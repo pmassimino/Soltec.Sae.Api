@@ -44,6 +44,38 @@ namespace Soltec.Sae.Api
                 item.Detalle.Add(ParseDetalle(reader));                
                 idAnt = id;                                
             }
+            if (item.Numero != 0) result.Add(item);
+            reader.Close();
+            cnn.Close();
+            return result;
+        }
+        public List<DocumentoPendienteView> ListPendiente(string idCuenta,DateTime fecha,DateTime fechaHasta)
+        {
+            SujetoService sujetoService = new SujetoService(this.ConnectionStringBase);
+            string connectionString = this.ConnectionStringBase + "sae.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = "SELECT remmae.sec,remmae.orden,remmae.tipo,letra,pe,num,num_doc,femi,fvto,scta,remmae.rem, " +
+                "sub1,dto,pde,sub2,remmae.int,per,iva1,iva2,iva3,remmae.tot,obs1,obs2,clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc, " +
+                "clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva,can,can_r,exp_tipo,des,pun,bon,art,remdet.tot as total " +
+                "FROM remmae " +
+                "INNER JOIN remdet ON remdet.sec = remmae.sec AND remmae.orden = remdet.orden " +
+                "INNER JOIN clipro on clipro.cod = remmae.scta " +
+                " WHERE  (femi BETWEEN ctod('" + fecha.ToString("MM-dd-yyy") + "') "
+                + " AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) "
+                + "And (scta = '" + idCuenta + "' or empty('" + idCuenta + "')) "
+                + "And remmae.tipo = 1 And remdet.can_r > 0 And remdet.exp_tipo = 'C' "
+                + "ORDER BY femi, remmae.sec, remmae.orden ";
+                 
+            OleDbDataReader reader = command.ExecuteReader();
+            List<DocumentoPendienteView> result = new List<DocumentoPendienteView>();
+            string idAnt = "";
+            
+            while (reader.Read())
+            {
+                result.Add(ParsePendiente(reader));
+            }            
             reader.Close();
             cnn.Close();
             return result;
@@ -157,6 +189,36 @@ namespace Soltec.Sae.Api
             tmpSujeto.Provincia = reader["provin"].ToString().Trim();
             tmpSujeto.Localidad = reader["loc"].ToString().Trim();
             item.Cuenta = tmpSujeto;
+            return item;
+        }
+        private DocumentoPendienteView ParsePendiente(OleDbDataReader reader)
+        {
+            DocumentoPendienteView item = new DocumentoPendienteView();
+            item.Sec = reader["sec"].ToString().Trim();
+            item.Orden = reader["orden"].ToString().Trim();
+            item.Tipo = Convert.ToInt16(reader["tipo"]);
+            item.Letra = reader["letra"].ToString().Trim();
+            item.Tipo = Convert.ToInt16(reader["tipo"]);
+            item.FechaPase = (DateTime)reader["femi"];
+            item.FechaComprobante = (DateTime)reader["femi"];
+            item.FechaVencimiento = (DateTime)reader["fvto"];
+            if (item.Tipo == 1)
+            {
+                item.Comprobante = "REMITO";
+            }
+            else if (item.Tipo == 2)
+            {
+                item.Comprobante = "REMITO DEVOLUCION";
+            }
+
+            item.Pe = reader["pe"].ToString().Trim() == "" ? 0 : Convert.ToInt16(reader["pe"]);
+            item.Numero = reader["num"].ToString().Trim() == "" ? 0 : Convert.ToInt32(reader["num"]);
+            item.IdCuenta = reader["scta"].ToString().Trim();
+            item.Nombre = reader["nom"].ToString().Trim();
+            item.Cantidad = (decimal)reader["can"];
+            item.CantidadPendiente = (decimal)reader["can_r"];            
+            item.NombreArticulo = reader["des"].ToString().Trim();
+            item.IdArticulo = reader["art"].ToString();
             return item;
         }
         private RemitoView ParseRemitoView(OleDbDataReader reader)

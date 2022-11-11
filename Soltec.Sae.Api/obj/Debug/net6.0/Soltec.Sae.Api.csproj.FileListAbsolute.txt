@@ -40,3 +40,10 @@ C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net6.0\refint\Soltec.Sae.Ap
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net6.0\Soltec.Sae.Api.pdb
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net6.0\Soltec.Sae.Api.genruntimeconfig.cache
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net6.0\ref\Soltec.Sae.Api.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\ClosedXML.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\ExcelNumberFormat.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\Irony.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\SixLabors.Fonts.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\System.IO.Packaging.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Debug\net6.0\XLParser.dll

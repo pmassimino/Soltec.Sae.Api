@@ -3,6 +3,8 @@ using System.Data.OleDb;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
+using System.Data;
+using ClosedXML.Excel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +51,40 @@ app.MapGet("/api/contabilidad/sujeto", () =>
     SujetoService sujetoService = new SujetoService(connectionStringBase);
     List<Sujeto> result = sujetoService.List();     
     return result;
+});
+app.MapGet("/api/contabilidad/sujeto/xls", () =>
+{
+
+    SujetoService sujetoService = new SujetoService(connectionStringBase);
+    List<Sujeto> result = sujetoService.List();
+    DataTable dt = new DataTable("Grid");
+
+    dt.Columns.AddRange(new DataColumn[9] { new DataColumn("Codigo"),
+                                            new DataColumn("Nombre"),
+                                            new DataColumn("Numero Documento"),
+                                            new DataColumn("Domicilio"),
+                                            new DataColumn("Codigo Postal"),
+                                            new DataColumn("Localidad"),
+                                            new DataColumn("Provincia"),
+                                            new DataColumn("Condicion Iva"),
+                                            new DataColumn("Condicion I.B.")});
+
+    foreach (var item in result)
+    {
+        dt.Rows.Add(item.Id, item.Nombre, item.NumeroDocumento, item.Domicilio,item.CodigoPostal, item.Localidad,item.Provincia,item.CondicionIva,item.CondicionIB);
+    }
+
+    using (XLWorkbook wb = new XLWorkbook())
+    {
+
+        wb.Worksheets.Add(dt);
+        using (MemoryStream stream = new MemoryStream())
+        {
+            wb.SaveAs(stream);          
+            return Results.File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet","Sujeto.xlsx");
+        }
+    }
+    
 });
 
 app.MapGet("/api/contabilidad/sujeto/{id}", (string id) =>
@@ -142,6 +178,19 @@ app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =
     result = service.List(fecha,fechaHasta);
     return Results.Ok(result);
 });
+app.MapGet("/api/ventas/Factura/pendiente", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    FacturaService service = new FacturaService(connectionStringBase);
+    List<DocumentoPendienteView> result = null;
+    result = service.ListPendiente(idCuenta, fecha, fechaHasta);
+    return Results.Ok(result);
+});
+
 app.MapGet("/api/ventas/Factura/{orden}", (string orden, HttpRequest request, HttpResponse response) =>
 {
     string sec = request.Query["sec"];
@@ -173,6 +222,19 @@ app.MapGet("/api/ventas/Remito", (HttpRequest request, HttpResponse response) =>
     result = service.List(fecha, fechaHasta);
     return Results.Ok(result);
 });
+app.MapGet("/api/ventas/Remito/pendiente", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();    
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    RemitoService service = new RemitoService(connectionStringBase);
+    List<DocumentoPendienteView> result = null;
+    result = service.ListPendiente(idCuenta,fecha, fechaHasta);
+    return Results.Ok(result);
+});
+
 app.MapGet("/api/ventas/remito/informe", (HttpRequest request, HttpResponse response) =>
 {
     var fechaStr = request.Query["Fecha"].ToString();

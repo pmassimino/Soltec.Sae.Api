@@ -152,8 +152,7 @@ namespace Soltec.Sae.Api
             Sujeto chofer = new Sujeto();
             chofer.Id = reader["id_camion"].ToString().Trim();
             chofer.Nombre = reader["NombreChofer"].ToString().Trim();            
-            chofer.NumeroDocumento = reader["CuitChofer"].ToString().Trim();
-            
+            chofer.NumeroDocumento = reader["CuitChofer"].ToString().Trim();            
             
             item.Chofer = chofer;
             return item;

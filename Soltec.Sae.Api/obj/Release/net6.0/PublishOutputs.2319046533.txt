@@ -5,8 +5,13 @@ C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Soltec.
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Soltec.Sae.Api.deps.json
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Soltec.Sae.Api.runtimeconfig.json
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Soltec.Sae.Api.pdb
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\ClosedXML.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\DocumentFormat.OpenXml.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\ExcelNumberFormat.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Irony.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Microsoft.OpenApi.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\SixLabors.Fonts.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -14,9 +19,11 @@ C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.Data.OleDb.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.Diagnostics.PerformanceCounter.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.Drawing.Common.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.IO.Packaging.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.Security.Cryptography.ProtectedData.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.Security.Permissions.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\System.Windows.Extensions.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\XLParser.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\System.Data.OleDb.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\net6.0\System.Diagnostics.PerformanceCounter.dll

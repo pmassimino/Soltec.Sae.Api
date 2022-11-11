@@ -43,7 +43,7 @@ namespace Soltec.Sae.Api
             command.CommandText = "SELECT facmae.sec,facmae.orden,facmae.tipo,letra,pe,num,cae,cae_id,tipcomp,femi,fvto,cmay,scta,facmae.rem,cla,facmae.ven,tve,tep,tra,civa,sub1,dto,pde,sub2," +
                 "gas,facmae.int,facmae.ibru,cibru,per,facmae.fle,ot1,ret,iva1,iva2,iva3,facmae.tot,cotiz,morig,estado,integ,facmae.lote,facmae.noa,noi,obs1,obs2,fnventa,facmae.pre, " +
                 "facmae.nc,facmae.tip_op,ord_ven,fac_cre," +
-                "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,div,totd,nctip," +
+                "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,totd,nctip," +
                 "clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva, " +
                 "can,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet " + 
                 "FROM facmae " +
@@ -69,6 +69,39 @@ namespace Soltec.Sae.Api
                 item.Detalle.Add(ParseDetalle(reader));
                 idAnt = id;
             }
+            if (item.Numero != 0) result.Add(item);
+            reader.Close();
+            cnn.Close();
+            return result;
+        }
+        public List<DocumentoPendienteView> ListPendiente(string idCuenta,DateTime fecha, DateTime fechaHasta)
+        {
+            SujetoService sujetoService = new SujetoService(this.ConnectionStringBase);
+            string connectionString = this.ConnectionStringBase + "sae.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = "SELECT facmae.sec,facmae.orden,facmae.tipo,letra,pe,num,cae,cae_id,tipcomp,femi,fvto,cmay,scta,facmae.rem,cla,facmae.ven,tve,tep,tra,civa,sub1,dto,pde,sub2," +
+                "gas,facmae.int,facmae.ibru,cibru,per,facmae.fle,ot1,ret,iva1,iva2,iva3,facmae.tot,cotiz,morig,estado,integ,facmae.lote,facmae.noa,noi,obs1,obs2,fnventa,facmae.pre, " +
+                "facmae.nc,facmae.tip_op,ord_ven,fac_cre," +
+                "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,totd,nctip," +
+                "clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva, " +
+                "can,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet,can_r " +
+                "FROM facmae " +
+                "INNER JOIN facdet ON facmae.sec = facdet.sec AND facmae.orden = facdet.orden " +
+                "inner join clipro on clipro.cod = facmae.scta "   +
+                "LEFT JOIN artgen ON artgen.cod = facdet.art "  +
+                "WHERE  (femi BETWEEN ctod('" + fecha.ToString("MM-dd-yyy") + "')"
+                + " AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) " 
+                + " and (scta = '" + idCuenta + "' or empty('" + idCuenta + "'))"  
+                + " And facmae.tipo = 1 And facdet.can_r > 0 And facdet.exp_tipo = 'C' and artgen.exime = .f. "                 
+                + " order by femi,facmae.tipo,letra,pe,num";
+            OleDbDataReader reader = command.ExecuteReader();
+            List<DocumentoPendienteView> result = new List<DocumentoPendienteView>();           
+            while (reader.Read())
+            {                
+               result.Add(ParsePendiente(reader));                
+            }            
             reader.Close();
             cnn.Close();
             return result;
@@ -187,10 +220,47 @@ namespace Soltec.Sae.Api
             }
             else 
             {
-                item.Precio = (decimal)reader["punimp"];
+                try { item.Precio = (decimal)reader["punimp"]; } catch { }
+                
                 item.SubTotal = (decimal)reader["totdet"];
             }
                 
+            return item;
+        }
+        private DocumentoPendienteView ParsePendiente(OleDbDataReader reader)
+        {
+            DocumentoPendienteView item = new DocumentoPendienteView();
+            item.Sec = reader["sec"].ToString().Trim();
+            item.Orden = reader["orden"].ToString().Trim();
+            item.Tipo = Convert.ToInt16(reader["tipo"]);
+            item.Letra = reader["letra"].ToString().Trim();            
+            item.FechaPase = (DateTime)reader["femi"];
+            item.FechaComprobante = (DateTime)reader["femi"];
+            item.FechaVencimiento = (DateTime)reader["fvto"];
+            if (item.Tipo == 1)
+            {
+                item.Comprobante = "FACTURA";
+            }
+            else if (item.Tipo == 2)
+            {
+                item.Comprobante = "NOTA DE CREDITO";
+            }
+            else if (item.Tipo == 3)
+            {
+                item.Comprobante = "NOTA DE DEBITO";
+            }
+            else if (item.Tipo == 4)
+            {
+                item.Comprobante = "TICKET";
+            }
+            item.Pe = reader["pe"].ToString().Trim() == "" ? 0 : Convert.ToInt16(reader["pe"]);
+            item.Numero = reader["num"].ToString().Trim() == "" ? 0 : Convert.ToInt32(reader["num"]);
+            item.IdCuenta = reader["scta"].ToString().Trim();
+            item.IdArticulo = reader["art"].ToString().Trim();
+            item.Nombre = reader["nom"].ToString().Trim();
+            item.Cantidad = (decimal)reader["can"];
+            item.NombreArticulo = reader["des"].ToString().Trim();
+            item.CantidadPendiente = (decimal)reader["can_r"];
             return item;
         }
     }

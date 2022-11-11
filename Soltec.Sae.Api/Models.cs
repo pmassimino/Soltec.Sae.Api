@@ -124,6 +124,26 @@
     public decimal Descuento {get; set;}
 
     }
+    public class DocumentoPendienteView 
+    {
+        public string Sec { get; set; }
+        public string Orden { get; set; }
+        public DateTime FechaPase { get; set; }
+        public DateTime FechaComprobante { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public int Tipo { get; set; }
+        public string Comprobante { get; set; }
+        public string Letra { get; set; }
+        public decimal Pe { get; set; }
+        public decimal Numero { get; set; }
+        public string IdCuenta { get; set; }
+        public string Nombre { get; set; }  
+        public string IdArticulo { get; set; }
+        public string NombreArticulo { get; set; }
+        public decimal Cantidad { get; set; }
+        public decimal CantidadPendiente { get; set; }
+
+    }
     public class Remito
     {
         public  Remito()

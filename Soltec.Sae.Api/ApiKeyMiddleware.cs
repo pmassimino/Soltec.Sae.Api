@@ -10,12 +10,7 @@
             _next = next;
         }
         public async Task InvokeAsync(HttpContext context)
-        {
-            if (context.Request.Path == "/swagger/index.html") 
-            {
-                await _next(context);
-                return;
-            }
+        {            
             if (!context.Request.Headers.TryGetValue(APIKEY, out
                     var extractedApiKey))
             {
