@@ -1,5 +1,11 @@
 ﻿namespace Soltec.Sae.Api
 {
+    public class Sucursal 
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+        public string ConnectionStrings { get; set; }
+    }
     public class Sujeto
     {
         public Sujeto()
@@ -9,13 +15,13 @@
         public string Id { get; set; }
         public string Nombre { get; set; }
         public string NumeroDocumento { get; set; }
-        public string NumeroIngBruto { get; set; }
+        public string NumeroIngBruto { get; set; } = "0";
         public string Domicilio { get; set; }
         public string Localidad { get; set; }
         public string Provincia { get; set; }
         public string CodigoPostal { get; set; }
-        public string CondicionIva { get; set; }
-        public string CondicionIB { get; set; }
+        public string CondicionIva { get; set; } = "0";
+        public string CondicionIB { get; set; } = "0";
         public List<Subdiario> Subdiarios { get; set; }
     }
     public class Subdiario
@@ -65,7 +71,8 @@
         public string IdCuenta { get; set;}
         public string Nombre { get; set; }
         public string IdCuentaMayor { get; set; }
-        public int IdDivisa { get; set; }         
+        public int IdDivisa { get; set; }
+        public decimal SaldoVencido { get; set; }
         public decimal Saldo { get; set; }
     }
     public class Comprobante 
@@ -225,6 +232,7 @@
         public string Nombre { get; set; }
         public string IdCosecha { get; set; }
         public string NombreCosecha { get; set; }
+        public string NombreCereal { get; set; }
         public Int64 Entregado { get; set; }
         public Int64 Recibido { get; set; }
         public Int64 Transferido { get; set; }
@@ -481,7 +489,20 @@
         public string Obs { get; set; }
         public string Estado { get; set; }
         public bool AFijar { get; set; }
-        public Int64 PendienteFijar { get; set; }
+        public Int64 PendienteFijar { get; set; }       
+    }
+    public class BoletoPendienteLiquidar
+    {
+        public string IdSucursal { get; set; } = "01";
+        public string Id { get; set; }
+        public string IdCosecha { get; set; }
+        public string NombreCosecha { get; set; }
+        public string IdCuenta { get; set; }
+        public string NombreCuenta { get; set; }
+        public decimal Precio { get; set; }
+        public Int64 PesoNeto { get; set; }
+        public Int64 PesoLiquidado { get; set; }
+        public Int64 PesoPendienteLiquidar { get; set; }
     }
     public class MovPlantaCereal 
     {
@@ -521,6 +542,50 @@
         public Sujeto CuentaDestino { get; set; }
 
     }
-    
+    //Contrato
+    public class ItemPosicionFisica
+    {
+        public string Concepto { get; set; } = "";
+        public Int64 Trigo { get; set; } = 0;
+        public Int64 Maiz { get; set; } = 0;
+        public Int64 Soja { get; set; } = 0;
+        public Int64 Sorgo { get; set; } = 0;
+        public Int64 Girasol { get; set; } = 0;
 
     }
+    public class Contrato
+    {
+        public string Id { get; set; }
+        public string Numero { get; set; }
+        public string Tipo { get; set; }
+        public DateTime Fecha { get; set; }
+        public string IdCosecha { get; set; }
+        public Cosecha Cosecha { get; set; }
+        public string NombreCereal { get; set; }
+        public string NombreComprador { get; set; }
+        public Int64 PesoNeto { get; set; }
+        public string Estado { get; set; } = "PENDIENTE";
+    }
+
+        public class EstadoContratoView
+    {
+        public DateTime Fecha { get; set; }
+        public string Numero { get; set; }
+        public string NombreComprador { get; set; }
+        public string NombreCosecha { get; set; }
+        public string NombreCereal { get; set; }
+        //A Fijar - Normal
+        public string Tipo { get; set; }
+        public string Estado { get; set; }
+        public Int64 PesoNeto {get;set;}
+        public Int64 PesoAplicado { get; set; }
+        public Int64 PesoPendienteAplicar { get; set; }
+        public Int64 PesoFijado { get; set; }
+        public Int64 PesoPendienteFijar { get; set; }
+        public Int64 PesoLiquidado { get; set; }
+        public Int64 PesoPendienteLiquidar { get; set; }
+
+    }
+
+
+}

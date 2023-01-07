@@ -19,8 +19,8 @@ namespace Soltec.Sae.Api
             OleDbCommand command = cnn.CreateCommand();
             command.CommandText = "SELECT can, ccpte, cmay, con, cotiz, fcom, fpas, fvto, imp, impd, morig, ncpte, ntra, obn, org, pvta, scta, suc, tip, usu " +
                 "                  FROM trasub " +
-                "                  WHERE (scta = '" + idCuenta + "') AND (cmay = '" + idCuentaMayor + "') AND (fpas BETWEEN ctod('" + fecha.ToString("MM-dd-yyy") + "')" 
-                                         + " AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) ORDER BY fvto, org, usu, ntra";
+                "                  WHERE (scta = '" + idCuenta + "') AND (cmay = '" + idCuentaMayor + "') AND (fvto >= ctod('" + fecha.ToString("MM-dd-yyy") + "')" 
+                                         + " AND fpas <= ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) ORDER BY fvto, org, usu, ntra";
             OleDbDataReader reader = command.ExecuteReader();
             List<MovCtaCte> result = new List<MovCtaCte>();
             while (reader.Read())
@@ -138,31 +138,82 @@ namespace Soltec.Sae.Api
             }
             cnn.Close();
             return result;        }
-        public List<SaldoCtaCte> Saldos(string idCuenta, string idCuentaHasta, string idCuentaMayor, DateTime fecha, int idDivisa, bool vencido = false)
+        public List<SaldoCtaCte> Saldos(string idCuenta, string idCuentaHasta, string idCuentaMayor, DateTime fecha, int idDivisa)
         {
-            List<SaldoCtaCte> result = new List<SaldoCtaCte>();
+            
             string connectionString = this.ConnectionStringBase + "sae.dbc";
             OleDbConnection cnn = new OleDbConnection(connectionString);
-            //Parametros
-            string campoFecha = vencido ? "fvto" : "fpas";
 
-            // Llenar detalle factura
+            //Agregar 1 dia para corregir bug
+            //fecha = fecha.AddDays(1);
+            // Saldo Vencido
             OleDbCommand command = cnn.CreateCommand();
+            string campoFecha = "fvto"; //: "fpas";
+
             cnn.Open();
             command.CommandText = "SELECT scta, clipro.nom as nombre ,cmay,SUM(IIF(tip = 1, imp, - imp)) AS Saldo FROM trasub LEFT JOIN clipro ON clipro.cod = scta GROUP BY scta,nom,cmay WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') having  SUM(IIF(tip = 1, imp, - imp)) <> 0";                        
-            OleDbDataReader reader = command.ExecuteReader();            
+            OleDbDataReader reader = command.ExecuteReader();
+            List<SaldoCtaCte> tmpResultVencido = new List<SaldoCtaCte>();
             while (reader.Read())
             {
                 SaldoCtaCte item = new SaldoCtaCte();
                 item.IdCuentaMayor = reader["cmay"].ToString().Trim();
                 item.IdCuenta = reader["scta"].ToString().Trim();
                 item.Nombre = reader["nombre"].ToString().Trim();                
-                item.Saldo = (decimal)reader["saldo"];
-                result.Add(item);
+                item.SaldoVencido = (decimal)reader["saldo"];
+                tmpResultVencido.Add(item);
             }
+            reader.Close();
+            // Saldo             
+            campoFecha =  "fpas";
+            command.CommandText = "SELECT scta, clipro.nom as nombre ,cmay,SUM(IIF(tip = 1, imp, - imp)) AS Saldo FROM trasub LEFT JOIN clipro ON clipro.cod = scta GROUP BY scta,nom,cmay WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') having  SUM(IIF(tip = 1, imp, - imp)) <> 0";
+            reader = command.ExecuteReader();
+            List<SaldoCtaCte> tmpResultSaldo = new List<SaldoCtaCte>();
+            while (reader.Read())
+            {
+                SaldoCtaCte item = new SaldoCtaCte();
+                item.IdCuentaMayor = reader["cmay"].ToString().Trim();
+                item.IdCuenta = reader["scta"].ToString().Trim();
+                item.Nombre = reader["nombre"].ToString().Trim();
+                item.Saldo = (decimal)reader["saldo"];
+                tmpResultSaldo.Add(item);
+            }
+            reader.Close();
+            //Combinar Saldos
+            var result = from s in tmpResultSaldo
+                                 join sv in tmpResultVencido on s.IdCuenta equals sv.IdCuenta into details
+                                 select new SaldoCtaCte 
+                                 { IdCuenta = s.IdCuenta, Nombre = s.Nombre, IdCuentaMayor = s.IdCuentaMayor, Saldo = s.Saldo, SaldoVencido = details.Sum(s => s.SaldoVencido), IdDivisa = s.IdDivisa };
+
+
             cnn.Close();
+            return result.ToList();
+        }
+        public Int32 DiasDeuda(string idCuenta, string idCuentaMayor)
+        {
+            DateTime fecha = DateTime.Now.AddDays(-365);
+            DateTime fechaHasta = DateTime.Now;
+            var tmpMov = this.List(idCuenta, idCuentaMayor, fecha, fechaHasta);
+            var tmpMovFinal = tmpMov.OrderByDescending(o => o.Orden).ToList();
+            DateTime UltimaFecha = fecha;
+            //Calcular Saldo
+            var registarFecha = false;
+            MovCtaCte tmpMovAnterior = null;
+            foreach (var item in tmpMovFinal) 
+            {                
+                if (item.Saldo <= 0) 
+                {
+                    UltimaFecha = tmpMovAnterior == null ? DateTime.Now : tmpMovAnterior.FechaVencimiento;
+                    break;
+                }
+                tmpMovAnterior = item;
+            }
+            Int32 result = (DateTime.Now - UltimaFecha).Days;           
             return result;
         }
+
+
+
 
 
 

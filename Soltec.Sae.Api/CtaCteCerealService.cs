@@ -228,6 +228,7 @@ namespace Soltec.Sae.Api
             var cosecha = cosechaService.FindOne(idCosecha);
             result.IdCosecha = idCosecha;
             result.NombreCosecha = cosecha.Nombre;
+            result.NombreCereal = cosecha.NombreCereal;
             EntradaService entradaService = new EntradaService(this.ConnectionStringBase);
             result.Entregado = entradaService.Total(idCuenta,idCosecha,fecha);
             RetiroService retiroService = new RetiroService(this.ConnectionStringBase);

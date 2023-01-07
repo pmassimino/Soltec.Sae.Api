@@ -20,7 +20,7 @@ string connectionStringBase = app.Configuration["ConnectionStringsSAE"];
 string connectionStringCerealesBase = app.Configuration["ConnectionStringsCereales"];
 string tipoSaldo = app.Configuration["TipoSaldo"];
 
-var sucursales = app.Configuration.GetSection("Sucursales").GetChildren().ToList().Select(x => new {
+var sucursales = app.Configuration.GetSection("Sucursales").GetChildren().ToList().Select(x => new Sucursal {
     Id = x.GetValue<string>("Id"),
     Nombre = x.GetValue<string>("Nombre"),
     ConnectionStrings = x.GetValue<string>("ConnectionStrings")
@@ -45,6 +45,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
+app.MapGet("/api/isRuning", () =>
+{    
+    return Results.Ok();
+});
 app.MapGet("/api/contabilidad/sujeto", () =>
 {
    
@@ -110,12 +114,12 @@ app.MapGet("/api/almacen/articulo/{id}", (string id) =>
 app.MapGet("/api/contabilidad/CtaCte/{id}/saldo", (string id, HttpRequest request, HttpResponse response) =>
 {
     string idCuentaMayor = request.Query["IdCuentaMayor"];
-    var fechaStr = request.Query["Fecha"] ;
+    var fechaStr = request.Query["Fecha"].ToString() ;
     string vencidoStr = request.Query["vencido"].ToString();
     bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
     string idDivisaStr = request.Query["idDivisa"].ToString() ;
     int idDivisa = idDivisaStr == "" ? 0 : Convert.ToInt32(idDivisaStr);
-    var fecha = DateTime.ParseExact(fechaStr,"MM-dd-yyyy",null);
+    var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     CtaCteService service = new CtaCteService(connectionStringBase);
     decimal result = 0;    
     result = service.Saldo(id, idCuentaMayor, fecha,idDivisa,vencido);
@@ -124,7 +128,7 @@ app.MapGet("/api/contabilidad/CtaCte/{id}/saldo", (string id, HttpRequest reques
 app.MapGet("/api/contabilidad/CtaCte/{id}", (string id, HttpRequest request, HttpResponse response) =>
 {
     string idCuentaMayor = request.Query["IdCuentaMayor"];
-    var fechaStr = request.Query["Fecha"];
+    var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now.AddDays(-60) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr==""? DateTime.Now:DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
@@ -145,7 +149,7 @@ app.MapGet("/api/contabilidad/CtaCte/saldos", (HttpRequest request, HttpResponse
     string idCuenta = request.Query["IdCuenta"].ToString();
     string idCuentaHasta = request.Query["IdCuentaHasta"].ToString();
     string idCuentaMayor = request.Query["IdCuentaMayor"].ToString();
-    var fechaStr = request.Query["Fecha"];
+    var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     string vencidoStr = request.Query["vencido"].ToString();
     bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
@@ -158,14 +162,83 @@ app.MapGet("/api/contabilidad/CtaCte/saldos", (HttpRequest request, HttpResponse
     }
     if (idCuentaHasta.Trim() == "")
     {
-        return Results.BadRequest("IdCuentaHasta requerido");
+        idCuentaHasta = "9999999999";
     }
     CtaCteService service = new CtaCteService(connectionStringBase);
     List<SaldoCtaCte> result = null;
-    result = service.Saldos(idCuenta,idCuentaHasta, idCuentaMayor, fecha,idDivisa,vencido);
+    result = service.Saldos(idCuenta,idCuentaHasta, idCuentaMayor, fecha,idDivisa);
 
     return Results.Ok(result);
 });
+app.MapGet("/api/contabilidad/CtaCte/saldos/xls", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    string idCuentaHasta = request.Query["IdCuentaHasta"].ToString();
+    string idCuentaMayor = request.Query["IdCuentaMayor"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    string vencidoStr = request.Query["vencido"].ToString();
+    bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
+    string idDivisaStr = request.Query["idDivisa"].ToString();
+    int idDivisa = idDivisaStr == "" ? 0 : Convert.ToInt32(idDivisaStr);
+    //Validar
+    if (idCuentaMayor.Trim() == "")
+    {
+        return Results.BadRequest("IdCuentaMayor requerido");
+    }
+    if (idCuentaHasta.Trim() == "")
+    {
+        idCuentaHasta = "9999999999";
+    }
+    CtaCteService service = new CtaCteService(connectionStringBase);
+    List<SaldoCtaCte> result = null;
+    result = service.Saldos(idCuenta, idCuentaHasta, idCuentaMayor, fecha, idDivisa);
+    //Convertir a Excel
+    DataTable dt = new DataTable("Grid");
+
+    dt.Columns.AddRange(new DataColumn[6] { new DataColumn("IdCuenta"),
+                                            new DataColumn("IdCuentaMayor"),
+                                            new DataColumn("Nombre"),
+                                            new DataColumn("Saldo Vencido"),
+                                            new DataColumn("Saldo"),
+                                            new DataColumn("idDivisa")});
+
+
+    foreach (var item in result)
+    {
+        dt.Rows.Add(item.IdCuenta,item.IdCuentaMayor ,item.Nombre, item.SaldoVencido,item.SaldoVencido,item.IdDivisa);
+    }
+
+    using (XLWorkbook wb = new XLWorkbook())
+    {
+
+        wb.Worksheets.Add(dt);
+        using (MemoryStream stream = new MemoryStream())
+        {
+            wb.SaveAs(stream);
+            return Results.File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SaldosCtaCte.xlsx");
+        }
+    }
+
+    return Results.Ok(result);
+});
+//Dias Deuda
+app.MapGet("/api/contabilidad/CtaCte/{id}/diasdeuda", (string id, HttpRequest request, HttpResponse response) =>
+{
+    string idCuentaMayor = request.Query["IdCuentaMayor"];
+    var fechaStr = request.Query["Fecha"].ToString();
+    string vencidoStr = request.Query["vencido"].ToString();
+    bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
+    string idDivisaStr = request.Query["idDivisa"].ToString();
+    int idDivisa = idDivisaStr == "" ? 0 : Convert.ToInt32(idDivisaStr);
+    var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    CtaCteService service = new CtaCteService(connectionStringBase);
+    Int32 result = 0;
+    result = service.DiasDeuda(id, idCuentaMayor);
+    return Results.Ok(result);
+});
+
+
 
 app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =>
 {
@@ -539,6 +612,73 @@ app.MapGet("/api/cereales/boleto", (HttpRequest request, HttpResponse response) 
     }
     return result;
 });
+app.MapGet("/api/cereales/boleto/pendiente", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    string idCosecha = request.Query["IdCosecha"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-365) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+    List<BoletoPendienteLiquidar> result = new List<BoletoPendienteLiquidar>();
+    foreach (var suc in sucFilter)
+    {
+        BoletoService service = new BoletoService(suc.ConnectionStrings);
+        service.IdSucursal = suc.Id;
+        var tmpresult = service.ListPendiente(idCuenta, idCosecha, fecha,fechaHasta);
+        result.AddRange(tmpresult);
+    }
+    return result;
+});
+app.MapGet("/api/cereales/boleto/pendiente/xls", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    string idCosecha = request.Query["IdCosecha"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-365) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+    List<BoletoPendienteLiquidar> result = new List<BoletoPendienteLiquidar>();
+    foreach (var suc in sucFilter)
+    {
+        BoletoService service = new BoletoService(suc.ConnectionStrings);
+        service.IdSucursal = suc.Id;
+        var tmpresult = service.ListPendiente(idCuenta, idCosecha, fecha, fechaHasta);
+        result.AddRange(tmpresult);
+    }
+    DataTable dt = new DataTable("Grid");
+    dt.Columns.AddRange(new DataColumn[10] { new DataColumn("IdSucursal"),
+                                            new DataColumn("Id"),
+                                            new DataColumn("IdCuenta"),
+                                            new DataColumn("NombreCuenta"),
+                                            new DataColumn("IdCosechal"),
+                                            new DataColumn("NombreCosecha"),
+                                            new DataColumn("Precio"),
+                                            new DataColumn("PesoNeto"),
+                                            new DataColumn("PesoLiquidado"),
+                                            new DataColumn("PesoPendienteLiquidar")});
+
+    foreach (var item in result)
+    {
+        dt.Rows.Add(item.IdSucursal,item.Id, item.IdCuenta, item.NombreCuenta,item.IdCosecha, item.NombreCosecha,item.Precio,item.PesoNeto,item.PesoLiquidado,item.PesoPendienteLiquidar);
+    }
+
+    using (XLWorkbook wb = new XLWorkbook())
+    {
+
+        wb.Worksheets.Add(dt);
+        using (MemoryStream stream = new MemoryStream())
+        {
+            wb.SaveAs(stream);
+            return Results.File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "BoletosPendientes.xlsx");
+        }
+    }   
+});
+
 app.MapGet("/api/cereales/boleto/{id}", (string id, HttpRequest request, HttpResponse response) =>
 {
     string idSucursal = request.Query["IdSucursal"].ToString();
@@ -735,7 +875,70 @@ app.MapGet("/api/cereales/planta/saldo", (HttpRequest request, HttpResponse resp
     }
     return result;
 });
+app.MapGet("/api/cereales/planta/posicioncomercial", (HttpRequest request, HttpResponse response) =>
+{
+    string idPlanta = request.Query["IdPlanta"].ToString();
+    string idCosecha = request.Query["IdCosecha"].ToString();
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-365) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+    List<ItemPosicionFisica> result = new List<ItemPosicionFisica>();
+    
+    CerealesService service = new CerealesService(connectionStringCerealesBase);
+    service.Sucursales = sucFilter.ToList();
+    service.SaeConnectionStringBase = connectionStringBase;
+    result = service.PosicionFisica(fecha, fechaHasta);    
+    return result;
+});
+//Contrato
+app.MapGet("/api/cereales/Contrato", (HttpRequest request, HttpResponse response) =>
+{
+    string numero = request.Query["numero"].ToString();
+    string tipo = request.Query["tipo"].ToString();
+    string estado = request.Query["estado"].ToString();
+    string id = request.Query["id"].ToString();
+    string idCosecha = request.Query["IdCosecha"].ToString();
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-355) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+    List<Contrato> result = new List<Contrato>();
+    foreach (var suc in sucFilter)
+    {
+        ContratoService service = new ContratoService(suc.ConnectionStrings);        
+        var tmpresult = service.List(id,numero,fecha,fechaHasta,tipo,estado);
+        result.AddRange(tmpresult);
+    }
+    return result;
+});
 
+app.MapGet("/api/cereales/Contrato/estado", (HttpRequest request, HttpResponse response) =>
+{
+    string numero = request.Query["numero"].ToString();
+    string tipo = request.Query["tipo"].ToString();
+    string estado = request.Query["estado"].ToString();
+    string id = request.Query["id"].ToString();
+    string idCosecha = request.Query["IdCosecha"].ToString();
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-355) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+    List<EstadoContratoView> result = new List<EstadoContratoView>();
+    foreach (var suc in sucFilter)
+    {
+        ContratoService service = new ContratoService(suc.ConnectionStrings);
+        var tmpresult = service.ListEstado(id, numero,fecha,fechaHasta,estado,tipo);
+        result.AddRange(tmpresult);
+    }
+    return result;
+});
 
 
 

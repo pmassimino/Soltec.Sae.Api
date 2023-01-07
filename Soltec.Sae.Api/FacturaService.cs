@@ -94,7 +94,8 @@ namespace Soltec.Sae.Api
                 "WHERE  (femi BETWEEN ctod('" + fecha.ToString("MM-dd-yyy") + "')"
                 + " AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) " 
                 + " and (scta = '" + idCuenta + "' or empty('" + idCuenta + "'))"  
-                + " And facmae.tipo = 1 And facdet.can_r > 0 And facdet.exp_tipo = 'C' and artgen.exime = .f. "                 
+                + " And facmae.tipo = 1 And facdet.can_r > 0 And facdet.exp_tipo = 'C' and artgen.exime = .f. "    
+                + " and (FACMAE.cla!='07' and FACMAE.cla!='08' and  FACMAE.cla!='09')"
                 + " order by femi,facmae.tipo,letra,pe,num";
             OleDbDataReader reader = command.ExecuteReader();
             List<DocumentoPendienteView> result = new List<DocumentoPendienteView>();           
