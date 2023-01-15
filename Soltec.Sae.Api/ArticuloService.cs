@@ -16,7 +16,7 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin FROM artgen";
+            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin FROM artgen where !empty(cod) and !empty(nom)";
             OleDbDataReader reader = command.ExecuteReader();
             List<Articulo> result = new List<Articulo>();
             while (reader.Read())

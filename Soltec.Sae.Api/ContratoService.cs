@@ -105,6 +105,7 @@ namespace Soltec.Sae.Api
             }
             return result;
         }
+        //Entregado pendiente de Asignar
         private Contrato Parse(OleDbDataReader reader)
         {
             Contrato item = new Contrato();
@@ -133,5 +134,12 @@ namespace Soltec.Sae.Api
             
             return item;
         }
+    }
+    public class CartaPorte
+    {
+        public string Id { get; set; }
+        public DateTime Fecha { get; set; }
+        public DateTime FechaDescarga {get;set;}
+
     }
 }

@@ -336,6 +336,77 @@ app.MapGet("/api/ventas/Remito/{orden}", (string orden, HttpRequest request, Htt
     result = service.FindOne(sec, orden);
     return Results.Ok(result);
 });
+//Contabilidad
+app.MapGet("/api/contabilidad/mayor", (HttpRequest request, HttpResponse response) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    MayorService service = new MayorService(connectionStringBase);
+    List<Mayor> result = null;
+    result = service.List(fecha, fechaHasta);
+    return Results.Ok(result);
+});
+app.MapGet("/api/contabilidad/diario", (HttpRequest request, HttpResponse response) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    MayorService service = new MayorService(connectionStringBase);
+    List<Diario> result = null;
+    result = service.ListDiario(fecha, fechaHasta);
+    return Results.Ok(result);
+});
+app.MapGet("/api/contabilidad/diario/xls", (HttpRequest request, HttpResponse response) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    MayorService service = new MayorService(connectionStringBase);
+    List<Diario> result = null;
+    result = service.ListDiario(fecha, fechaHasta);
+    DataTable dt = new DataTable("Diario");
+    dt.Columns.AddRange(new DataColumn[19] { new DataColumn("IdSucursal"),
+                                            new DataColumn("IdSeccion"),
+                                            new DataColumn("IdTransaccion"),
+                                            new DataColumn("Fecha"),
+                                            new DataColumn("FechaComprobante"),
+                                            new DataColumn("FechaVencimiento"),
+                                            new DataColumn("Concepto"),
+                                            new DataColumn("IdComprobante"),
+                                            new DataColumn("Pe"),
+                                            new DataColumn("Numero"),
+                                            new DataColumn("Origen"),
+                                            new DataColumn("IdCuentaMayor"),
+                                            new DataColumn("NombreCuentaMayor"),
+                                            new DataColumn("IdCuenta"),
+                                            new DataColumn("NombreSujeto"),
+                                            new DataColumn("IdTipo"),
+                                            new DataColumn("Debe"),
+                                            new DataColumn("Haber"),
+                                            new DataColumn("Cantidad")});
+
+    foreach (var item in result)
+    {
+        dt.Rows.Add(item.IdSucursal, item.IdSeccion, item.IdTransaccion, item.Fecha, item.FechaComprobante, item.FechaVencimiento, item.Concepto, 
+                    item.IdComprobante, item.Pe, item.Numero,item.Origen,item.IdCuentaMayor, item.NombreCuentaMayor, item.IdCuenta,item.NombreSujeto,item.IdTipo,item.Debe,item.Haber,item.Cantidad);
+    }
+
+    using (XLWorkbook wb = new XLWorkbook())
+    {
+
+        wb.Worksheets.Add(dt);
+        using (MemoryStream stream = new MemoryStream())
+        {
+            wb.SaveAs(stream);
+            return Results.File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Diario.xlsx");
+        }
+    }
+    return Results.Ok(result);
+});
 
 
 

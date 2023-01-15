@@ -20,8 +20,8 @@
         public string Localidad { get; set; }
         public string Provincia { get; set; }
         public string CodigoPostal { get; set; }
-        public string CondicionIva { get; set; } = "0";
-        public string CondicionIB { get; set; } = "0";
+        public string CondicionIva { get; set; } = "";
+        public string CondicionIB { get; set; } = "";
         public List<Subdiario> Subdiarios { get; set; }
     }
     public class Subdiario
@@ -129,6 +129,96 @@
     public decimal Cantidad { get; set;}
     public decimal SubTotal { get; set; }
     public decimal Descuento {get; set;}
+
+    }
+    //Contabilidad
+    //Mayor
+    public class Mayor 
+    {
+        public Mayor()
+        {
+            List<DetalleMayor> Detalle = new List<DetalleMayor>();
+            this.Detalle = Detalle;
+        }
+        public string IdSucursal { get; set; } 
+        public string IdSeccion { get; set; }
+        public string IdTransaccion { get; set; }
+        public DateTime Fecha { get; set; }
+        public DateTime FechaComprobante { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        
+        public string Concepto { get; set; }
+        
+        public string IdComprobante { get; set; }
+        public int Pe { get; set; }
+        public long Numero { get; set; }
+        
+        public string Origen { get; set; }
+        public virtual IList<DetalleMayor> Detalle { get; set; }
+        public DetalleMayor AddDetalle(string IdCuentaMayor, string Concepto, string IdTipo, decimal Debe,decimal Haber, DateTime FechaVenc, string IdCuenta = null)
+        {
+            DetalleMayor item = new DetalleMayor();            
+            item.Item = Detalle.Count();
+            item.IdCuentaMayor = IdCuentaMayor;
+            item.Concepto = Concepto;
+            item.IdCuenta = IdCuenta;
+            item.IdTipo = IdTipo;
+            item.Debe = Debe;
+            item.Haber = Haber;
+            item.FechaVenc = FechaVenc;
+            this.Detalle.Add(item);
+            return item;
+        }
+
+    }
+    public class Diario 
+    {
+        public string IdSucursal { get; set; }
+        public string IdSeccion { get; set; }
+        public string IdTransaccion { get; set; }
+        public DateTime Fecha { get; set; }
+        public DateTime FechaComprobante { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public string Concepto { get; set; }
+        public string IdComprobante { get; set; }
+        public int Item { get; set; }
+        public int Pe { get; set; }
+        public long Numero { get; set; }
+        public string Origen { get; set; }
+        public string IdCuentaMayor { get; set; }
+        public string NombreCuentaMayor { get; set; }
+        public string IdCuenta { get; set; }
+        public string NombreSujeto { get; set; }
+        public string IdTipo { get; set; }
+        public decimal Debe { get; set; }
+        public decimal Haber { get; set; }
+        public decimal Cantidad { get; set; }
+    }
+    public class DetalleMayor
+    {
+        //Estructura
+        public string IdSucursal { get; set; }
+        public string IdSeccion { get; set; }
+        public string IdTransaccion { get; set; }
+
+        public int Item { get; set; }
+        public DateTime FechaVenc { get; set; }
+        
+        public string IdCuentaMayor { get; set; }
+        public string NombreCuentaMayor { get; set; }
+
+        public string Concepto { get; set; }
+        
+        public string IdCuenta { get; set; }
+        public string NombreSujeto { get; set; }
+
+        public string IdTipo { get; set; }
+        public decimal Debe { get; set; }
+        public decimal Haber { get; set; }
+        public decimal Cantidad { get; set; }
+        //public virtual CuentaMayor CuentaMayor { get; set; }
+        //
+        
 
     }
     public class DocumentoPendienteView 
@@ -586,6 +676,7 @@
         public Int64 PesoPendienteLiquidar { get; set; }
 
     }
+
 
 
 }
