@@ -149,9 +149,14 @@ namespace Soltec.Sae.Api
             // Saldo Vencido
             OleDbCommand command = cnn.CreateCommand();
             string campoFecha = "fvto"; //: "fpas";
-
+            string campoImporte = idDivisa==0 ? "imp":"impd";
             cnn.Open();
-            command.CommandText = "SELECT scta, clipro.nom as nombre ,cmay,SUM(IIF(tip = 1, imp, - imp)) AS Saldo FROM trasub LEFT JOIN clipro ON clipro.cod = scta GROUP BY scta,nom,cmay WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') having  SUM(IIF(tip = 1, imp, - imp)) <> 0";                        
+            command.CommandText = "SELECT scta, clipro.nom as nombre ,cmay,SUM(IIF(tip = 1, " + campoImporte + ", -" + campoImporte + ")) AS Saldo " + 
+                                  "FROM trasub " +
+                                  "LEFT JOIN clipro ON clipro.cod = scta " + 
+                                  "GROUP BY scta,nom,cmay " + "" +
+                                  "WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') " + 
+                                  "having  SUM(IIF(tip = 1, " + campoImporte + ", - " + campoImporte + ")) <> 0";                        
             OleDbDataReader reader = command.ExecuteReader();
             List<SaldoCtaCte> tmpResultVencido = new List<SaldoCtaCte>();
             while (reader.Read())
@@ -166,7 +171,12 @@ namespace Soltec.Sae.Api
             reader.Close();
             // Saldo             
             campoFecha =  "fpas";
-            command.CommandText = "SELECT scta, clipro.nom as nombre ,cmay,SUM(IIF(tip = 1, imp, - imp)) AS Saldo FROM trasub LEFT JOIN clipro ON clipro.cod = scta GROUP BY scta,nom,cmay WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') having  SUM(IIF(tip = 1, imp, - imp)) <> 0";
+            command.CommandText = "SELECT scta, clipro.nom as nombre ,cmay,SUM(IIF(tip = 1, " + campoImporte + ", -" + campoImporte + ")) AS Saldo " + 
+                                  "FROM trasub " + 
+                                  "LEFT JOIN clipro ON clipro.cod = scta " + 
+                                  "GROUP BY scta,nom,cmay " + 
+                                  "WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') " +
+                                  "having  SUM(IIF(tip = 1," + campoImporte + ", -" + campoImporte + ")) <> 0";
             reader = command.ExecuteReader();
             List<SaldoCtaCte> tmpResultSaldo = new List<SaldoCtaCte>();
             while (reader.Read())
@@ -176,6 +186,7 @@ namespace Soltec.Sae.Api
                 item.IdCuenta = reader["scta"].ToString().Trim();
                 item.Nombre = reader["nombre"].ToString().Trim();
                 item.Saldo = (decimal)reader["saldo"];
+                item.IdDivisa = idDivisa;
                 tmpResultSaldo.Add(item);
             }
             reader.Close();

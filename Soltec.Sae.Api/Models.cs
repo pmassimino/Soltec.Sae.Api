@@ -339,9 +339,10 @@
         public string IdSucursal { get; set; } = "01";
         public string  Id { get; set; }
         public string IdCosecha { get; set; }
-        public Cosecha Cosecha { get; set; }
+        public string NombreCosecha { get; set; }
+        public string NombreCereal { get; set; }
         public string  IdCuenta { get; set; }
-        public Sujeto Cuenta { get; set; }
+        public string  Nombre { get; set; }
         public string IdTransaccion { get; set; }
         public DateTime Fecha { get; set; }
         public string Numero { get; set; }
@@ -409,9 +410,10 @@
         public DateTime FechaVencimiento { get; set; }
         public string Numero { get; set; }
         public string IdCosecha { get; set; }        
-        public Cosecha Cosecha { get; set; }
+        public string NombreCosecha { get; set; }
+        public string NombreCereal { get; set; }
         public string IdCuenta { get; set; }
-        public Sujeto Cuenta { get; set; }
+        public string Nombre { get; set; }
         public string Tipo { get; set; }
         public decimal TarifaAlmacenaje { get; set; }
         public decimal TarifaAcarreo { get; set; }
@@ -492,9 +494,10 @@
         public DateTime FechaVencimiento { get; set; }
         public string Numero { get; set; }
         public string IdCosecha { get; set; }
-        public Cosecha Cosecha { get; set; }
+        public string NombreCosecha { get; set; }
+        public string NombreCereal { get; set; }
         public string IdCuenta { get; set; }
-        public Sujeto Cuenta { get; set; }        
+        public string Nombre { get; set; }        
         public  decimal Precio { get; set; }
         public Int64 PesoNeto { get; set; }
         public decimal TarifaComision { get; set; }

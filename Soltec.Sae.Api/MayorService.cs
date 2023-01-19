@@ -115,6 +115,7 @@ namespace Soltec.Sae.Api
             item.Concepto = reader["con"].ToString().Trim();
             decimal importe = (decimal)(reader["imp"]);
             string tipo = reader["tip"].ToString();
+            item.IdTipo = tipo;
             if (tipo == "1")
             {
                 item.Debe = importe;

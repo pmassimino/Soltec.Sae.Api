@@ -1,4 +1,6 @@
-﻿namespace Soltec.Sae.Api
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace Soltec.Sae.Api
 {
     public class ApiKeyMiddleware
     {
@@ -10,7 +12,14 @@
             _next = next;
         }
         public async Task InvokeAsync(HttpContext context)
-        {            
+        {
+            var endpoint = context.GetEndpoint();
+            var isAllowAnonymous = endpoint?.Metadata.Any(x => x.GetType() == typeof(AllowAnonymousAttribute));
+            if (isAllowAnonymous == true)
+            {
+                await _next(context);
+                return;
+            }
             if (!context.Request.Headers.TryGetValue(APIKEY, out
                     var extractedApiKey))
             {

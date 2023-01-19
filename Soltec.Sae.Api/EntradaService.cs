@@ -18,13 +18,14 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT en_n_rom,en_fecha,en_produ,produmae.rsocial as NombreProductor,produmae.n_cuit as CuitProductor,en_cerea,en_tipo,en_cosec,Cosechas.descri as NombreCosecha,en_proce,en_comp," +                                   
+            command.CommandText = "SELECT en_n_rom,en_fecha,en_produ,produmae.rsocial as NombreProductor,produmae.n_cuit as CuitProductor,en_cerea,en_tipo,en_cosec,Cosechas.descri as NombreCosecha,en_proce,en_comp,cermae.descri as NombreCereal," +                                   
                                   "en_pes_bru,en_tara,en_pes_net,en_p_hum,en_m_hum,en_p_zar,en_m_zar,en_p_vol,en_m_vol,en_p_cal,en_m_cal,en_p_net,en_obser," +
                                   "en_trans,Transpor.tra_emp as NombreTransporte,Transpor.tra_cui as CuitTransporte,entrada.id_camion,en_pe_cp,en_n_cre,ctg,planta,kms,en_obser, " +
-                                  "Camion.chofer as NombreChofer,Camion.patente_a as Patente_A,Camion.Patente_c as Patente_c,str(Camion.cuit_chofer,11,0) as CuitChofer " +
+                                  "Camion.chofer as NombreChofer,Camion.patente_a as Patente_A,Camion.Patente_c as Patente_c,str(Camion.cuit_chofer,11,0) as CuitChofer,ntra " +
                                   "FROM entrada " +
                                   "LEFT JOIN Produmae on produmae.codigo = entrada.en_produ " + 
                                   "LEFT JOIN Cosechas on cosechas.cod = entrada.en_cosec " +
+                                  "LEFT JOIN Cermae on cosechas.cereal = cermae.cod_cer " +
                                   "LEFT JOIN Transpor on Transpor.tra_cod = entrada.en_trans " +
                                   "LEFT JOIN Camion on Camion.id_Camion = entrada.id_camion " +
                                   "WHERE (en_produ = '" + idCuenta + "' OR empty('" + idCuenta + "')) and " +
@@ -112,18 +113,16 @@ namespace Soltec.Sae.Api
         {
             Entrada item = new Entrada();
             item.Id = reader["en_n_rom"].ToString().Trim();
+            item.IdTransaccion = reader["ntra"].ToString().Trim();
             item.Fecha = (DateTime)reader["en_fecha"];
             item.IdCosecha = reader["en_cosec"].ToString().Trim();
             Cosecha cosecha = new Cosecha();
             cosecha.Id = reader["en_cosec"].ToString().Trim();
             cosecha.Nombre = reader["NombreCosecha"].ToString().Trim();
-            item.Cosecha = cosecha;
-            item.IdCuenta = reader["en_produ"].ToString().Trim();
-            Sujeto cuenta = new Sujeto();
-            cuenta.Id = reader["en_produ"].ToString().Trim();
-            cuenta.Nombre = reader["NombreProductor"].ToString().Trim();
-            cuenta.NumeroDocumento = reader["CuitProductor"].ToString().Trim();
-            item.Cuenta = cuenta;
+            item.NombreCosecha = cosecha.Nombre;
+            item.NombreCereal = reader["NombreCereal"].ToString().Trim();
+            item.IdCuenta = reader["en_produ"].ToString().Trim();            
+            item.Nombre = reader["NombreProductor"].ToString().Trim();            
             item.PesoBruto = Convert.ToInt64(reader["en_pes_bru"].ToString().Trim());
             item.PesoTara = Convert.ToInt64(reader["en_tara"].ToString().Trim());
             item.PesoNeto = Convert.ToInt64(reader["en_pes_net"].ToString().Trim());
