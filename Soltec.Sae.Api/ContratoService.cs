@@ -102,6 +102,8 @@ namespace Soltec.Sae.Api
                 item.Tipo = contrato.Tipo;
                 
                 result.Add(item);
+                //Mercaderia en transito
+
             }
             return result;
         }

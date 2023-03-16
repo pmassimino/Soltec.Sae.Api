@@ -1,6 +1,6 @@
 ﻿namespace Soltec.Sae.Api
 {
-    public class Sucursal 
+    public class Sucursal
     {
         public string Id { get; set; }
         public string Nombre { get; set; }
@@ -18,11 +18,21 @@
         public string NumeroIngBruto { get; set; } = "0";
         public string Domicilio { get; set; }
         public string Localidad { get; set; }
+        public string IdProvincia { get; set; }
         public string Provincia { get; set; }
+        public string IdCategoria { get; set; }
+        public string Categoria { get; set; }
+        public string IdZona { get; set; }
+        public string Zona { get; set; }
         public string CodigoPostal { get; set; }
         public string CondicionIva { get; set; } = "";
         public string CondicionIB { get; set; } = "";
         public List<Subdiario> Subdiarios { get; set; }
+    }
+    public class EntityGeneric 
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
     }
     public class Subdiario
     {
@@ -30,19 +40,45 @@
         public string Nombre { get; set; }
         public int IdDivisa { get; set; }
     }
-    public class Articulo 
+    public class Articulo
     {
-        public string Id { get; set;}   
-        public string Nombre { get; set; }  
+        public string Id { get; set; }
+        public string Nombre { get; set; }
         public decimal PrecioCosto { get; set; }
         public decimal ImpuestoInterno { get; set; }
         public decimal MargenVenta { get; set; }
-        public decimal AlicuotaIva  { get; set; }
-        public decimal PrecioVenta  { get; set; }
+        public decimal AlicuotaIva { get; set; }
+        public decimal PrecioVenta { get; set; }
         public decimal PrecioVentaFinal { get; set; }
 
     }
-  
+
+    public class MovStock
+    {
+        public string Id { get; set; }
+        public string IdArticulo { get; set; }
+        public string NombreArticulo { get; set; }
+        public DateTime Fecha { get; set; }
+        public string IdDeposito {get;set;}
+        public string IdDepositoDestino { get; set; }
+        public decimal Cantidad { get; set; }
+
+    }
+    public class Stock 
+    {
+        public string IdArticulo { get; set; }
+        public string NombreArticulo { get; set; }
+        public decimal Precio { get;set; }
+        public decimal Cantidad { get; set; }
+        public List<StockDeposito> Deposito { get;set;}
+    }
+    public class StockDeposito 
+    { 
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+        public decimal Cantidad { get;set;}
+
+    }
     public class MovCtaCte 
     {
         public DateTime FechaPase { get; set; }
@@ -564,6 +600,25 @@
         public string NumeroCPorte { get; set; }
         public Int64 PesoNeto { get; set; }
     }
+
+    public class MovPlantaCereal
+    {
+        public string IdSucursal { get; set; } = "01";
+        public string Id { get; set; }
+        public DateTime Fecha { get; set; }
+        public string IdCosecha { get; set; }
+        public Cosecha Cosecha { get; set; }
+        public string IdCuenta { get; set; }
+        public string IdPlanta { get; set; }
+        public Sujeto Cuenta { get; set; }
+        public string Tipo { get; set; }
+        public string IdTransaccion { get; set; }       
+        public string Numero { get; set; }
+        public string NumeroCPorte { get; set; }
+        public Int64 PesoBruto { get; set; }
+        public Int64 PesoTara { get; set; }
+        public Int64 PesoNeto { get; set; }
+    }
     public class Boleto
     {
         public string IdSucursal { get; set; } = "01";
@@ -577,7 +632,9 @@
         public DateTime FechaVencimiento { get; set; }
         public string Numero { get; set; }
         public decimal Precio { get; set; }
-
+        public string Moneda { get; set; }
+        public string IdCondicionVenta { get; set; }
+        public string CondicionVenta { get; set; }
         public Int64 PesoNeto { get; set; }
         public string Obs { get; set; }
         public string Estado { get; set; }
@@ -588,34 +645,20 @@
     {
         public string IdSucursal { get; set; } = "01";
         public string Id { get; set; }
+        public DateTime Fecha { get; set; }
         public string IdCosecha { get; set; }
         public string NombreCosecha { get; set; }
         public string IdCuenta { get; set; }
         public string NombreCuenta { get; set; }
         public decimal Precio { get; set; }
         public Int64 PesoNeto { get; set; }
+        public string Moneda { get; set; }
+        public string IdCondicionVenta { get; set; }
+        public string CondicionVenta { get; set; }
         public Int64 PesoLiquidado { get; set; }
         public Int64 PesoPendienteLiquidar { get; set; }
     }
-    public class MovPlantaCereal 
-    {
-        public string IdSucursal { get; set; } = "01";
-        public string Id { get; set; }
-        public string IdPlanta { get; set; }
-        public string IdCereal { get; set; }
-        public string IdCosecha { get; set; }       
-        public Cosecha Cosecha { get; set; }
-        public string IdCuenta { get; set; }
-        public Sujeto Cuenta { get; set; }
-        public string IdTransaccion { get; set; }
-        public DateTime Fecha { get; set; }        
-        public string Numero { get; set; }
-        public Int64 PesoBruto { get; set; }
-        public Int64 Ingreso { get; set; }
-        public Int64 Egreso { get; set; }
-        public Int64 Saldo { get; set; }
-
-    }
+   
 
     public class Rt 
     {

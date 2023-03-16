@@ -10,7 +10,11 @@ namespace Soltec.Sae.Api
             this.ConnectionStringBase = connectionStringBase;
         }
         public string ConnectionStringBase { get; set; } = "";        
-        public string IdSucursal { get; set; } = "01";       
+        public string IdSucursal { get; set; } = "01";
+        public List<MovPlantaCereal> List(string idPlanta, string idCosecha, DateTime fecha) 
+        {
+            
+        }
         public List<C14View> C14(string idPlanta, string idCosecha, DateTime fecha,DateTime fechaHasta) 
         {
             List<C14View> result = new List<C14View>();

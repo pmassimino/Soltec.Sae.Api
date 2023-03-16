@@ -81,10 +81,33 @@ app.MapGet("/api/contabilidad/sujeto",() =>
     List<Sujeto> result = sujetoService.List();     
     return result;
 });
-app.MapGet("/api/isRuning", [AllowAnonymous] () =>
+app.MapGet("/api/comun/provincia", () =>
+{
+
+    ProvinciaService service = new ProvinciaService(connectionStringBase);
+    List<EntityGeneric> result = service.List();
+    return result;
+});
+app.MapGet("/api/comun/categoria", () =>
+{
+
+    CategoriaService service = new CategoriaService(connectionStringBase);
+    List<EntityGeneric> result = service.List();
+    return result;
+});
+app.MapGet("/api/comun/zona", () =>
+{
+
+    ZonaService service = new ZonaService(connectionStringBase);
+    List<EntityGeneric> result = service.List();
+    return result;
+});
+
+app.MapGet("/api/comun/isRuning", [AllowAnonymous] () =>
 {
     return Results.Ok(true);
 });
+
 
 app.MapGet("/api/contabilidad/sujeto/xls", () =>
 {
@@ -140,6 +163,20 @@ app.MapGet("/api/almacen/articulo/{id}", (string id) =>
     Articulo result = service.FindOne(id);
     return result == null ? Results.NotFound() : Results.Ok(result);
 });
+app.MapGet("/api/almacen/articulo/stock", ( HttpRequest request, HttpResponse response) =>
+{
+    string idArticulo = request.Query["IdArticulo"].ToString();
+    string idArticuloHasta = request.Query["IdArticuloHasta"].ToString();
+    string idSeccion = request.Query["IdSeccion"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();    
+    var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+
+    if (string.IsNullOrEmpty(idArticuloHasta)) idArticuloHasta = idArticulo;
+    MovStockService service = new MovStockService(connectionStringBase);
+    List<Stock> result = service.List(fecha,idArticulo,idArticuloHasta,idSeccion);
+    return result == null ? Results.NotFound() : Results.Ok(result);
+});
+
 //Cta Cte
 app.MapGet("/api/contabilidad/CtaCte/{id}/saldo", (string id, HttpRequest request, HttpResponse response) =>
 {
@@ -929,7 +966,7 @@ app.MapGet("/api/cereales/CtaCteCereal/saldos", (HttpRequest request, HttpRespon
         service.SaeConnectionStringBase = connectionStringBase;
         service.IdSucursal = suc.Id;
         service.TipoSaldo = tipoSaldo;
-        var tmpresult = service.Saldos(idCuenta, idCosecha, fecha);
+        var tmpresult = service.Saldos2(idCuenta, idCosecha, fecha);
         result.AddRange(tmpresult);
     }
     return result;
@@ -1038,6 +1075,14 @@ app.MapGet("/api/cereales/Contrato/estado", (HttpRequest request, HttpResponse r
         var tmpresult = service.ListEstado(id, numero,fecha,fechaHasta,estado,tipo);
         result.AddRange(tmpresult);
     }
+    return result;
+});
+
+app.MapGet("/api/cereales/condicionventa", () =>
+{
+
+    CondicionVentaCerealService service = new CondicionVentaCerealService(connectionStringCerealesBase);
+    List<EntityGeneric> result = service.List();
     return result;
 });
 

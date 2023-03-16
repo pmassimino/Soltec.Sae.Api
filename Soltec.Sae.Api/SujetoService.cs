@@ -16,12 +16,14 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT clipro.cod,clipro.nom,dir,alt,loc,pos,provin,email,cuit,piva,ibru,pibru,coniva.nom as CondicionIva,"
-              + "conibru.nom as CondicionIB,provin.nom as NombreProvincia " + 
-                "FROM clipro " + 
+            command.CommandText = "SELECT clipro.cod,clipro.nom,dir,alt,loc,pos,pro,clipro.email,cuit,piva,ibru,pibru,coniva.nom as CondicionIva,"
+              + "conibru.nom as CondicionIB,provin.nom as NombreProvincia,categ,catesub.nom as Categoria,zon,zonas.nom as zona " +
+                "FROM clipro " +
                 "Left Join ConIva on piva = conIva.cod " +
                 "Left Join ConIbru on piva = conIBru.cod " +
-                "Left Join provin on pro = provin.cod ";
+                "Left Join provin on pro = provin.cod " +
+                "Left Join zonas on zon = zonas.cod " +
+                "Left Join catesub on categ = catesub.cod ";
             OleDbDataReader reader = command.ExecuteReader();
             List<Sujeto> result = new List<Sujeto>();
             while (reader.Read())
@@ -37,12 +39,14 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT clipro.cod,clipro.nom,dir,alt,loc,pos,provin,email,cuit,piva,ibru,pibru,coniva.nom as CondicionIva,"
-              + "conibru.nom as CondicionIB,provin.nom as NombreProvincia " +
+            command.CommandText = "SELECT clipro.cod,clipro.nom,dir,alt,loc,pos,pro,clipro.email,cuit,piva,ibru,pibru,coniva.nom as CondicionIva,"
+              + "conibru.nom as CondicionIB,provin.nom as NombreProvincia,categ,catesub.nom as Categoria,zon,zonas.nom as zona " +
                 "FROM clipro " +
                 "Left Join ConIva on piva = conIva.cod " +
                 "Left Join ConIbru on piva = conIBru.cod " +
-                "Left Join provin on pro = provin.cod " + 
+                "Left Join provin on pro = provin.cod " +
+                "Left Join catesub on categ = catesub.cod " +
+                "Left Join zonas on zon = zonas.cod " +
                 "where clipro.cod = '" + id + "'";
             OleDbDataReader reader = command.ExecuteReader();
             Sujeto result = null;
@@ -72,6 +76,7 @@ namespace Soltec.Sae.Api
             result.Id = reader["cod"].ToString().Trim();
             result.Nombre = reader["nom"].ToString().Trim();
             result.Localidad = reader["loc"].ToString().Trim();
+            result.IdProvincia = reader["pro"].ToString().Trim();
             result.Provincia = reader["NombreProvincia"].ToString().Trim();
             result.CodigoPostal = reader["pos"].ToString().Trim();
             result.NumeroDocumento = reader["cuit"].ToString().Trim();
@@ -79,6 +84,10 @@ namespace Soltec.Sae.Api
             result.Domicilio = reader["dir"].ToString().Trim();
             result.CondicionIva = reader["CondicionIva"].ToString().Trim();
             result.CondicionIB = reader["CondicionIB"].ToString().Trim();
+            result.IdCategoria = reader["categ"].ToString().Trim();
+            result.Categoria = reader["Categoria"].ToString().Trim();
+            result.IdZona = reader["zon"].ToString().Trim();
+            result.Zona = reader["Zona"].ToString().Trim();
             if (string.IsNullOrEmpty(result.NumeroIngBruto)) result.NumeroIngBruto = "0";
             if (string.IsNullOrEmpty(result.NumeroDocumento)) result.NumeroDocumento = "0";
             if (string.IsNullOrEmpty(result.CondicionIva)) result.CondicionIva = "0";

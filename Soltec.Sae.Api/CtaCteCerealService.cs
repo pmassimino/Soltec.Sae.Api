@@ -202,7 +202,7 @@ namespace Soltec.Sae.Api
             if (string.IsNullOrEmpty(idCosecha) && string.IsNullOrEmpty(IdCuenta)) 
                {
                 CosechaService cosechaService = new CosechaService(this.ConnectionStringBase);
-                var cosecha = cosechaService.List().OrderBy(o => o.Id).TakeLast(15).ToList();
+                var cosecha = cosechaService.List().OrderBy(o => o.Id).TakeLast(45).ToList();
                 cosechasDisp = cosechasDisp.Where(x => cosecha.Any(c => c.Id == x.IdCosecha)).ToList();
             }
                
@@ -213,6 +213,117 @@ namespace Soltec.Sae.Api
                 result.Add(this.Saldo(item.IdProductor, item.IdCosecha, fecha));
             }
             return result;
+        }
+        public List<SaldoCtaCteCereal> Saldos2(string IdCuenta, string idCosecha, DateTime fecha)
+        {
+            string consultaSQL = "SELECT EN_P_NET AS Entrada, IIF(entrada.ventadir, en_p_net, 0000000000) as Directo, 00000000000 AS Certificado, 00000000000 AS Recibido, 00000000000 AS Transferido, " +
+            "00000000000 AS Liquidado, 00000000000 AS K_ANTI, 00000000000 AS Retiro, 00000000000 AS K_AUTO, EN_COSEC AS id_Cosecha,EN_PRODU as id_Produ " +
+            "FROM ENTRADA WHERE en_fecha <= ctod('" + fecha.ToString("MM-dd-yyy") + "')" + " AND ENTRADA.STOCK_PLAN = .F. " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, P_NETO AS  Certificado, 00000000000 AS K_RECI, 00000000000 AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro, 00000000000 AS K_AUTO, COSECHA AS id_Cosecha,Productor as id_Produ " +
+            "FROM CERTI WHERE CONFIRMADO = .T. .and.fpase <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " +
+            "UNION ALL " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, 00000000000 AS K_RECI, 00000000000 AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, RE_PES_NET AS  Retiro,  00000000000 AS K_AUTO, RE_COSEC AS id_Cosecha,re_produ as id_Produ " +
+            "FROM RETIRO WHERE RE_TIP = 2.and.re_fecha <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, 00000000000 AS K_RECI, 00000000000 AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro,  BOL_KGS AS K_AUTO, BOL_COSEC AS id_Cosecha,bol_produ as id_Produ " +
+            "FROM BOLETOS WHERE BOL_CONFI = .T. .and. bol_fec <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, 00000000000 AS K_RECI, 00000000000 AS  Transferido, " +
+            "P_NETO AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro,  00000000000 AS K_AUTO, COSE AS id_Cosecha,produ as id_Produ " +
+            "FROM LIQUI WHERE CERRADA = .T. .AND. !ANTICIPO.and.fecha <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " + " AND(id_tip_liq = 1 OR id_tip_liq = 3) " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, 00000000000 AS K_RECI, 00000000000 AS  Transferido, " +
+            "00000000000 AS  Liquidado, P_NETO AS K_ANTI, 00000000000 AS  Retiro,  00000000000 AS K_AUTO, COSE AS id_Cosecha , produ as id_Produ " +
+            "FROM LIQUI WHERE CERRADA = .T. .AND. (id_tip_liq = 1 OR id_tip_liq = 3).and.fecha <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, 00000000000 AS K_RECI, KGS AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro,  00000000000 AS K_AUTO, COS AS id_Cosecha,pro as id_Produ " +
+            "FROM TRAORI WHERE fec <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " +
+            "UNION ALL " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, 00000000000 AS K_RECI, kilosnetos AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro,  00000000000 AS K_AUTO, id_cosecha AS id_Cosecha,id_deposi as id_Produ " +
+            "FROM rettransf WHERE fecha_emi <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " + " AND id_tipo_rt = 1 " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, KGS AS K_RECI,  00000000000 AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro,  00000000000 AS K_AUTO, COS AS id_Cosecha,pro as id_Produ " +
+            "FROM TRADES WHERE fec <= ctod('" + fecha.ToString("MM-dd-yyy") + "') " +
+            "union all " +
+            "SELECT 00000000000 AS  Entrada,00000000000 as Directo, 00000000000 AS  Certificado, kilosNetos AS K_RECI,  00000000000 AS  Transferido, " +
+            "00000000000 AS  Liquidado, 00000000000 AS K_ANTI, 00000000000 AS  Retiro,  00000000000 AS K_AUTO, id_cosecha AS id_Cosecha,id_Receptor as id_Produ " +
+            "FROM rettransf WHERE fecha_emi <= ctod('" + fecha.ToString("MM-dd-yyy") + "')" + " AND id_tipo_rt = 1 into cursor tmpMovCta";
+            string connectionString = this.ConnectionStringBase + "cereales.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = consultaSQL;
+            OleDbDataReader reader = command.ExecuteReader();            
+            List<tmpSumaSaldo> tmpResult = new List<tmpSumaSaldo>();
+            while (reader.Read())
+            {
+                tmpResult.Add(new tmpSumaSaldo {
+                    IdCosecha = reader["id_cosecha"].ToString().Trim(),
+                    IdCuenta = reader["id_produ"].ToString().Trim(),
+                    TotalEntradas = Convert.ToInt64(reader["entrada"].ToString()),
+                    TotalRetiros = Convert.ToInt64(reader["retiro"]),
+                    TotalCertificado = Convert.ToInt64(reader["entrada"]),
+                    TotalTransferido = Convert.ToInt64(reader["transferido"]),                    
+                    TotalRecibido = Convert.ToInt64(reader["recibido"]),
+                    TotalAutorizado = Convert.ToInt64(reader["k_auto"]),
+                    TotalLiquidado = Convert.ToInt64(reader["liquidado"])
+                });
+            }
+            var tmpresult = from r in tmpResult group r by new {r.IdCuenta,r.IdCosecha} into g 
+                                 select new SaldoCtaCteCereal
+                                 {
+                                     IdCosecha=g.Key.IdCosecha,IdCuenta=g.Key.IdCuenta,
+                                     Entregado = g.Sum(s=>s.TotalEntradas),
+                                     Retirado = g.Sum(s => s.TotalRetiros),
+                                     Certificado = g.Sum(s => s.TotalCertificado),
+                                     Recibido = g.Sum(s => s.TotalRecibido),
+                                     Transferido = g.Sum(s => s.TotalTransferido),
+                                     Autorizado = g.Sum(s => s.TotalAutorizado),
+                                     Liquidado = g.Sum(s => s.TotalLiquidado),
+                                     Disponible = 0,
+                                     Saldo = 0
+                                 };
+
+            SujetoService sujetoService = new SujetoService(this.SaeConnectionStringBase);
+            var sujetos = sujetoService.List();
+            CosechaService cosechaService = new CosechaService(this.ConnectionStringBase);
+            var cosechas = cosechaService.List();
+            var result = tmpresult.ToList();
+            foreach (var item in result) 
+            {
+                
+                var cuenta = sujetos.Where(w=>w.Id==item.IdCuenta.Trim()).FirstOrDefault();                
+                if (cuenta != null)
+                {
+                    item.Nombre = cuenta.Nombre;
+                }                
+                var cosecha = cosechas.Where(w=>w.Id== item.IdCosecha.Trim()).FirstOrDefault();
+                if (cosecha != null)
+                {
+                    item.NombreCosecha = cosecha.Nombre;
+                    item.NombreCereal = cosecha.NombreCereal;
+                }
+                if (this.TipoSaldo == "1")
+                {
+                    item.Saldo = item.Entregado + item.Recibido - (item.Transferido + item.Retirado + item.Liquidado);
+                }
+                else
+                {
+                    item.Saldo = item.Entregado + item.Recibido - (item.Transferido + item.Retirado + item.Autorizado);
+                }
+                item.Disponible = item.Entregado + item.Recibido - (item.Transferido + item.Retirado + item.Autorizado);
+            }
+                                
+            cnn.Close();
+            return result.ToList();
+
         }
         public SaldoCtaCteCereal Saldo(string idCuenta, string idCosecha, DateTime fecha) 
         {           
@@ -242,6 +353,7 @@ namespace Soltec.Sae.Api
             result.Liquidado = liquiService.Total(idCuenta, idCosecha, fecha);
             BoletoService boletoService = new BoletoService(this.ConnectionStringBase);
             result.Autorizado = boletoService.Total(idCuenta, idCosecha, fecha);
+            result.Disponible =  result.Entregado + result.Recibido - (result.Transferido + result.Retirado + result.Autorizado);
             if (this.TipoSaldo == "1")
             {
                 result.Saldo = result.Entregado + result.Recibido - (result.Transferido + result.Retirado +  result.Liquidado );
@@ -253,6 +365,20 @@ namespace Soltec.Sae.Api
                 return result;            
         }
         
+
+    }
+
+    class tmpSumaSaldo 
+    {
+        public string IdCosecha { get; set; }
+        public string IdCuenta { get; set; }
+        public Int64 TotalEntradas { get; set; }
+        public  Int64 TotalRetiros { get; set; }
+        public Int64 TotalCertificado { get; set; }
+        public Int64 TotalTransferido { get; set; }
+        public Int64 TotalRecibido { get; set; }
+        public Int64 TotalLiquidado { get; set; }
+        public Int64 TotalAutorizado { get; set; }
 
     }
     
