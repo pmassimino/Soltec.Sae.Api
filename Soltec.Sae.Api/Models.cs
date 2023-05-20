@@ -1,4 +1,6 @@
-﻿namespace Soltec.Sae.Api
+﻿using System.Text.Json.Serialization;
+
+namespace Soltec.Sae.Api
 {
     public class Sucursal
     {
@@ -165,6 +167,7 @@
     public decimal Cantidad { get; set;}
     public decimal SubTotal { get; set; }
     public decimal Descuento {get; set;}
+    public string IdRemito { get; set; }
 
     }
     //Contabilidad
@@ -277,6 +280,76 @@
         public decimal CantidadPendiente { get; set; }
 
     }
+    public class ReciboCtaCte 
+    {
+        //Estructura
+
+        public string Sec { get; set; }
+        public string Id { get; set; }
+
+        public string IdCuenta { get; set; }
+        public Sujeto Cuenta { get; set; }
+        public string IdCuentaMayor { get; set; }
+        public DateTime Fecha { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public string Pe { get; set; }
+        public string Numero { get; set; }
+        public string IdTipo { get; set; }
+        public decimal Importe { get; set; }
+        public int IdDivisa { get; set; }
+        public decimal Cotizacion { get; set; } 
+        public string Obs { get; set; }
+        //Detalles
+        public virtual IList<DetalleComprobante> DetalleComprobante { get; set; }
+        public virtual IList<DetalleValores> DetalleValores { get; set; }
+        
+        //inicializar
+        public ReciboCtaCte()
+        {
+            this.DetalleComprobante = new List<DetalleComprobante>();
+            this.DetalleValores = new List<DetalleValores>();            
+        }
+    }
+    public class DetalleComprobante
+    {
+        //Estructura        
+        [JsonIgnore]
+        public string Pe { get; set; }
+        [JsonIgnore]
+        public string Numero { get; set; }
+        public int Item { get; set; }        
+        public string IdTipo { get; set; } //1 - debito 2 - crédito
+
+        public string IdComprobante { get; set; }
+        public DateTime Fecha { get; set; }
+        public int PeComprobante { get; set; }
+        public Int64 NumeroComprobante { get; set; }
+        public string Concepto { get; set; }
+        public decimal Importe { get; set; }        
+    }
+    public class DetalleValores
+    {
+        [JsonIgnore]
+        public string Pe{ get; set; }
+        [JsonIgnore]
+        public string Numero { get; set; }
+        
+        public int Item { get; set; }
+        
+        public string IdTipo { get; set; } //1 - debito 2 - crédito
+        
+        public string IdCuentaMayor { get; set; }        
+        
+        public DateTime Fecha { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public string NumeroComprobante { get; set; }        
+        public string Concepto { get; set; }
+        public decimal Importe { get; set; }
+        
+        public string Banco { get; set; }        
+        public string Sucursal { get; set; }        
+        
+    }
     public class Remito
     {
         public  Remito()
@@ -321,6 +394,7 @@
         public string Estado { get; set; }
         public decimal SubTotal { get; set; }
         public decimal Descuento { get; set; }
+        public string IdRemito { get; set; }
 
     }
     public class Cosecha

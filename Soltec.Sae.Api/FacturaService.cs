@@ -130,7 +130,7 @@ namespace Soltec.Sae.Api
             }
             reader.Close();
             command.CommandText = "Select facmae.letra,can,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp," + 
-                "VAL(STR(facdet.int,10,2)) as intdet " + 
+                "VAL(STR(facdet.int,10,2)) as intdet,facdet.rem " + 
                 "from facdet " +
                 "inner join facmae on facmae.sec = facdet.sec and facmae.orden = facdet.orden " + 
                 "WHERE facdet.sec = '" + sec + "' and facdet.orden = '" + orden + "'";
@@ -156,6 +156,7 @@ namespace Soltec.Sae.Api
             item.FechaPase = (DateTime)reader["femi"];
             item.FechaComprobante = (DateTime)reader["femi"];
             item.FechaVencimiento = (DateTime)reader["fvto"];
+            item.Remito = reader["rem"].ToString();
             if (item.Tipo == 1)
             {
                 item.Comprobante = "FACTURA";
@@ -213,6 +214,8 @@ namespace Soltec.Sae.Api
             item.SubTotal = (decimal)reader["totdet"];
             item.AlicuotaIva = (decimal)reader["aiva"];
             item.Iva = (decimal)reader["ivadet"];
+            item.IdRemito = reader["rem"].ToString();
+
             //try { item.ImpInterno = Convert.ToDecimal(reader["intdet"]); }catch{ }
             if (reader["letra"].ToString().Trim() == "A")
             {

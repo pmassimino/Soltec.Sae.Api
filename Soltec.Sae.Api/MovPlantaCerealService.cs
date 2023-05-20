@@ -13,7 +13,7 @@ namespace Soltec.Sae.Api
         public string IdSucursal { get; set; } = "01";
         public List<MovPlantaCereal> List(string idPlanta, string idCosecha, DateTime fecha) 
         {
-            
+            return null;
         }
         public List<C14View> C14(string idPlanta, string idCosecha, DateTime fecha,DateTime fechaHasta) 
         {

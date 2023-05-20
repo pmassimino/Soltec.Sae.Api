@@ -305,6 +305,18 @@ app.MapGet("/api/contabilidad/CtaCte/{id}/diasdeuda", (string id, HttpRequest re
     return Results.Ok(result);
 });
 
+//Recbos de Cta. Cte.
+app.MapGet("/api/contabilidad/ReciboCtaCte", (HttpRequest request, HttpResponse response) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-365) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    ReciboCtaCteService service = new ReciboCtaCteService(connectionStringBase);
+    List<ReciboCtaCte> result = null;
+    result = service.List(fecha, fechaHasta);
+    return Results.Ok(result);
+});
 
 
 app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =>
@@ -755,7 +767,7 @@ app.MapGet("/api/cereales/boleto/pendiente", (HttpRequest request, HttpResponse 
     string idCuenta = request.Query["IdCuenta"].ToString();
     string idCosecha = request.Query["IdCosecha"].ToString();
     var fechaStr = request.Query["Fecha"].ToString();
-    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-365) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-3650) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     string idSucursal = request.Query["IdSucursal"].ToString();
