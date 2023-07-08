@@ -9,10 +9,29 @@ namespace Soltec.Sae.Api
             this.ConnectionStringBase = connectionStringBase;
         }
         public string ConnectionStringBase { get; set; } = "";
+
+        public void add(MovStock entity) 
+        {
+            Random random = new Random();
+            int ntra = random.Next(10000, 99999);
+
+            string sql = "INSERT INTO ALMO (suc,usu,tra,femi,art,depo,depd,can,fcom,pe,ncom,con,obn) " +
+                "VALUES ('01','001'," + ntra.ToString() + ",ctod('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "'),'"
+                + entity.IdArticulo.Trim() + "','" + entity.IdDeposito.Trim() + "','" + entity.IdDepositoDestino.Trim() + "',"
+                + entity.Cantidad.ToString() + ",CTOD('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "')," + entity.Pe.ToString() + "," + entity.Numero + ",'" + entity.Concepto.Trim() + "','API')";
+            string connectionString = this.ConnectionStringBase + "sae.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = "SET NULL OFF" ;//Anular valores nulos
+            command.ExecuteNonQuery();
+            //command.CommandText = "SET DATE TO DMY";//Anular valores nulos
+            //command.ExecuteNonQuery();
+            command.CommandText = sql;
+            command.ExecuteNonQuery();
+        }
         
-       
-      
-        public List<Stock> List(DateTime fecha,string idArticulo,string idArticuloHasta,string idSeccion)
+        public List<Stock> ListStock(DateTime fecha,string idArticulo,string idArticuloHasta,string idSeccion)
         {
             ArticuloService service = new ArticuloService(this.ConnectionStringBase);
             var tmpArticulos = service.List().Where(w => string.Compare(w.Id, idArticulo, StringComparison.Ordinal) >= 0 && string.Compare(w.Id, idArticuloHasta, StringComparison.Ordinal) <= 0);

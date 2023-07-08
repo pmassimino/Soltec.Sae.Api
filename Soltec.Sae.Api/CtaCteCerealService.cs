@@ -13,12 +13,13 @@ namespace Soltec.Sae.Api
         public string SaeConnectionStringBase { get; set; } = "";
         public string IdSucursal { get; set; } = "01";
         public string TipoSaldo { get; set; } = "1";
-        public List<MovCtaCteCereal> List(string idCuenta, string idCosecha, DateTime fecha) 
+        public List<MovCtaCteCereal> List(string idCuenta, string idCosecha, DateTime fechaHasta) 
         {
             List<MovCtaCteCereal> result = new List<MovCtaCteCereal>();
             List<MovCtaCteCereal> tmpResult = new List<MovCtaCteCereal>();
-            EntradaService entradaService = new EntradaService(this.ConnectionStringBase);            
-            var entradas = entradaService.List(idCuenta, idCosecha,fecha);
+            EntradaService entradaService = new EntradaService(this.ConnectionStringBase);
+            DateTime fecha = DateTime.Now.AddYears(-100);
+            var entradas = entradaService.List(idCuenta, idCosecha,fecha,fechaHasta);
             foreach (var item in entradas) 
             {
                 MovCtaCteCereal newItem = new MovCtaCteCereal();

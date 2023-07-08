@@ -4,16 +4,21 @@ namespace Soltec.Sae.Api
 {
     public class EntradaService
     {
+        LocalidadService localidadService;
+        IList<Localidad> localidadList;
         public EntradaService(string connectionStringBase) 
         {
             this.ConnectionStringBase = connectionStringBase;
+            localidadService = new LocalidadService(this.ConnectionStringBase);
+            localidadList = localidadService.List();
         }
         public string ConnectionStringBase { get; set; } = "";
         public string IdSucursal { get; set; } = "01";
        
-        public List<Entrada> List(string idCuenta , string idCosecha ,DateTime fecha ) 
+        public List<Entrada> List(string idCuenta , string idCosecha ,DateTime fecha , DateTime fechaHasta) 
         {
-            if(fecha == null)fecha = DateTime.Now;
+            if(fecha == null)fecha = DateTime.Now.AddYears(-100);
+            if (fechaHasta == null) fechaHasta = DateTime.Now;
             string connectionString = this.ConnectionStringBase + "Cereales.dbc";
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
@@ -21,21 +26,25 @@ namespace Soltec.Sae.Api
             command.CommandText = "SELECT en_n_rom,en_fecha,en_produ,produmae.rsocial as NombreProductor,produmae.n_cuit as CuitProductor,en_cerea,en_tipo,en_cosec,Cosechas.descri as NombreCosecha,en_proce,en_comp,cermae.descri as NombreCereal," +                                   
                                   "en_pes_bru,en_tara,en_pes_net,en_p_hum,en_m_hum,en_p_zar,en_m_zar,en_p_vol,en_m_vol,en_p_cal,en_m_cal,en_p_net,en_obser," +
                                   "en_trans,Transpor.tra_emp as NombreTransporte,Transpor.tra_cui as CuitTransporte,entrada.id_camion,en_pe_cp,en_n_cre,ctg,planta,kms,en_obser, " +
-                                  "Camion.chofer as NombreChofer,Camion.patente_a as Patente_A,Camion.Patente_c as Patente_c,str(Camion.cuit_chofer,11,0) as CuitChofer,ntra " +
+                                  "Camion.chofer as NombreChofer,Camion.patente_a as Patente_A,Camion.Patente_c as Patente_c,str(Camion.cuit_chofer,11,0) as CuitChofer,ntra, " +
+                                  "entrada.id_locproc,locali.cdlocalida as LocProcedencia,entrada.id_locdest,entrada.ventadir " + 
                                   "FROM entrada " +
                                   "LEFT JOIN Produmae on produmae.codigo = entrada.en_produ " + 
                                   "LEFT JOIN Cosechas on cosechas.cod = entrada.en_cosec " +
                                   "LEFT JOIN Cermae on cosechas.cereal = cermae.cod_cer " +
                                   "LEFT JOIN Transpor on Transpor.tra_cod = entrada.en_trans " +
                                   "LEFT JOIN Camion on Camion.id_Camion = entrada.id_camion " +
+                                  "LEFT JOIN LOCALI on locali.id_locali = entrada.id_locproc " +                                  
                                   "WHERE (en_produ = '" + idCuenta + "' OR empty('" + idCuenta + "')) and " +
-                                  " (en_cosec = '" + idCosecha + "' OR empty('" + idCosecha + "')) and en_fecha <= ctod('" + fecha.ToString("MM-dd-yyy") + "')";
+                                  " (en_cosec = '" + idCosecha + "' OR empty('" + idCosecha + "')) and " + 
+                                   "en_fecha >= ctod('" + fecha.ToString("MM-dd-yyy") + "') and en_fecha <= ctod('" + fechaHasta.ToString("MM-dd-yyy") + "') and " +
+                                   "entrada.stock_plan = .f.";
 
             OleDbDataReader reader = command.ExecuteReader();
-            List<Entrada> result = new List<Entrada>();
+            List<Entrada> result = new List<Entrada>();            
             while (reader.Read())
-            {
-                result.Add(this.Parse(reader));
+            {                
+                result.Add(this.Parse(reader));                
             }            
             cnn.Close();
             return result;
@@ -112,6 +121,7 @@ namespace Soltec.Sae.Api
         private Entrada Parse(OleDbDataReader reader)
         {
             Entrada item = new Entrada();
+            item.IdSucursal = this.IdSucursal;
             item.Id = reader["en_n_rom"].ToString().Trim();
             item.IdTransaccion = reader["ntra"].ToString().Trim();
             item.Fecha = (DateTime)reader["en_fecha"];
@@ -151,9 +161,18 @@ namespace Soltec.Sae.Api
             Sujeto chofer = new Sujeto();
             chofer.Id = reader["id_camion"].ToString().Trim();
             chofer.Nombre = reader["NombreChofer"].ToString().Trim();            
-            chofer.NumeroDocumento = reader["CuitChofer"].ToString().Trim();            
-            
+            chofer.NumeroDocumento = reader["CuitChofer"].ToString().Trim();    
             item.Chofer = chofer;
+            item.IdLocalidadProcedencia = reader["id_locproc"].ToString().Trim();
+            item.LocalidadProcedencia = reader["LocProcedencia"].ToString().Trim();
+            item.IdLocalidadDestino = reader["id_locdest"].ToString().Trim();
+            if (item.IdLocalidadDestino!=null) 
+            {
+                string localidadDestino = localidadList.Where(w => w.Id == item.IdLocalidadDestino).FirstOrDefault().Nombre.Trim();
+                item.LocalidadDestino=localidadDestino;
+            }
+            
+            item.Directo = Convert.ToBoolean(reader["ventadir"].ToString().Trim());
             return item;
         }
     }

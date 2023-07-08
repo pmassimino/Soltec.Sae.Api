@@ -204,7 +204,10 @@ namespace Soltec.Sae.Api
             }
             item.RetGan = (decimal)reader["imp_gan"];
             item.RetIva = (decimal)reader["imp_iva2"];
-            item.RetIb = (decimal)reader["imp_dgr"];
+            try {
+                item.RetIb = reader["imp_dgr"] as decimal? ?? item.RetIb;
+            }
+            catch { }
             item.ImporteFinal = (decimal)reader["neto1"];
             item.ImporteNeto = (decimal)reader["final"];
             item.ImporteRg2300 = (decimal)reader["r4250"];            

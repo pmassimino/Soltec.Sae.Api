@@ -60,19 +60,20 @@ namespace Soltec.Sae.Api
         public string Id { get; set; }
         public string IdArticulo { get; set; }
         public string NombreArticulo { get; set; }
+        public string Concepto { get; set; }
         public DateTime Fecha { get; set; }
         public string IdDeposito {get;set;}
         public string IdDepositoDestino { get; set; }
         public decimal Cantidad { get; set; }
+        public int Pe { get; set; }
+        public int Numero { get; set; }
 
     }
-    public class Stock 
-    {
-        public string IdArticulo { get; set; }
+    public class Stock    {
+        public string IdArticulo { get; set; }        
         public string NombreArticulo { get; set; }
-        public decimal Precio { get;set; }
         public decimal Cantidad { get; set; }
-        public List<StockDeposito> Deposito { get;set;}
+
     }
     public class StockDeposito 
     { 
@@ -477,13 +478,24 @@ namespace Soltec.Sae.Api
         public Sujeto Chofer { get; set; }    
         public string Procedencia { get; set; }
         public  decimal Distancia { get; set; }
-        public string IdPlanta { get; set; }        
+        public string IdPlanta { get; set; }   
+        public string IdLocalidadProcedencia { get; set; }
+        public string LocalidadProcedencia { get;set;}
+        public string IdLocalidadDestino { get; set; }
+        public string LocalidadDestino { get; set; }
+        public bool Directo { get; set; }
         public Int64 Ctg { get; set; }
     }
     public class Planta
     {
         public string Id { get; set; }
         public string Nombre { get; set; }
+    }
+    public class Localidad
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+        public string IdProvincia { get; set; }
     }
     public class ItemRomaneo
     {
@@ -673,6 +685,37 @@ namespace Soltec.Sae.Api
         public string Numero { get; set; }
         public string NumeroCPorte { get; set; }
         public Int64 PesoNeto { get; set; }
+    }
+    public class LiquidacionSec 
+    {
+        public string IdSucursal { get; set; } = "01";
+        public string Id { get; set; }
+        public string IdTransaccion { get; set; }
+        public int IdTipo { get; set; }
+        public DateTime Fecha { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public string Numero { get; set; }
+        public string IdCosecha { get; set; }
+        public string NombreCosecha { get; set; }
+        public string NombreCereal { get; set; }
+        public string IdCuenta { get; set; }
+        public string Nombre { get; set; }
+        public decimal Precio { get; set; }
+        public Int64 PesoNeto { get; set; }        
+        public decimal ImporteComision { get; set; }
+        public decimal ImporteSellado { get; set; }
+        public decimal ImporteDeduccion { get; set; }
+        public decimal ImporteFlete { get; set; }        
+        public decimal ImporteIva { get; set; }
+        public decimal RetIva { get; set; }
+        public decimal RetGan { get; set; }
+        public decimal RetIb { get; set; }       
+        public decimal PrecioOperacion { get; set; }        
+        public string Coe { get; set; }
+        public string CoeAjustado { get; set; }       
+        public decimal ImporteBruto { get; set; }
+        public decimal ImporteFinal { get; set; }
+
     }
 
     public class MovPlantaCereal

@@ -173,8 +173,36 @@ app.MapGet("/api/almacen/articulo/stock", ( HttpRequest request, HttpResponse re
 
     if (string.IsNullOrEmpty(idArticuloHasta)) idArticuloHasta = idArticulo;
     MovStockService service = new MovStockService(connectionStringBase);
-    List<Stock> result = service.List(fecha,idArticulo,idArticuloHasta,idSeccion);
+    List<Stock> result = service.ListStock(fecha,idArticulo,idArticuloHasta,idSeccion);
     return result == null ? Results.NotFound() : Results.Ok(result);
+});
+
+//MovStock
+app.MapPost("/api/almacen/MovStock", (MovStock entity) =>
+{   //Validar datos
+    if (string.IsNullOrEmpty(entity.IdArticulo))
+        return Results.BadRequest("IdArticulo requerido");
+    if (string.IsNullOrEmpty(entity.IdDeposito))
+        return Results.BadRequest("IdDeposito requerido");
+    if (string.IsNullOrEmpty(entity.IdDepositoDestino))
+        return Results.BadRequest("IdDepositoDestino requerido");
+    if (entity.IdDeposito == entity.IdDepositoDestino)
+        return Results.BadRequest("Deposito origen y destino no pueden ser iguales");
+    if (string.IsNullOrEmpty(entity.Concepto))
+        return Results.BadRequest("Concepto requerido");
+    if (entity.Fecha.Date < DateTime.Now.Date)
+        return Results.BadRequest("Fecha no puede ser menor a la actual");
+    if (entity.Cantidad < 0)
+        return Results.BadRequest("Cantidad debe ser mayor a cero");
+    //Verificar que exista el articulo
+    ArticuloService articuloService = new ArticuloService(connectionStringBase);
+    var existeArt = articuloService.FindOne(entity.IdArticulo) != null;
+    if (!existeArt)
+        return Results.BadRequest("Articulo no existe");
+
+    MovStockService service = new MovStockService(connectionStringBase);
+    service.add(entity);
+    return Results.Ok();
 });
 
 //Cta Cte
@@ -530,13 +558,15 @@ app.MapGet("/api/cereales/entrada", (HttpRequest request, HttpResponse response)
     string idSucursal = request.Query["IdSucursal"].ToString();
     var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
     var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
     List<Entrada> result = new List<Entrada>();
     foreach (var suc in sucFilter) 
     {
         EntradaService service = new EntradaService(suc.ConnectionStrings);
         service.IdSucursal = suc.Id;
-        var tmpResult = service.List(idCuenta, idCosecha,fecha);
+        var tmpResult = service.List(idCuenta, idCosecha,fecha,fechaHasta);
         result.AddRange(tmpResult);
     }   
     return result;
@@ -654,6 +684,24 @@ app.MapGet("/api/cereales/liquidacion/total", (HttpRequest request, HttpResponse
     }
     return result;
 });
+//Liquidacion Secundaria
+//Liquidaciones
+app.MapGet("/api/cereales/liquidacionsec", (HttpRequest request, HttpResponse response) =>
+{
+    string idCosecha = request.Query["IdCosecha"].ToString();
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+    List<LiquidacionSec> result = new List<LiquidacionSec>();
+    foreach (var suc in sucFilter)
+    {
+        LiquidacionSecService service = new LiquidacionSecService(suc.ConnectionStrings);
+        service.IdSucursal = suc.Id;
+        var tmpresult = service.List(idCosecha,DateTime.Now);
+        result.AddRange(tmpresult);
+    }
+    return result;
+});
+
 
 //Retiros
 app.MapGet("/api/cereales/retiro", (HttpRequest request, HttpResponse response) =>
@@ -984,6 +1032,14 @@ app.MapGet("/api/cereales/CtaCteCereal/saldos", (HttpRequest request, HttpRespon
     return result;
 });
 //Planta
+app.MapGet("/api/cereales/planta/", (HttpRequest request, HttpResponse response) =>
+{    
+    List<Planta> result = new List<Planta>();
+    PlantaService service = new PlantaService(connectionStringCerealesBase);
+    result = service.List(); 
+    return result;
+});
+
 app.MapGet("/api/cereales/planta/c14", (HttpRequest request, HttpResponse response) =>
 {
     string idPlanta = request.Query["IdPlanta"].ToString();
@@ -1095,6 +1151,13 @@ app.MapGet("/api/cereales/condicionventa", () =>
 
     CondicionVentaCerealService service = new CondicionVentaCerealService(connectionStringCerealesBase);
     List<EntityGeneric> result = service.List();
+    return result;
+});
+app.MapGet("/api/cereales/localidad", () =>
+{
+
+    LocalidadService service = new LocalidadService(connectionStringCerealesBase);
+    List<Localidad> result = service.List();
     return result;
 });
 
