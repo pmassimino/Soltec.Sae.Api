@@ -2,6 +2,15 @@
 
 namespace Soltec.Sae.Api
 {
+    public class Empresa
+    {        
+        public string Nombre { get; set; }
+        public string Cuit { get; set; }
+        public string Direccion { get; set; }
+        public string Localidad { get; set; }
+        public string Provincia { get; set; }
+        public string CondIva { get; set; }
+    }
     public class Sucursal
     {
         public string Id { get; set; }

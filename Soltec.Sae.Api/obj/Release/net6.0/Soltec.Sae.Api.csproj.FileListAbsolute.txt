@@ -47,3 +47,5 @@ C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Release\net6.0\Irony.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Release\net6.0\SixLabors.Fonts.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Release\net6.0\System.IO.Packaging.dll
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Release\net6.0\XLParser.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Release\net6.0\BouncyCastle.Crypto.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\bin\Release\net6.0\itextsharp.dll

@@ -43,6 +43,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 var message = app.Configuration["ConnectionStrings"];
+IWebHostEnvironment webHostEnvironment = app.Services.GetService<IWebHostEnvironment>();
 
 string connectionStringBase = app.Configuration["ConnectionStringsSAE"];
 string connectionStringCerealesBase = app.Configuration["ConnectionStringsCereales"];
@@ -53,7 +54,15 @@ var sucursales = app.Configuration.GetSection("Sucursales").GetChildren().ToList
     Nombre = x.GetValue<string>("Nombre"),
     ConnectionStrings = x.GetValue<string>("ConnectionStrings")
 }).ToList();
-
+var empresa = new Empresa
+{
+    Nombre = app.Configuration["Empresa:Nombre"],
+    Cuit = app.Configuration["Empresa:CUIT"],
+    Direccion = app.Configuration["Empresa:Direccion"],
+    Localidad = app.Configuration["Empresa:Localidad"],
+    Provincia = app.Configuration["Empresa:Provincia"],
+    CondIva = app.Configuration["Empresa:CondIva"]
+};
 
 SujetoService sujetoService = new SujetoService(connectionStringBase);
 //app.Services.AddTransient<SujetoService,sujetoService>();
@@ -239,6 +248,37 @@ app.MapGet("/api/contabilidad/CtaCte/{id}", (string id, HttpRequest request, Htt
 
     return Results.Ok(result);
 });
+app.MapGet("/api/contabilidad/CtaCte/{id}/pdf", async (string id, HttpRequest request, HttpResponse response) =>
+{
+    string idCuentaMayor = request.Query["IdCuentaMayor"];
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-60) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+
+    string vencidoStr = request.Query["vencido"].ToString();
+    bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
+    string idDivisaStr = request.Query["idDivisa"].ToString();
+    int idDivisa = idDivisaStr == "" ? 0 : Convert.ToInt32(idDivisaStr);
+
+    SujetoService sujetoService = new SujetoService(connectionStringBase);
+    Sujeto sujeto = sujetoService.FindOne(id);
+    CtaCteService service = new CtaCteService(connectionStringBase);
+    List<MovCtaCte> movCtaCte = null;
+    movCtaCte = service.List(id, idCuentaMayor, fecha, fechaHasta, idDivisa);
+    CtaCteReportTemplate template = new CtaCteReportTemplate();
+    template.FechaDesde = fecha;
+    template.FechaHasta = fechaHasta;
+    template.Sujeto = sujeto;
+    template.MovCtaCte = movCtaCte;
+    template.Empresa = empresa;
+    template.Path = webHostEnvironment.ContentRootPath;
+    MemoryStream stream = await template.ListPDF();
+    stream.Position = 0;
+    return Results.File(stream.ToArray(), "application/pdf", "ResumenCtaCte.pdf");    
+    
+});
+
 app.MapGet("/api/contabilidad/CtaCte/saldos", (HttpRequest request, HttpResponse response) =>
 {
     string idCuenta = request.Query["IdCuenta"].ToString();
