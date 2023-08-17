@@ -14,11 +14,11 @@ namespace Soltec.Sae.Api
         {
             Random random = new Random();
             int ntra = random.Next(10000, 99999);
-
-            string sql = "INSERT INTO ALMO (suc,usu,tra,femi,art,depo,depd,can,fcom,pe,ncom,con,obn) " +
+            var cantidad = entity.Cantidad.ToString("F4").Replace(",",".");
+            string sql = "INSERT INTO ALMO (suc,usu,tra,femi,art,depo,depd,can,fcom,pe,ncom,con,obn,modelo) " +
                 "VALUES ('01','001'," + ntra.ToString() + ",ctod('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "'),'"
                 + entity.IdArticulo.Trim() + "','" + entity.IdDeposito.Trim() + "','" + entity.IdDepositoDestino.Trim() + "',"
-                + entity.Cantidad.ToString() + ",CTOD('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "')," + entity.Pe.ToString() + "," + entity.Numero + ",'" + entity.Concepto.Trim() + "','API')";
+                + cantidad + ",CTOD('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "')," + entity.Pe.ToString() + "," + entity.Numero + ",'" + entity.Concepto.Trim() + "','API','" + entity.Lote.Trim() + "')";
             string connectionString = this.ConnectionStringBase + "sae.dbc";
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
@@ -54,7 +54,7 @@ namespace Soltec.Sae.Api
             foreach (var item in tmpArticulos) 
             {
                 Stock newItem = new Stock();
-                decimal cant = tmpMovStock.Where(w=>w.IdArticulo==item.Id).Sum(x => x.Cantidad);
+                double cant = tmpMovStock.Where(w=>w.IdArticulo==item.Id).Sum(x => x.Cantidad);
                 newItem.Cantidad = cant;
                 newItem.IdArticulo = idArticulo;
                 newItem.NombreArticulo = item.Nombre;
@@ -73,7 +73,7 @@ namespace Soltec.Sae.Api
             item.NombreArticulo = reader["NombreArticulo"].ToString().Trim();
             item.IdDeposito = reader["depo"].ToString().Trim();
             item.IdDepositoDestino = reader["depd"].ToString().Trim();
-            item.Cantidad = (decimal)reader["can"];            
+            item.Cantidad = (double)reader["can"];            
             return item;
         }
         

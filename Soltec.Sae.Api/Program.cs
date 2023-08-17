@@ -54,6 +54,11 @@ var sucursales = app.Configuration.GetSection("Sucursales").GetChildren().ToList
     Nombre = x.GetValue<string>("Nombre"),
     ConnectionStrings = x.GetValue<string>("ConnectionStrings")
 }).ToList();
+var seccionDolar = app.Configuration.GetSection("SeccionDolar").GetChildren().ToList().Select(x => new Seccion
+{
+    Id = x.GetValue<string>("Id"),
+    Nombre = x.GetValue<string>("Nombre"),    
+}).ToList();
 var empresa = new Empresa
 {
     Nombre = app.Configuration["Empresa:Nombre"],
@@ -172,6 +177,13 @@ app.MapGet("/api/almacen/articulo/{id}", (string id) =>
     Articulo result = service.FindOne(id);
     return result == null ? Results.NotFound() : Results.Ok(result);
 });
+app.MapGet("/api/almacen/familia", () =>
+{
+    FamiliaService service = new FamiliaService(connectionStringBase);
+    List<Familia> result = service.List();
+    return result;
+});
+
 app.MapGet("/api/almacen/articulo/stock", ( HttpRequest request, HttpResponse response) =>
 {
     string idArticulo = request.Query["IdArticulo"].ToString();
@@ -199,8 +211,8 @@ app.MapPost("/api/almacen/MovStock", (MovStock entity) =>
         return Results.BadRequest("Deposito origen y destino no pueden ser iguales");
     if (string.IsNullOrEmpty(entity.Concepto))
         return Results.BadRequest("Concepto requerido");
-    if (entity.Fecha.Date < DateTime.Now.Date)
-        return Results.BadRequest("Fecha no puede ser menor a la actual");
+    //if (entity.Fecha.Date < DateTime.Now.Date)
+    //    return Results.BadRequest("Fecha no puede ser menor a la actual");
     if (entity.Cantidad < 0)
         return Results.BadRequest("Cantidad debe ser mayor a cero");
     //Verificar que exista el articulo
@@ -386,6 +398,27 @@ app.MapGet("/api/contabilidad/ReciboCtaCte", (HttpRequest request, HttpResponse 
     return Results.Ok(result);
 });
 
+app.MapGet("/api/ventas/Seccion", (HttpRequest request, HttpResponse response) =>
+{   
+    SeccionService service = new SeccionService(connectionStringBase);
+    List<Seccion> result = null;
+    result = service.List();
+    return Results.Ok(result);
+});
+app.MapGet("/api/ventas/ClaseVenta", (HttpRequest request, HttpResponse response) =>
+{
+    ClaseVentaService service = new ClaseVentaService(connectionStringBase);
+    List<EntityGeneric> result = null;
+    result = service.List();
+    return Results.Ok(result);
+});
+app.MapGet("/api/ventas/Campania", (HttpRequest request, HttpResponse response) =>
+{
+    CampaniaService service = new CampaniaService(connectionStringBase);
+    List<EntityGeneric> result = null;
+    result = service.List();
+    return Results.Ok(result);
+});
 
 app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =>
 {
@@ -394,10 +427,30 @@ app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
     FacturaService service = new FacturaService(connectionStringBase);
+    service.SeccionDolar = seccionDolar;
     List<Factura> result = null;
     result = service.List(fecha,fechaHasta);
     return Results.Ok(result);
 });
+app.MapGet("/api/ventas/Factura/view", (HttpRequest request, HttpResponse response) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var diasStr = request.Query["Dias"].ToString();
+    int dias = 730;
+    if (!string.IsNullOrEmpty(diasStr))
+        dias = Convert.ToInt32(diasStr);
+        
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-dias) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    
+    FacturaService service = new FacturaService(connectionStringBase);
+    service.SeccionDolar = seccionDolar;
+    List<FacturaView> result = null;
+    result = service.ListView(fecha, fechaHasta);
+    return Results.Ok(result);
+});
+
 app.MapGet("/api/ventas/Factura/pendiente", (HttpRequest request, HttpResponse response) =>
 {
     string idCuenta = request.Query["IdCuenta"].ToString();
