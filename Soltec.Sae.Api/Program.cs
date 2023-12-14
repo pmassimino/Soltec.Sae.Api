@@ -7,9 +7,17 @@ using System.Data;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Caching.Memory;
+
+using System.Text;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddMemoryCache();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,8 +48,21 @@ builder.Services.AddSwaggerGen(c =>
                     };
     c.AddSecurityRequirement(requirement);
 });
+// Configura la compresión para el tipo de contenido "application/json"
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+});
+
+//builder.Services.AddDbContext<DatabaseContext>();
 
 var app = builder.Build();
+
+// Habilita la compresión de respuesta
+app.UseResponseCompression();
+
 var message = app.Configuration["ConnectionStrings"];
 IWebHostEnvironment webHostEnvironment = app.Services.GetService<IWebHostEnvironment>();
 
@@ -85,6 +106,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+
 
 
 
@@ -181,6 +204,20 @@ app.MapGet("/api/almacen/familia", () =>
 {
     FamiliaService service = new FamiliaService(connectionStringBase);
     List<Familia> result = service.List();
+    return result;
+});
+
+app.MapGet("/api/almacen/linea", () =>
+{
+    LineaService service = new LineaService(connectionStringBase);
+    List<Linea> result = service.List();
+    return result;
+});
+
+app.MapGet("/api/almacen/seccionoperativa", () =>
+{
+    SeccionOperativaService service = new SeccionOperativaService(connectionStringBase);
+    List<SeccionOperativa> result = service.List();
     return result;
 });
 
@@ -432,24 +469,290 @@ app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =
     result = service.List(fecha,fechaHasta);
     return Results.Ok(result);
 });
-app.MapGet("/api/ventas/Factura/view", (HttpRequest request, HttpResponse response) =>
+app.MapGet("/api/ventas/Factura/view", (HttpRequest request, HttpResponse response, IMemoryCache cache) =>
 {
     var fechaStr = request.Query["Fecha"].ToString();
     var diasStr = request.Query["Dias"].ToString();
     int dias = 730;
     if (!string.IsNullOrEmpty(diasStr))
         dias = Convert.ToInt32(diasStr);
-        
+
     var fecha = fechaStr == "" ? DateTime.Now.AddDays(-dias) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
-    
-    FacturaService service = new FacturaService(connectionStringBase);
-    service.SeccionDolar = seccionDolar;
-    List<FacturaView> result = null;
-    result = service.ListView(fecha, fechaHasta);
+
+    //FacturaService service = new FacturaService(connectionStringBase);    
+    //List<FacturaView> result = null;
+    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
+
+    // Intenta obtener los datos desde el caché
+    if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
+    {
+        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        var cacheEntryOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+        };
+
+        FacturaService service = new FacturaService(connectionStringBase);
+        service.SeccionDolar = seccionDolar;
+        result = service.ListView(fecha, fechaHasta);
+
+        // Almacena los resultados en caché
+        cache.Set(cacheKey, result, cacheEntryOptions);
+    }
     return Results.Ok(result);
 });
+
+app.MapGet("/api/ventas/Factura/view/xls", (HttpRequest request, HttpResponse response, IMemoryCache cache) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var diasStr = request.Query["Dias"].ToString();
+    int dias = 730;
+    if (!string.IsNullOrEmpty(diasStr))
+        dias = Convert.ToInt32(diasStr);
+
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-dias) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+
+    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
+
+    // Intenta obtener los datos desde el caché
+    if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
+    {
+        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        var cacheEntryOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+        };
+
+        FacturaService service = new FacturaService(connectionStringBase);
+        service.SeccionDolar = seccionDolar;
+        result = service.ListView(fecha, fechaHasta);
+
+        // Almacena los resultados en caché
+        cache.Set(cacheKey, result, cacheEntryOptions);
+    }
+    //Convertir a Excel
+    DataTable dt = new DataTable("Grid");
+
+    dt.Columns.AddRange(new DataColumn[41] { new DataColumn("Sec"),
+                                            new DataColumn("Orden"),
+                                            new DataColumn("FechaPase"),
+                                            new DataColumn("FechaComprobante"),
+                                            new DataColumn("FechaVencimiento"),
+                                            new DataColumn("Tipo"),
+                                            new DataColumn("Letra"),
+                                            new DataColumn("Pe"),
+                                            new DataColumn("Numero"),
+                                            new DataColumn("Comprobante"),
+                                            new DataColumn("IdDivisa"),
+                                            new DataColumn("Cotizacion"),
+                                            new DataColumn("IdCuenta"),
+                                            new DataColumn("NombreCuenta"),
+                                            new DataColumn("Obs"),
+                                            new DataColumn("SubTotal"),
+                                            new DataColumn("Descuento"),
+                                            new DataColumn("IvaGeneral"),
+                                            new DataColumn("IvaOtro"),
+                                            new DataColumn("ImpuestoInterno"),
+                                            new DataColumn("PercepcionIva"),
+                                            new DataColumn("PercepcionIB"),
+                                            new DataColumn("Total"),
+                                            new DataColumn("Cae"),
+                                            new DataColumn("Remito"),
+                                            new DataColumn("CondVenta"),
+                                            new DataColumn("TipoComp"),
+                                            new DataColumn("IdClaseVenta"),
+                                            new DataColumn("IdCampania"),
+                                            new DataColumn("Item"),
+                                            new DataColumn("IdArticulo"),
+                                            new DataColumn("Concepto"),
+                                            new DataColumn("Precio"),
+                                            new DataColumn("AlicuotaIva"),
+                                            new DataColumn("Iva"),
+                                            new DataColumn("ImpuestoInternoItem"),
+                                            new DataColumn("Cantidad"),
+                                            new DataColumn("UnidadMedida"),
+                                            new DataColumn("SubTotalItem"),
+                                            new DataColumn("Bonificacion"),
+                                            new DataColumn("IdRemito")
+                                            });
+
+    int i = 0;
+    foreach (var item in result)
+    {
+        i += 1;
+        dt.Rows.Add(item.Sec, item.Orden, item.FechaPase, item.FechaComprobante, item.FechaVencimiento,
+                     item.Tipo,item.Letra,item.Pe,item.Numero,item.Comprobante,item.IdDivisa,item.Cotizacion,
+                     item.IdCuenta,item.NombreCuenta,item.Obs,item.SubTotal,item.Descuento,item.IvaGeneral,
+                     item.IvaOtro,item.ImpuestoInterno,item.PercepcionIva,item.PercepcionIB,item.Total,
+                     item.Cae,item.Remito,item.CondVenta,item.TipoComp,item.IdClaseVenta,item.IdCampania,
+                     item.Item,item.IdArticulo,item.Concepto,item.Precio,item.AlicuotaIva,item.Iva,item.ImpuestoInternoItem,
+                     item.Cantidad,item.UnidadMedida,item.SubTotalItem,item.Bonificacion,item.IdRemito);
+    }
+
+    using (XLWorkbook wb = new XLWorkbook())
+    {
+
+        wb.Worksheets.Add(dt);
+        using (MemoryStream stream = new MemoryStream())
+        {
+            wb.SaveAs(stream);
+            return Results.File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "FacturasVenta.xlsx");
+        }
+    }   
+   
+});
+app.MapGet("/api/ventas/Factura/view/xls1", (HttpRequest request, HttpResponse response, IMemoryCache cache) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var diasStr = request.Query["Dias"].ToString();
+    int dias = 730;
+    if (!string.IsNullOrEmpty(diasStr))
+        dias = Convert.ToInt32(diasStr);
+
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-dias) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+
+    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
+
+    // Intenta obtener los datos desde el caché
+    if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
+    {
+        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        var cacheEntryOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+        };
+
+        FacturaService service = new FacturaService(connectionStringBase);
+        service.SeccionDolar = seccionDolar;
+        result = service.ListView(fecha, fechaHasta);
+
+        // Almacena los resultados en caché
+        cache.Set(cacheKey, result, cacheEntryOptions);
+    }
+
+    // Crear un nuevo archivo Excel
+    using (MemoryStream stream = new MemoryStream())
+    {
+        // Crear el documento Excel
+        using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook))
+        {
+            // Crear una hoja de cálculo en el libro de trabajo
+            WorkbookPart workbookPart = spreadsheetDocument.AddWorkbookPart();
+            workbookPart.Workbook = new Workbook();
+
+            WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+            worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+            Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild(new Sheets());
+            Sheet sheet = new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Sheet1" };
+            sheets.Append(sheet);
+
+            SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+            // Encabezados de columna
+            Row headerRow = new Row();
+            foreach (var prop in typeof(FacturaView).GetProperties())
+            {
+                Cell headerCell = new Cell(new CellValue(prop.Name))
+                {
+                    DataType = CellValues.String
+                };
+                headerRow.AppendChild(headerCell);
+            }
+            sheetData.AppendChild(headerRow);
+
+            // Datos de la factura
+            foreach (var item in result)
+            {
+                Row excelRow = new Row();
+                foreach (var prop in typeof(FacturaView).GetProperties())
+                {
+                    Cell cell = new Cell(new CellValue(prop.GetValue(item)?.ToString()))
+                    {
+                        DataType = CellValues.String
+                    };
+                    excelRow.AppendChild(cell);
+                }
+                sheetData.AppendChild(excelRow);
+            }
+        }
+
+        // Configurar la respuesta HTTP para el archivo Excel
+        response.Headers.Add("Content-Disposition", "attachment; filename=FacturasVenta.xlsx");
+        response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+        // Escribir el archivo Excel en la respuesta
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.CopyTo(response.Body);
+    }
+
+});
+
+// Tu endpoint API modificado para devolver un archivo CSV
+app.MapGet("/api/ventas/Factura/view/csv", (HttpRequest request, HttpResponse response, IMemoryCache cache) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var diasStr = request.Query["Dias"].ToString();
+    int dias = 730;
+    if (!string.IsNullOrEmpty(diasStr))
+        dias = Convert.ToInt32(diasStr);
+
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-dias) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+
+    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
+
+    // Intenta obtener los datos desde el caché
+    if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
+    {
+        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        var cacheEntryOptions = new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+        };
+
+        FacturaService service = new FacturaService(connectionStringBase);
+        service.SeccionDolar = seccionDolar;
+        result = service.ListView(fecha, fechaHasta);
+
+        // Almacena los resultados en caché
+        cache.Set(cacheKey, result, cacheEntryOptions);
+    }
+
+    // Configurar la respuesta HTTP para devolver un archivo CSV
+    response.Headers.Add("Content-Type", "text/csv");
+    response.Headers.Add("Content-Disposition", "attachment; filename=FacturasVenta.csv");
+
+    // Crear el contenido CSV manualmente
+    var csvContent = new StringBuilder();
+
+    // Agregar encabezados de columna
+    csvContent.AppendLine("Sec,Orden,FechaPase,FechaComprobante,FechaVencimiento,Tipo,Letra,Pe,Numero,Comprobante,IdDivisa,Cotizacion,IdCuenta,NombreCuenta,Obs,SubTotal,Descuento,IvaGeneral,IvaOtro,ImpuestoInterno,PercepcionIva,PercepcionIB,Total,Cae,Remito,CondVenta,TipoComp,IdClaseVenta,IdCampania,Item,IdArticulo,Concepto,Precio,AlicuotaIva,Iva,ImpuestoInternoItem,Cantidad,UnidadMedida,SubTotalItem,Bonificacion,IdRemito");
+
+    // Agregar datos de las filas
+    foreach (var item in result)
+    {
+        csvContent.AppendLine($"{item.Sec},{item.Orden},{item.FechaPase},{item.FechaComprobante},{item.FechaVencimiento},{item.Tipo},{item.Letra},{item.Pe},{item.Numero},{item.Comprobante},{item.IdDivisa},{item.Cotizacion},{item.IdCuenta},{item.NombreCuenta},{item.Obs},{item.SubTotal},{item.Descuento},{item.IvaGeneral},{item.IvaOtro},{item.ImpuestoInterno},{item.PercepcionIva},{item.PercepcionIB},{item.Total},{item.Cae},{item.Remito},{item.CondVenta},{item.TipoComp},{item.IdClaseVenta},{item.IdCampania},{item.Item},{item.IdArticulo},{item.Concepto},{item.Precio},{item.AlicuotaIva},{item.Iva},{item.ImpuestoInternoItem},{item.Cantidad},{item.UnidadMedida},{item.SubTotalItem},{item.Bonificacion},{item.IdRemito}");
+    }
+
+    // Escribir el contenido CSV en el cuerpo de la respuesta
+    byte[] csvBytes = Encoding.UTF8.GetBytes(csvContent.ToString());
+    response.Body.Write(csvBytes, 0, csvBytes.Length);
+
+    return Results.Ok();
+});
+
 
 app.MapGet("/api/ventas/Factura/pendiente", (HttpRequest request, HttpResponse response) =>
 {
@@ -463,6 +766,7 @@ app.MapGet("/api/ventas/Factura/pendiente", (HttpRequest request, HttpResponse r
     result = service.ListPendiente(idCuenta, fecha, fechaHasta);
     return Results.Ok(result);
 });
+
 
 app.MapGet("/api/ventas/Factura/{orden}", (string orden, HttpRequest request, HttpResponse response) =>
 {
@@ -1254,9 +1558,9 @@ app.MapGet("/api/cereales/localidad", () =>
     return result;
 });
 
-
-
-
-
 app.Run();
+
+
+
+
 

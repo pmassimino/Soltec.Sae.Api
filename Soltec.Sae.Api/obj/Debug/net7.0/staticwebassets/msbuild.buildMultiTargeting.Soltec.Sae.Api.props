@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Soltec.Sae.Api.props" />
+</Project>

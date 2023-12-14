@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "1zZYlutqJQKrXwo8k+Yg997A4H7nCtl2flo86hAS2YI=",
+  "Source": "Soltec.Sae.Api",
+  "BasePath": "_content/Soltec.Sae.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

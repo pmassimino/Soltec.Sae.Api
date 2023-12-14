@@ -56,6 +56,8 @@ namespace Soltec.Sae.Api
         public string Id { get; set; }
         public string Nombre { get; set; }
         public string IdFamilia { get; set; }
+        public string IdLinea{ get; set; }
+        public string IdSeccionOp { get; set; }
         public decimal PrecioCosto { get; set; }
         public decimal ImpuestoInterno { get; set; }
         public decimal MargenVenta { get; set; }
@@ -64,11 +66,18 @@ namespace Soltec.Sae.Api
         public decimal PrecioVentaFinal { get; set; }
 
     }
+    public class SeccionOperativa : EntityGeneric
+    { 
+    }
     public class Familia
     {
         public string Id { get; set; }
         public string Nombre { get; set; }
         
+    }
+    public class Linea:EntityGeneric
+    {
+
     }
     public class Seccion
     {
@@ -219,8 +228,8 @@ namespace Soltec.Sae.Api
         public decimal IvaGeneral { get; set; }
         public decimal IvaOtro { get; set; }
         public decimal ImpuestoInterno { get; set; }
-        public decimal PrecepcionIva { get; set; }
-        public decimal PrecepcionIB { get; set; }
+        public decimal PercepcionIva { get; set; }
+        public decimal PercepcionIB { get; set; }
         public decimal Total { get; set; }
         public Int64 Cae { get; set; }
         public string Remito { get; set; }

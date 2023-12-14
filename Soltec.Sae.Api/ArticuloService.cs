@@ -16,7 +16,7 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru FROM artgen where !empty(cod) and !empty(nom)";
+            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect,linea FROM artgen where !empty(cod) and !empty(nom)";
             OleDbDataReader reader = command.ExecuteReader();
             List<Articulo> result = new List<Articulo>();
             while (reader.Read())
@@ -31,7 +31,9 @@ namespace Soltec.Sae.Api
                     PrecioVenta = (decimal)reader["pve1"],
                     PrecioVentaFinal = (decimal)reader["pfin"],
                     AlicuotaIva = (decimal)reader["aiva"],
-                    IdFamilia = reader["agru"].ToString().Trim()
+                    IdFamilia = reader["agru"].ToString().Trim(),
+                    IdLinea = reader["linea"].ToString().Trim(),                    
+                    IdSeccionOp = reader["sect"].ToString().Trim()
                 });
             }            
             cnn.Close();
@@ -43,7 +45,7 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru FROM artgen WHERE cod ='" + id + "'";
+            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect FROM artgen WHERE cod ='" + id + "'";
             OleDbDataReader reader = command.ExecuteReader();
             Articulo result = null;
             while (reader.Read())
@@ -57,7 +59,9 @@ namespace Soltec.Sae.Api
                     ImpuestoInterno = (decimal)reader["imi"],
                     PrecioVenta = (decimal)reader["pve1"],
                     PrecioVentaFinal = (decimal)reader["pfin"],
-                    AlicuotaIva = (decimal)reader["aiva"]
+                    AlicuotaIva = (decimal)reader["aiva"],
+                    IdFamilia = reader["agru"].ToString().Trim(),
+                    IdSeccionOp = reader["sect"].ToString().Trim()
                 };
             }
             cnn.Close();
