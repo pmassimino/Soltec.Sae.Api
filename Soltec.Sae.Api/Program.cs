@@ -84,10 +84,14 @@ var empresa = new Empresa
 {
     Nombre = app.Configuration["Empresa:Nombre"],
     Cuit = app.Configuration["Empresa:CUIT"],
+    NumeroIB = app.Configuration["Empresa:NumeroIB"],
     Direccion = app.Configuration["Empresa:Direccion"],
     Localidad = app.Configuration["Empresa:Localidad"],
     Provincia = app.Configuration["Empresa:Provincia"],
-    CondIva = app.Configuration["Empresa:CondIva"]
+    CondIva = app.Configuration["Empresa:CondIva"],
+    Telefono = app.Configuration["Empresa:Telefono"],
+    Email = app.Configuration["Empresa:Email"]
+
 };
 
 SujetoService sujetoService = new SujetoService(connectionStringBase);
@@ -912,6 +916,69 @@ app.MapGet("/api/contabilidad/diario/xls", (HttpRequest request, HttpResponse re
     return Results.Ok(result);
 });
 
+//Retenciones
+app.MapGet("/api/contabilidad/retencion/afip", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    RetencionAFIPService service = new RetencionAFIPService(connectionStringBase);
+    List<RetencionBase> result = null;
+    result = service.List(idCuenta,fecha, fechaHasta);
+    return Results.Ok(result);
+});
+app.MapGet("/api/contabilidad/retencion/afip/{id}/pdf", async (string id, HttpRequest request, HttpResponse response) =>
+{    
+    RetencionAFIPService service = new RetencionAFIPService(connectionStringBase);
+    RetencionBase entity = null;
+    entity = service.FindOne(id);
+    if (entity == null)
+    {
+        return Results.NotFound("Registro no encontrado");
+    }
+    RetencionAFIPTemplate template = new RetencionAFIPTemplate();
+    template.Entity = entity;
+    template.Empresa = empresa;
+    template.Path = webHostEnvironment.ContentRootPath;
+    MemoryStream stream = await template.ToPDF();
+    stream.Position = 0;
+    return Results.File(stream.ToArray(), "application/pdf", "RetencionAFIP.pdf");
+});
+app.MapGet("/api/contabilidad/retencion/dgr/{id}/pdf", async (string id, HttpRequest request, HttpResponse response) =>
+{
+    RetencionDGRService service = new RetencionDGRService(connectionStringBase);
+    RetencionBase entity = null;
+    entity = service.FindOne(id);
+    if (entity == null)
+    {
+        return Results.NotFound("Registro no encontrado");
+    }
+    RetencionDGRTemplate template = new RetencionDGRTemplate();
+    template.Entity = entity;
+    template.Empresa = empresa;
+    template.Path = webHostEnvironment.ContentRootPath;
+    MemoryStream stream = await template.ToPDF();
+    stream.Position = 0;
+    return Results.File(stream.ToArray(), "application/pdf", "RetencionDGR.pdf");
+});
+
+//Retenciones
+app.MapGet("/api/contabilidad/retencion/dgr", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    RetencionDGRService service = new RetencionDGRService(connectionStringBase);
+    List<RetencionBase> result = null;
+    result = service.List(idCuenta, fecha, fechaHasta);
+    return Results.Ok(result);
+});
+
+
 
 
 //Cereal
@@ -1557,6 +1624,8 @@ app.MapGet("/api/cereales/localidad", () =>
     List<Localidad> result = service.List();
     return result;
 });
+
+
 
 app.Run();
 

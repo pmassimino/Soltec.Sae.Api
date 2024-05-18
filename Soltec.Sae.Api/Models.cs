@@ -6,10 +6,13 @@ namespace Soltec.Sae.Api
     {        
         public string Nombre { get; set; }
         public string Cuit { get; set; }
+        public string NumeroIB { get; set; }
         public string Direccion { get; set; }
         public string Localidad { get; set; }
         public string Provincia { get; set; }
         public string CondIva { get; set; }
+        public string Email { get; set; }
+        public string Telefono { get; set; }
     }
     public class Sucursal
     {
@@ -99,6 +102,7 @@ namespace Soltec.Sae.Api
         public int Pe { get; set; }
         public int Numero { get; set; }
         public string Lote { get; set; }
+        public string Serie { get; set; }
 
     }
     public class Stock    {
@@ -901,7 +905,7 @@ namespace Soltec.Sae.Api
         public string Estado { get; set; } = "PENDIENTE";
     }
 
-        public class EstadoContratoView
+    public class EstadoContratoView
     {
         public DateTime Fecha { get; set; }
         public string Numero { get; set; }
@@ -919,6 +923,28 @@ namespace Soltec.Sae.Api
         public Int64 PesoLiquidado { get; set; }
         public Int64 PesoPendienteLiquidar { get; set; }
 
+    }
+    public class RetencionBase 
+    {
+        public string Sec { get; set; }
+        public string Orden { get; set; }
+        public DateTime FechaPase { get; set; }
+        public DateTime FechaComprobante { get; set; }
+        public DateTime FechaVencimiento { get; set; }
+        public string Id { get; set; }
+        public int Pe { get;set; }
+        public string Numero { get; set;}
+        public int PeComprobante { get; set; }
+        public string NumeroComprobante { get; set; }
+        public string Tipo { get;set; }
+        public string IdCuenta   { get; set; }
+        public Sujeto Cuenta { get; set; }
+        public string Impuesto { get; set; }
+        public string Regimen { get; set; }
+        public decimal BaseImponible { get; set; }
+        public decimal Alicuota { get; set; }
+        public decimal Importe { get; set; }
+        public string Obs { get; set; }
     }
 
 

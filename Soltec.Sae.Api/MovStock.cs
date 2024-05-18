@@ -15,10 +15,11 @@ namespace Soltec.Sae.Api
             Random random = new Random();
             int ntra = random.Next(10000, 99999);
             var cantidad = entity.Cantidad.ToString("F4").Replace(",",".");
-            string sql = "INSERT INTO ALMO (suc,usu,tra,femi,art,depo,depd,can,fcom,pe,ncom,con,obn,modelo) " +
+            string sql = "INSERT INTO ALMO (suc,usu,tra,femi,art,depo,depd,can,fcom,pe,ncom,con,obn,modelo,serie) " +
                 "VALUES ('01','001'," + ntra.ToString() + ",ctod('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "'),'"
                 + entity.IdArticulo.Trim() + "','" + entity.IdDeposito.Trim() + "','" + entity.IdDepositoDestino.Trim() + "',"
-                + cantidad + ",CTOD('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "')," + entity.Pe.ToString() + "," + entity.Numero + ",'" + entity.Concepto.Trim() + "','API','" + entity.Lote.Trim() + "')";
+                + cantidad + ",CTOD('" + entity.Fecha.Date.ToString("MM-dd-yyyy") + "')," + entity.Pe.ToString() + "," + entity.Numero + ",'" 
+                + entity.Concepto.Trim() + "','API','" + entity.Lote.Trim() + "','" + entity.Serie.Trim() + "')";
             string connectionString = this.ConnectionStringBase + "sae.dbc";
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
