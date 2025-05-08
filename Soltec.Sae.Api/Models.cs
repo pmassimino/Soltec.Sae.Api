@@ -539,6 +539,7 @@ namespace Soltec.Sae.Api
         public string NombreCereal { get; set; }
         public string  IdCuenta { get; set; }
         public string  Nombre { get; set; }
+        public string NumeroDocumento { get; set; }
         public string IdTransaccion { get; set; }
         public DateTime Fecha { get; set; }
         public string Numero { get; set; }

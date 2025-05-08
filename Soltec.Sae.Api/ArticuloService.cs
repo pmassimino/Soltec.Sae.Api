@@ -21,12 +21,21 @@ namespace Soltec.Sae.Api
             List<Articulo> result = new List<Articulo>();
             while (reader.Read())
             {
+                decimal margenVenta;
+                try
+                {
+                    margenVenta = (decimal)reader["pove"];
+                }
+                catch
+                {
+                    margenVenta = 0; // O el valor predeterminado que desees en caso de error
+                }
                 result.Add(new Articulo
                 {
                     Id = reader["cod"].ToString().Trim(),
                     Nombre = reader["nom"].ToString().Trim(),
                     PrecioCosto = (decimal)reader["pco"],
-                    MargenVenta = (decimal)reader["pove"],
+                    MargenVenta = margenVenta,
                     ImpuestoInterno = (decimal)reader["imi"],
                     PrecioVenta = (decimal)reader["pve1"],
                     PrecioVentaFinal = (decimal)reader["pfin"],

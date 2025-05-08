@@ -76,6 +76,41 @@ namespace Soltec.Sae.Api
             cnn.Close();
             return result;
         }
+        public Entrada FindBynTra(string ntra)
+        {
+
+            string connectionString = this.ConnectionStringBase + "Cereales.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = "SELECT en_n_rom,en_fecha,en_produ,produmae.rsocial as NombreProductor,produmae.n_cuit as CuitProductor,en_cerea,en_tipo,en_cosec,Cosechas.descri as NombreCosecha,en_proce,en_comp,cermae.descri as NombreCereal," +
+                                  "en_pes_bru,en_tara,en_pes_net,en_p_hum,en_m_hum,en_p_zar,en_m_zar,en_p_vol,en_m_vol,en_p_cal,en_m_cal,en_p_net,en_obser," +
+                                  "en_trans,Transpor.tra_emp as NombreTransporte,Transpor.tra_cui as CuitTransporte,entrada.id_camion,en_pe_cp,en_n_cre,ctg,planta,kms,en_obser, " +
+                                  "Camion.chofer as NombreChofer,Camion.patente_a as PatenteA,Camion.Patente_c as PatenteC,str(Camion.cuit_chofer,11,0) as CuitChofer,ntra, " +
+                                  "entrada.id_locproc,locali.cdlocalida as LocProcedencia,entrada.id_locdest,entrada.ventadir " +
+                                  "FROM entrada " +
+                                  "LEFT JOIN Produmae on produmae.codigo = entrada.en_produ " +
+                                  "LEFT JOIN Cosechas on cosechas.cod = entrada.en_cosec " +
+                                  "LEFT JOIN Cermae on cosechas.cereal = cermae.cod_cer " +
+                                  "LEFT JOIN Transpor on Transpor.tra_cod = entrada.en_trans " +
+                                  "LEFT JOIN Camion on Camion.id_Camion = entrada.id_camion " +
+                                  "LEFT JOIN LOCALI on locali.id_locali = entrada.id_locproc " +
+                                  "WHERE ntra = '" + ntra + "'";
+
+            OleDbDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                cnn.Close();
+                return null; // Devuelve null si no hay registros
+            }
+            Entrada result = new Entrada();
+            while (reader.Read())
+            {
+                result = this.Parse(reader);
+            }
+            cnn.Close();
+            return result;
+        }
         public Int64 Total(string idCuenta, string idCosecha,DateTime fechaHasta) 
         {
             Int64 result = 0;
@@ -132,7 +167,8 @@ namespace Soltec.Sae.Api
             item.NombreCosecha = cosecha.Nombre;
             item.NombreCereal = reader["NombreCereal"].ToString().Trim();
             item.IdCuenta = reader["en_produ"].ToString().Trim();            
-            item.Nombre = reader["NombreProductor"].ToString().Trim();            
+            item.Nombre = reader["NombreProductor"].ToString().Trim();
+            item.NumeroDocumento = reader["CuitProductor"].ToString().Trim();
             item.PesoBruto = Convert.ToInt64(reader["en_pes_bru"].ToString().Trim());
             item.PesoTara = Convert.ToInt64(reader["en_tara"].ToString().Trim());
             item.PesoNeto = Convert.ToInt64(reader["en_pes_net"].ToString().Trim());
@@ -163,6 +199,8 @@ namespace Soltec.Sae.Api
             chofer.Nombre = reader["NombreChofer"].ToString().Trim();            
             chofer.NumeroDocumento = reader["CuitChofer"].ToString().Trim();    
             item.Chofer = chofer;
+            item.PatenteA = reader["PatenteA"].ToString().Trim();
+            item.PatenteC = reader["PatenteC"].ToString().Trim();
             item.IdLocalidadProcedencia = reader["id_locproc"].ToString().Trim();
             item.LocalidadProcedencia = reader["LocProcedencia"].ToString().Trim();
             item.IdLocalidadDestino = reader["id_locdest"].ToString().Trim();

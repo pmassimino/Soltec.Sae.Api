@@ -15,6 +15,7 @@ using System.Text;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMemoryCache();
@@ -252,6 +253,8 @@ app.MapPost("/api/almacen/MovStock", (MovStock entity) =>
         return Results.BadRequest("Deposito origen y destino no pueden ser iguales");
     if (string.IsNullOrEmpty(entity.Concepto))
         return Results.BadRequest("Concepto requerido");
+    if (entity.Serie==null)
+        return Results.BadRequest("Serie requerido");
     //if (entity.Fecha.Date < DateTime.Now.Date)
     //    return Results.BadRequest("Fecha no puede ser menor a la actual");
     if (entity.Cantidad < 0)
@@ -1015,6 +1018,33 @@ app.MapGet("/api/cereales/entrada/{id}", (string id, HttpRequest request, HttpRe
     Entrada result = service.FindOne(id);
     return result;
 });
+//Entradas
+app.MapGet("/api/cereales/entrada/trx/{ntra}", (string ntra, HttpRequest request, HttpResponse response) =>
+{
+    EntradaService service = new EntradaService(connectionStringCerealesBase);
+    Entrada result = service.FindBynTra(ntra);
+    return result;
+});
+app.MapGet("/api/cereales/entrada/trx/{ntra}/pdf", async (string ntra, HttpRequest request, HttpResponse response) =>
+{
+    EntradaService service = new EntradaService(connectionStringCerealesBase);
+    Entrada entity = null;
+    entity = service.FindBynTra(ntra);
+    if (entity == null)
+    {
+        return Results.NotFound("Registro no encontrado");
+    }
+    EntradaTemplate template = new EntradaTemplate();
+    template.Entity = entity;
+    template.Empresa = empresa;
+    template.Path = webHostEnvironment.ContentRootPath;
+    MemoryStream stream = await template.ToPDF();
+    stream.Position = 0;
+    string filename = "Entrada_" + entity.Ctg.ToString() + ".pdf";
+    return Results.File(stream.ToArray(), "application/pdf", filename);
+});
+
+
 app.MapGet("/api/cereales/entrada", (HttpRequest request, HttpResponse response) =>
 {
     string idCuenta = request.Query["IdCuenta"].ToString();
