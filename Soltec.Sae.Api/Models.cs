@@ -9,10 +9,12 @@ namespace Soltec.Sae.Api
         public string NumeroIB { get; set; }
         public string Direccion { get; set; }
         public string Localidad { get; set; }
+        public string Cpostal { get; set; }
         public string Provincia { get; set; }
         public string CondIva { get; set; }
         public string Email { get; set; }
         public string Telefono { get; set; }
+        public string FechaIniAct { get; set; }
     }
     public class Sucursal
     {
@@ -193,6 +195,7 @@ namespace Soltec.Sae.Api
     public List<DetalleFactura> Detalle { get; set; }
     public string IdClaseVenta { get; set; }
     public string IdCampania { get; set; }
+    public string NTra { get; set; }
     }
     public class DetalleFactura 
     {      

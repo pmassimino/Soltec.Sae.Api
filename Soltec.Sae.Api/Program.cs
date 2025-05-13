@@ -87,12 +87,13 @@ var empresa = new Empresa
     Cuit = app.Configuration["Empresa:CUIT"],
     NumeroIB = app.Configuration["Empresa:NumeroIB"],
     Direccion = app.Configuration["Empresa:Direccion"],
+    Cpostal = app.Configuration["Empresa:CodigoPostal"],
     Localidad = app.Configuration["Empresa:Localidad"],
     Provincia = app.Configuration["Empresa:Provincia"],
     CondIva = app.Configuration["Empresa:CondIva"],
     Telefono = app.Configuration["Empresa:Telefono"],
-    Email = app.Configuration["Empresa:Email"]
-
+    Email = app.Configuration["Empresa:Email"],
+    FechaIniAct = app.Configuration["Empresa:FechaIniAct"]
 };
 
 SujetoService sujetoService = new SujetoService(connectionStringBase);
@@ -792,6 +793,45 @@ app.MapGet("/api/ventas/Factura/{orden}", (string orden, HttpRequest request, Ht
     result = service.FindOne(sec,orden);
     return Results.Ok(result);
 });
+app.MapGet("/api/ventas/factura/trx/{ntra}", async (string ntra, HttpRequest request, HttpResponse response) =>
+{
+    FacturaService service = new FacturaService(connectionStringBase);
+    service.SeccionDolar = seccionDolar;
+    Factura entity = null;
+
+    entity = service.FindByNTra(ntra);
+    if (entity == null)
+    {
+        return Results.NotFound("Registro no encontrado");
+    }
+    return Results.Ok(entity);
+});
+
+app.MapGet("/api/ventas/factura/trx/{ntra}/pdf", async (string ntra, HttpRequest request, HttpResponse response) =>
+{
+    FacturaService service = new FacturaService(connectionStringBase);
+    service.SeccionDolar = seccionDolar;
+    Factura entity = null;
+    
+    entity = service.FindByNTra(ntra);
+    if (entity == null)
+    {
+        return Results.NotFound("Registro no encontrado");
+    }
+    SujetoService sujetoService = new SujetoService(connectionStringBase);
+    var sujeto = sujetoService.FindOne(entity.IdCuenta);
+    FacturaTemplate template = new FacturaTemplate();
+    template.Entity = entity;
+    template.Empresa = empresa;
+    template.Sujeto = sujeto;
+    template.Path = webHostEnvironment.ContentRootPath;
+    template.SeccionDolar = seccionDolar;
+    MemoryStream stream = await template.ToPDF();
+    stream.Position = 0;
+    string filename = "Factura_" + entity.Cae.ToString() + ".pdf";
+    return Results.File(stream.ToArray(), "application/pdf", filename);
+});
+
 //Remito
 app.MapGet("/api/ventas/Remito", (HttpRequest request, HttpResponse response) =>
 {

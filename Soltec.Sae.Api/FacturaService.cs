@@ -24,7 +24,7 @@ namespace Soltec.Sae.Api
                 "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,totd,nctip," +
                 "cla,peri_asig," + 
                 "clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva, " +
-                "can,ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet " + 
+                "can,ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet,facmae.guid as ntra " + 
                 "FROM facmae " +
                 "INNER JOIN facdet ON facmae.sec = facdet.sec AND facmae.orden = facdet.orden " +
                 "INNER JOIN sec On facmae.sec = sec.cod " +
@@ -186,6 +186,52 @@ namespace Soltec.Sae.Api
             cnn.Close();
             return result;
         }
+        public Factura FindByNTra(string ntra)
+        {
+            string connectionString = this.ConnectionStringBase + "sae.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = "SELECT facmae.sec,facmae.orden,facmae.tipo,letra,pe,num,cae,cae_id,tipcomp,femi,fvto,facmae.cmay,scta,facmae.rem,cla,facmae.ven,tve,tep,tra,civa,sub1,sub1Imp,dto,pde,sub2," +
+               "gas,facmae.int,facmae.ibru,cibru,per,facmae.fle,ot1,ret,iva1,iva2,iva3,facmae.tot,cotiz,morig,estado,integ,facmae.lote,facmae.noa,noi,obs1,obs2,fnventa,facmae.pre, " +
+               "facmae.nc,facmae.tip_op,ord_ven,fac_cre," +
+               "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,totd,nctip," +
+               "cla,peri_asig," +
+               "clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva, " +
+               "can,ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet ,facmae.guid as ntra " +
+               "FROM facmae " +
+               "INNER JOIN facdet ON facmae.sec = facdet.sec AND facmae.orden = facdet.orden " +
+               "INNER JOIN sec On facmae.sec = sec.cod " +
+               "inner join clipro on clipro.cod = facmae.scta " +
+               "WHERE guid = '" + ntra + "'";
+            OleDbDataReader reader = command.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                cnn.Close();
+                return null; // Devuelve null si no hay registros
+            }
+            string idAnt = "";
+            Factura result = null;
+            while (reader.Read())
+            {
+                string id = reader["sec"].ToString().Trim() + reader["orden"].ToString().Trim();
+                if (idAnt != id && idAnt != "")
+                {
+                    
+                    result = new Factura();
+                }
+                if (idAnt != id)
+                {
+                    result = Parse(reader);
+                }
+                result.Detalle.Add(ParseDetalle(reader));
+                idAnt = id;
+            }
+            
+            reader.Close();
+            cnn.Close();
+            return result;
+        }
         private Factura Parse(OleDbDataReader reader)
         {
             Factura item = new Factura();
@@ -234,7 +280,7 @@ namespace Soltec.Sae.Api
             item.IdDivisa = reader["morig"].ToString().Trim() == "D" || reader["morig"].ToString().Trim() == "1" ? 1:0;
             item.Cotizacion = 1;
             //Poner solo la cotizacion si es Factura en dolar o con clausula
-            if (item.IdDivisa == 1 || (item.IdDivisa == 0  && this.SeccionDolar.Where(w=>w.Id ==item.Sec).Count() > 0))
+            if (item.IdDivisa == 1 || (item.IdDivisa == 0 && this.SeccionDolar?.Where(w => w.Id == item.Sec).Count() > 0))
                 item.Cotizacion = (decimal)reader["cotiz"];
             Sujeto tmpSujeto = new Sujeto();
             tmpSujeto.Id = reader["cod"].ToString().Trim();
@@ -247,6 +293,7 @@ namespace Soltec.Sae.Api
             item.Cuenta = tmpSujeto;
             item.IdClaseVenta = reader["cla"].ToString().Trim();
             item.IdCampania = reader["peri_asig"].ToString().Trim();
+            item.NTra = reader["ntra"].ToString().Trim();
             return item;
         }
         private DetalleFactura ParseDetalle(OleDbDataReader reader)
