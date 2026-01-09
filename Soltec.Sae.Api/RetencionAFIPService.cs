@@ -65,11 +65,17 @@ namespace Soltec.Sae.Api
             item.Regimen = reader["ref"].ToString().Trim();
             if (string.IsNullOrEmpty(item.Regimen))
                 //item.Regimen = "Compraventa de Cosas Muebles y Locaciones / Servicios RG 2854 AFIP";
-            if (pidTipo == "02") 
-            {
-                item.Tipo = "IVA";
-                item.Impuesto = "Impuesto al valor agregado";
-            }                                
+                if (pidTipo == "02")
+                {
+                    item.Tipo = "IVA";
+                    item.Impuesto = "Impuesto al valor agregado";
+                }
+                else if (pidTipo == "04") 
+                {
+                    item.Tipo = "SEG.SOCIAL";
+                    item.Impuesto = "Contribuciones Patronales";
+                    item.Regimen = "Seguridad Social RG1784";
+                }
             item.FechaPase = (DateTime)reader["fec"];
             item.FechaComprobante = (DateTime)reader["fec"];
             item.FechaVencimiento = (DateTime)reader["fec"];

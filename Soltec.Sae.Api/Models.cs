@@ -69,6 +69,9 @@ namespace Soltec.Sae.Api
         public decimal AlicuotaIva { get; set; }
         public decimal PrecioVenta { get; set; }
         public decimal PrecioVentaFinal { get; set; }
+        public int IdDivisa { get; set; }
+        public decimal Stock { get; set; }
+        public decimal PendRemitir { get; set; }
 
     }
     public class SeccionOperativa : EntityGeneric

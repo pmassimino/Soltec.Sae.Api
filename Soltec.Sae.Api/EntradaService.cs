@@ -26,7 +26,7 @@ namespace Soltec.Sae.Api
             command.CommandText = "SELECT en_n_rom,en_fecha,en_produ,produmae.rsocial as NombreProductor,produmae.n_cuit as CuitProductor,en_cerea,en_tipo,en_cosec,Cosechas.descri as NombreCosecha,en_proce,en_comp,cermae.descri as NombreCereal," +                                   
                                   "en_pes_bru,en_tara,en_pes_net,en_p_hum,en_m_hum,en_p_zar,en_m_zar,en_p_vol,en_m_vol,en_p_cal,en_m_cal,en_p_net,en_obser," +
                                   "en_trans,Transpor.tra_emp as NombreTransporte,Transpor.tra_cui as CuitTransporte,entrada.id_camion,en_pe_cp,en_n_cre,ctg,planta,kms,en_obser, " +
-                                  "Camion.chofer as NombreChofer,Camion.patente_a as Patente_A,Camion.Patente_c as Patente_c,str(Camion.cuit_chofer,11,0) as CuitChofer,ntra, " +
+                                  "Camion.chofer as NombreChofer,Camion.patente_a as PatenteA,Camion.Patente_c as PatenteC,str(Camion.cuit_chofer,11,0) as CuitChofer,ntra, " +
                                   "entrada.id_locproc,locali.cdlocalida as LocProcedencia,entrada.id_locdest,entrada.ventadir " + 
                                   "FROM entrada " +
                                   "LEFT JOIN Produmae on produmae.codigo = entrada.en_produ " + 
@@ -59,7 +59,7 @@ namespace Soltec.Sae.Api
             command.CommandText = "SELECT en_n_rom,en_fecha,en_produ,produmae.rsocial as NombreProductor,produmae.n_cuit as CuitProductor,en_cerea,en_tipo,en_cosec,Cosechas.descri as NombreCosecha,en_proce,en_comp," +
                                   "en_pes_bru,en_tara,en_pes_net,en_p_hum,en_m_hum,en_p_zar,en_m_zar,en_p_vol,en_m_vol,en_p_cal,en_m_cal,en_p_net,en_obser," +
                                   "en_trans,Transpor.tra_emp as NombreTransporte,Transpor.tra_cui as CuitTransporte,entrada.id_camion,en_pe_cp,en_n_cre,ctg,planta,kms,en_obser, " +
-                                  "Camion.chofer as NombreChofer,Camion.patente_a as Patente_A,Camion.Patente_c as Patente_c,Camion.cuit_chofer as CuitChofer " +
+                                  "Camion.chofer as NombreChofer,Camion.patente_a as PatenteA,Camion.Patente_c as PatenteC,Camion.cuit_chofer as CuitChofer " +
                                   "FROM entrada " +
                                   "LEFT JOIN Produmae on produmae.codigo = entrada.en_produ " +
                                   "LEFT JOIN Cosechas on cosechas.cod = entrada.en_cosec " +

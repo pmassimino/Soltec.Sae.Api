@@ -95,7 +95,9 @@ namespace Soltec.Sae.Api
                 item.PesoAplicado = pesoAplicado;
                 item.PesoPendienteAplicar = item.PesoNeto - pesoAplicado;
                 item.PesoFijado = pesoFijado;
-                item.PesoPendienteFijar = contrato.PesoNeto - pesoFijado;
+                if (contrato.Tipo.Trim() == "A FIJAR")
+                    item.PesoPendienteFijar = contrato.PesoNeto - pesoFijado;
+                
                 item.PesoLiquidado = pesoLiquidado;
                 item.PesoPendienteLiquidar = contrato.PesoNeto - pesoLiquidado;
                 item.Estado = contrato.Estado;

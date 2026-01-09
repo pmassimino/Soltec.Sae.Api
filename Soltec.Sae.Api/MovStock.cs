@@ -74,7 +74,7 @@ namespace Soltec.Sae.Api
             item.NombreArticulo = reader["NombreArticulo"].ToString().Trim();
             item.IdDeposito = reader["depo"].ToString().Trim();
             item.IdDepositoDestino = reader["depd"].ToString().Trim();
-            item.Cantidad = (double)reader["can"];            
+            item.Cantidad = Convert.ToDouble(reader["can"]);
             return item;
         }
         

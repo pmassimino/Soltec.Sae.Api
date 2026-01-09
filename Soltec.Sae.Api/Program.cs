@@ -1,8 +1,4 @@
 using Soltec.Sae.Api;
-using System.Data.OleDb;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
 using System.Data;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +11,8 @@ using System.Text;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.InkML;
+using Soltec.Sae.Api.Soltec.Sae.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMemoryCache();
@@ -49,6 +46,21 @@ builder.Services.AddSwaggerGen(c =>
                     };
     c.AddSecurityRequirement(requirement);
 });
+//Cors
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AppPolicy", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+              .AllowAnyHeader()
+              .AllowAnyMethod()              
+              .WithExposedHeaders("Content-Disposition", "Content-Length"); // si devuelves archivos
+    });
+});
+
+
 // Configura la compresión para el tipo de contenido "application/json"
 builder.Services.AddResponseCompression(options =>
 {
@@ -62,7 +74,7 @@ builder.Services.AddResponseCompression(options =>
 var app = builder.Build();
 
 // Habilita la compresión de respuesta
-app.UseResponseCompression();
+//app.UseResponseCompression();
 
 var message = app.Configuration["ConnectionStrings"];
 IWebHostEnvironment webHostEnvironment = app.Services.GetService<IWebHostEnvironment>();
@@ -81,6 +93,12 @@ var seccionDolar = app.Configuration.GetSection("SeccionDolar").GetChildren().To
     Id = x.GetValue<string>("Id"),
     Nombre = x.GetValue<string>("Nombre"),    
 }).ToList();
+var seccionPendiente = app.Configuration.GetSection("SeccionPendiente").GetChildren().ToList().Select(x => new Seccion
+{
+    Id = x.GetValue<string>("Id"),
+    Nombre = x.GetValue<string>("Nombre"),
+}).ToList();
+
 var empresa = new Empresa
 {
     Nombre = app.Configuration["Empresa:Nombre"],
@@ -98,11 +116,9 @@ var empresa = new Empresa
 
 SujetoService sujetoService = new SujetoService(connectionStringBase);
 //app.Services.AddTransient<SujetoService,sujetoService>();
-//Configure Security
-app.UseMiddleware<ApiKeyMiddleware>();
 
 //Errors Manage
-app.UseMiddleware<ErrorHandlerMiddleware>();
+//app.UseMiddleware<ErrorHandlerMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -110,10 +126,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI() ;
 }
-
+// 2. ORDEN CRUCIAL DE MIDDLEWARES
 app.UseHttpsRedirection();
+//app.UseMiddleware<HeaderLoggingMiddleware>();
+app.UseCors("AppPolicy"); // Debe estar ANTES de UseAuthorization y MapControllers
+                 
+app.UseMiddleware<ApiKeyMiddleware>(); // Tu middleware de API Key
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 
+
+
+app.MapGet("/api/almacen/articulo", () =>
+{
+    ArticuloService service = new ArticuloService(connectionStringBase);
+    List<Articulo> result = service.List();
+    return result;
+});
 
 
 
@@ -194,12 +223,7 @@ app.MapGet("/api/contabilidad/sujeto/{id}", (string id) =>
     return result == null ? Results.NotFound() : Results.Ok(result);
 });
 
-app.MapGet("/api/almacen/articulo", () =>
-{
-    ArticuloService service = new ArticuloService(connectionStringBase);
-    List<Articulo> result = service.List();
-    return result;
-});
+
 app.MapGet("/api/almacen/articulo/{id}", (string id) =>
 {
     ArticuloService service = new ArticuloService(connectionStringBase);
@@ -771,6 +795,7 @@ app.MapGet("/api/ventas/Factura/pendiente", (HttpRequest request, HttpResponse r
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
     FacturaService service = new FacturaService(connectionStringBase);
     List<DocumentoPendienteView> result = null;
+    service.SeccionPendiente = seccionPendiente;
     result = service.ListPendiente(idCuenta, fecha, fechaHasta);
     return Results.Ok(result);
 });
@@ -1529,7 +1554,7 @@ app.MapGet("/api/cereales/CtaCteCereal/saldo", (HttpRequest request, HttpRespons
 {
     string idCuenta = request.Query["IdCuenta"].ToString();
     string idCosecha = request.Query["IdCosecha"].ToString();
-    string idSucursal = request.Query["IdSucursal"].ToString();
+    string idSucursal = request.Query["IdSucursal"].ToString();    
     var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
@@ -1550,19 +1575,36 @@ app.MapGet("/api/cereales/CtaCteCereal/saldos", (HttpRequest request, HttpRespon
     string idCuenta = request.Query["IdCuenta"].ToString();
     string idCosecha = request.Query["IdCosecha"].ToString();
     string idSucursal = request.Query["IdSucursal"].ToString();
+    string FiltraSaldoCero = request.Query["FiltraSaldoCero"].ToString().ToLower();
     var fechaStr = request.Query["Fecha"].ToString();
-    var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
-    var sucFilter = sucursales.Where(w => w.Id == idSucursal || idSucursal == "");
+
+    var fecha = string.IsNullOrWhiteSpace(fechaStr)
+        ? DateTime.Now
+        : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || string.IsNullOrEmpty(idSucursal));
+
     List<SaldoCtaCteCereal> result = new List<SaldoCtaCteCereal>();
+
     foreach (var suc in sucFilter)
     {
-        CtaCteCerealService service = new CtaCteCerealService(suc.ConnectionStrings);
-        service.SaeConnectionStringBase = connectionStringBase;
-        service.IdSucursal = suc.Id;
-        service.TipoSaldo = tipoSaldo;
+        var service = new CtaCteCerealService(suc.ConnectionStrings)
+        {
+            SaeConnectionStringBase = connectionStringBase,
+            IdSucursal = suc.Id,
+            TipoSaldo = tipoSaldo
+        };
+
         var tmpresult = service.Saldos2(idCuenta, idCosecha, fecha);
+
+        if (FiltraSaldoCero == "si")
+        {
+            tmpresult = tmpresult.Where(item => item.Saldo != 0).ToList();
+        }
+
         result.AddRange(tmpresult);
     }
+
     return result;
 });
 //Planta

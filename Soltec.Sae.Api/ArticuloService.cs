@@ -16,34 +16,12 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect,linea FROM artgen where !empty(cod) and !empty(nom)";
+            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect,linea,sact,spen,div FROM artgen where !empty(cod) and !empty(nom)";
             OleDbDataReader reader = command.ExecuteReader();
             List<Articulo> result = new List<Articulo>();
             while (reader.Read())
-            {
-                decimal margenVenta;
-                try
-                {
-                    margenVenta = (decimal)reader["pove"];
-                }
-                catch
-                {
-                    margenVenta = 0; // O el valor predeterminado que desees en caso de error
-                }
-                result.Add(new Articulo
-                {
-                    Id = reader["cod"].ToString().Trim(),
-                    Nombre = reader["nom"].ToString().Trim(),
-                    PrecioCosto = (decimal)reader["pco"],
-                    MargenVenta = margenVenta,
-                    ImpuestoInterno = (decimal)reader["imi"],
-                    PrecioVenta = (decimal)reader["pve1"],
-                    PrecioVentaFinal = (decimal)reader["pfin"],
-                    AlicuotaIva = (decimal)reader["aiva"],
-                    IdFamilia = reader["agru"].ToString().Trim(),
-                    IdLinea = reader["linea"].ToString().Trim(),                    
-                    IdSeccionOp = reader["sect"].ToString().Trim()
-                });
+            {                
+                result.Add(this.Parse(reader));
             }            
             cnn.Close();
             return result;
@@ -54,27 +32,52 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect FROM artgen WHERE cod ='" + id + "'";
+            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect,sact,spen,div FROM artgen WHERE cod ='" + id + "'";
             OleDbDataReader reader = command.ExecuteReader();
             Articulo result = null;
             while (reader.Read())
             {
-                result = new Articulo
-                {
-                    Id = reader["cod"].ToString().Trim(),
-                    Nombre = reader["nom"].ToString().Trim(),
-                    PrecioCosto = (decimal)reader["pco"],
-                    MargenVenta = (decimal)reader["pove"],
-                    ImpuestoInterno = (decimal)reader["imi"],
-                    PrecioVenta = (decimal)reader["pve1"],
-                    PrecioVentaFinal = (decimal)reader["pfin"],
-                    AlicuotaIva = (decimal)reader["aiva"],
-                    IdFamilia = reader["agru"].ToString().Trim(),
-                    IdSeccionOp = reader["sect"].ToString().Trim()
-                };
+                result = this.Parse(reader);
             }
             cnn.Close();
             return result;
+        }
+        private Articulo Parse(OleDbDataReader reader)
+        {
+            Articulo item = new Articulo();
+            item.Id = reader["cod"].ToString().Trim();
+            item.Nombre = reader["nom"].ToString().Trim();
+            try
+            {
+             item.PrecioCosto = (decimal)reader["pco"];
+            }
+            catch (Exception ex)
+            { }
+            item.MargenVenta = (decimal)reader["pove"];
+            item.ImpuestoInterno = (decimal)reader["imi"];
+            try
+            {
+                item.PrecioVenta = (decimal)reader["pve1"];
+            } catch (Exception ex) { }
+            try
+            {
+                item.PrecioVentaFinal = (decimal)reader["pfin"];
+            }catch (Exception ex) { }
+
+            item.AlicuotaIva = (decimal)reader["aiva"];
+            item.IdFamilia = reader["agru"].ToString().Trim();
+            item.IdSeccionOp = reader["sect"].ToString().Trim();
+            int.TryParse(reader["div"]?.ToString(), out int idDivisa);
+            item.IdDivisa = idDivisa;
+            item.Stock = Convert.ToDecimal(reader["sact"]);
+            try 
+            {
+                item.PendRemitir = Convert.ToDecimal(reader["spen"]);
+            }catch (Exception ex) 
+            {
+            }
+            
+            return item;
         }
     }
 }

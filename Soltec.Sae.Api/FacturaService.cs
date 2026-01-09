@@ -10,7 +10,8 @@ namespace Soltec.Sae.Api
         }
         public string ConnectionStringBase { get; set; } = "";
         public List<Seccion> SeccionDolar { get; set; }
-        
+        public List<Seccion> SeccionPendiente { get; set; }
+
         public List<Factura> List(DateTime fecha, DateTime fechaHasta)
         {
             SujetoService sujetoService = new SujetoService(this.ConnectionStringBase);
@@ -115,7 +116,78 @@ namespace Soltec.Sae.Api
             }
             return result;
         }
-        public List<DocumentoPendienteView> ListPendiente(string idCuenta,DateTime fecha, DateTime fechaHasta)
+        public List<DocumentoPendienteView> ListPendiente(string idCuenta, DateTime fecha, DateTime fechaHasta)
+        {
+            // Validar que tenemos la lista de secciones
+            if (SeccionPendiente == null || SeccionPendiente.Count == 0)
+            {
+                return new List<DocumentoPendienteView>();
+            }
+
+            SujetoService sujetoService = new SujetoService(this.ConnectionStringBase);
+            string connectionString = this.ConnectionStringBase + "sae.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+
+            // Construir la lista de secciones para el filtro IN
+            string seccionesFilter = "";
+            if (SeccionPendiente.Count > 0)
+            {
+                // Crear lista de secciones entre comillas simples
+                var seccionesList = SeccionPendiente.Select(s => $"'{s.Id.Trim()}'").ToArray();
+                seccionesFilter = string.Join(",", seccionesList);
+            }
+
+            command.CommandText = @"
+        SELECT 
+            facmae.sec, facmae.orden, facmae.tipo, letra, pe, num, cae, cae_id, tipcomp, 
+            femi, fvto, cmay, scta, facmae.rem, cla, facmae.ven, tve, tep, tra, civa, 
+            sub1, dto, pde, sub2, gas, facmae.int, facmae.ibru, cibru, per, facmae.fle, 
+            ot1, ret, iva1, iva2, iva3, facmae.tot, cotiz, morig, estado, integ, 
+            facmae.lote, facmae.noa, noi, obs1, obs2, fnventa, facmae.pre, 
+            facmae.nc, facmae.tip_op, ord_ven, fac_cre, for_pag, transp, guia, 
+            nped, bultos, facmae.credito, pag, fcr, totd, nctip,
+            clipro.cod, clipro.nom, clipro.dir, clipro.alt, clipro.loc, clipro.pos, 
+            clipro.provin, clipro.email, clipro.cuit, clipro.piva, 
+            can, des, pun, bon, art, facdet.tot as totdet, facdet.iva as ivadet, 
+            VAL(STR(facdet.aiva,10,2)) as aiva, dtog, punimp, 
+            VAL(STR(facdet.int,10,2)) as intdet, can_r 
+        FROM facmae 
+        INNER JOIN facdet ON facmae.sec = facdet.sec AND facmae.orden = facdet.orden 
+        INNER JOIN clipro ON clipro.cod = facmae.scta 
+        LEFT JOIN artgen ON artgen.cod = facdet.art 
+        WHERE  
+            (femi BETWEEN ctod('" + fecha.ToString("MM-dd-yyy") + @"') 
+            AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + @"')) 
+            AND (scta = '" + idCuenta + @"' OR EMPTY('" + idCuenta + @"')) 
+            AND facmae.tipo = 1 
+            AND facdet.can_r > 0 
+            AND facdet.exp_tipo = 'C' 
+            AND (artgen.exime = .f. OR artgen.exime IS NULL) 
+            AND (FACMAE.cla != '07' AND FACMAE.cla != '08' AND FACMAE.cla != '09')";
+
+            // Agregar filtro por secciones si hay elementos en la lista
+            if (!string.IsNullOrEmpty(seccionesFilter))
+            {
+                command.CommandText += " AND facmae.sec IN (" + seccionesFilter + ")";
+            }
+
+            command.CommandText += " ORDER BY femi, facmae.tipo, letra, pe, num";
+
+            OleDbDataReader reader = command.ExecuteReader();
+            List<DocumentoPendienteView> result = new List<DocumentoPendienteView>();
+
+            while (reader.Read())
+            {
+                result.Add(ParsePendiente(reader));
+            }
+
+            reader.Close();
+            cnn.Close();
+            return result;
+        }
+        public List<DocumentoPendienteView> ListPendienteOrg(string idCuenta,DateTime fecha, DateTime fechaHasta)
         {
             SujetoService sujetoService = new SujetoService(this.ConnectionStringBase);
             string connectionString = this.ConnectionStringBase + "sae.dbc";
