@@ -1,4 +1,5 @@
-﻿using System.Data.OleDb;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using System.Data.OleDb;
 
 namespace Soltec.Sae.Api
 {
@@ -70,6 +71,31 @@ namespace Soltec.Sae.Api
             cnn.Close();
             return result;
         }
+        public List<Sujeto> FindByDoc(string numero)
+        {
+            string connectionString = this.ConnectionStringBase + "sae.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = "SELECT clipro.cod,clipro.nom,dir,alt,loc,pos,pro,clipro.email,cuit,piva,ibru,pibru,coniva.nom as CondicionIva,"
+              + "conibru.nom as CondicionIB,provin.nom as NombreProvincia,categ,catesub.nom as Categoria,zon,zonas.nom as zona " +
+                "FROM clipro " +
+                "Left Join ConIva on piva = conIva.cod " +
+                "Left Join ConIbru on piva = conIBru.cod " +
+                "Left Join provin on pro = provin.cod " +
+                "Left Join zonas on zon = zonas.cod " +
+                "Left Join catesub on categ = catesub.cod " + 
+                "where clipro.cuit = '" + numero + "'" ;
+            OleDbDataReader reader = command.ExecuteReader();
+            List<Sujeto> result = new List<Sujeto>();
+            while (reader.Read())
+            {
+                result.Add(this.Parse(reader));
+            }
+            cnn.Close();
+            return result;
+        }
+
         private Sujeto Parse(OleDbDataReader reader)
         {
             var result = new Sujeto();

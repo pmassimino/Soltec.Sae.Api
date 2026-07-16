@@ -69,11 +69,23 @@ namespace Soltec.Sae.Api
         public decimal AlicuotaIva { get; set; }
         public decimal PrecioVenta { get; set; }
         public decimal PrecioVentaFinal { get; set; }
+        public List<PrecioArticulo> Precios { get; set; } = new List<PrecioArticulo>();
         public int IdDivisa { get; set; }
         public decimal Stock { get; set; }
         public decimal PendRemitir { get; set; }
 
     }
+    public class PrecioArticulo
+    {
+        public string Tipo { get; set; } // 1: Minorista, 2: Mayorista, etc.
+        public decimal Valor { get; set; }
+    }
+
+    public class ArticuloFilterOptions
+    {
+        public bool FiltrarActivos { get; set;}
+    }
+
     public class SeccionOperativa : EntityGeneric
     { 
     }
@@ -92,6 +104,13 @@ namespace Soltec.Sae.Api
         public string Id { get; set; }
         public string Nombre { get; set; }
 
+    }
+    public class Numerador
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+        public int Pe { get; set; }
+        public Int64 Numero { get; set; }
     }
 
     public class MovStock
@@ -842,6 +861,7 @@ namespace Soltec.Sae.Api
         public string Numero { get; set; }
         public decimal Precio { get; set; }
         public string Moneda { get; set; }
+        public string IdMoneda { get; set; } = "0001";
         public string IdCondicionVenta { get; set; }
         public string CondicionVenta { get; set; }
         public Int64 PesoNeto { get; set; }

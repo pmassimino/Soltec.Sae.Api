@@ -138,7 +138,7 @@ namespace Soltec.Sae.Api
             }
             cnn.Close();
             return result;        }
-        public List<SaldoCtaCte> Saldos(string idCuenta, string idCuentaHasta, string idCuentaMayor, DateTime fecha, int idDivisa)
+        public List<SaldoCtaCte> Saldos(string idCuenta, string idCuentaHasta, string idCuentaMayor, DateTime fecha, DateTime fechaVenc, int idDivisa)
         {
             
             string connectionString = this.ConnectionStringBase + "sae.dbc";
@@ -155,7 +155,7 @@ namespace Soltec.Sae.Api
                                   "FROM trasub " +
                                   "LEFT JOIN clipro ON clipro.cod = scta " + 
                                   "GROUP BY scta,nom,cmay " + "" +
-                                  "WHERE( " + campoFecha + " <=ctod('" + fecha.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') " + 
+                                  "WHERE( " + campoFecha + " <=ctod('" + fechaVenc.ToString("MM-dd-yyyy") + "')) AND (cmay ='" + idCuentaMayor + "') AND (scta >='" + idCuenta + "') AND (scta <='" + idCuentaHasta + "') " + 
                                   "having  SUM(IIF(tip = 1, " + campoImporte + ", - " + campoImporte + ")) <> 0";                        
             OleDbDataReader reader = command.ExecuteReader();
             List<SaldoCtaCte> tmpResultVencido = new List<SaldoCtaCte>();

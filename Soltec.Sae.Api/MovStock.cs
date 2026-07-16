@@ -35,7 +35,8 @@ namespace Soltec.Sae.Api
         public List<Stock> ListStock(DateTime fecha,string idArticulo,string idArticuloHasta,string idSeccion)
         {
             ArticuloService service = new ArticuloService(this.ConnectionStringBase);
-            var tmpArticulos = service.List().Where(w => string.Compare(w.Id, idArticulo, StringComparison.Ordinal) >= 0 && string.Compare(w.Id, idArticuloHasta, StringComparison.Ordinal) <= 0);
+            var filtros = new ArticuloFilterOptions();
+            var tmpArticulos = service.List(filtros).Where(w => string.Compare(w.Id, idArticulo, StringComparison.Ordinal) >= 0 && string.Compare(w.Id, idArticuloHasta, StringComparison.Ordinal) <= 0);
             string connectionString = this.ConnectionStringBase + "sae.dbc";
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();

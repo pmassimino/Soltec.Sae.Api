@@ -10,13 +10,26 @@ namespace Soltec.Sae.Api
         }
         public string ConnectionStringBase { get; set; } = "";
        
-        public List<Articulo> List() 
+        public List<Articulo> List(ArticuloFilterOptions filtro) 
         {
             string connectionString = this.ConnectionStringBase + "sae.dbc";
             OleDbConnection cnn = new OleDbConnection(connectionString);
-            cnn.Open();
-            OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT cod,nom,ccbar,pco,VAL(str(pove,10,3)) as pove,imi,pve1,aiva,pfin,agru,sect,linea,sact,spen,div FROM artgen where !empty(cod) and !empty(nom)";
+            cnn.Open();            
+            // Base de la consulta
+            string sql = "SELECT artgen.cod, artgen.nom, artgen.ccbar, artgen.pco, VAL(STR(artgen.pove,10,3)) as pove, " +
+                         "artgen.imi, artgen.pve1, artgen.aiva, artgen.pfin, artgen.agru, artgen.sect, artgen.linea, " +
+                         "artgen.sact, artgen.spen, artgen.div, ARTEXT.PVE2F, ARTEXT.PVE3F " +
+                         "FROM artgen " +
+                         "LEFT JOIN ARTEXT ON ARTGEN.COD == ARTEXT.COD " +
+                         "WHERE !EMPTY(artgen.cod) AND !EMPTY(artgen.nom)";
+
+            // Lógica dinámica: Solo agrega el filtro si es true
+            if (filtro.FiltrarActivos)
+            {
+                sql += " AND artgen.activo = .T.";
+            }
+
+            OleDbCommand command = new OleDbCommand(sql, cnn);
             OleDbDataReader reader = command.ExecuteReader();
             List<Articulo> result = new List<Articulo>();
             while (reader.Read())
@@ -76,7 +89,31 @@ namespace Soltec.Sae.Api
             }catch (Exception ex) 
             {
             }
-            
+            try
+            {
+                var listaPrecio = new List<PrecioArticulo>();
+                listaPrecio.Add(new PrecioArticulo { Tipo = "Publico", Valor = item.PrecioVentaFinal });
+                // Usamos Convert.ToDecimal para evitar errores si el valor es nulo en BD
+                var precioVenta2 = Convert.ToDecimal(reader["PVE2F"]);
+                var precioVenta3 = Convert.ToDecimal(reader["PVE3F"]); // Corregida la columna
+                
+                if (precioVenta2 > 0)
+                {
+                    listaPrecio.Add(new PrecioArticulo { Tipo = "Especial", Valor = precioVenta2 });
+                }
+
+                if (precioVenta3 > 0)
+                {
+                    // Corregido: Usamos precioVenta3
+                    listaPrecio.Add(new PrecioArticulo { Tipo = "Mayorista", Valor = precioVenta3 });
+                }
+                item.Precios = listaPrecio;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+            }
+
             return item;
         }
     }

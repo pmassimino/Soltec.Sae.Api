@@ -13,6 +13,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.InkML;
 using Soltec.Sae.Api.Soltec.Sae.Api;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMemoryCache();
@@ -136,14 +137,19 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 
 
 
-
-app.MapGet("/api/almacen/articulo", () =>
+app.MapGet("/api/almacen/articulo", (bool? soloActivos) =>
 {
     ArticuloService service = new ArticuloService(connectionStringBase);
-    List<Articulo> result = service.List();
-    return result;
-});
 
+    // Instanciamos la clase de opciones que creamos
+    var filtros = new ArticuloFilterOptions
+    {
+        FiltrarActivos = soloActivos ?? false // Si no se envía, por defecto es false
+    };
+
+    List<Articulo> result = service.List(filtros);
+    return Results.Ok(result);
+});
 
 
 app.MapGet("/api/contabilidad/sujeto",() =>
@@ -220,6 +226,12 @@ app.MapGet("/api/contabilidad/sujeto/{id}", (string id) =>
 {
     SujetoService sujetoService = new SujetoService(connectionStringBase);
     Sujeto result = sujetoService.FindOne(id);
+    return result == null ? Results.NotFound() : Results.Ok(result);
+});
+app.MapGet("/api/contabilidad/sujeto/documento/{numero}", (string numero) =>
+{
+    SujetoService sujetoService = new SujetoService(connectionStringBase);
+    var result = sujetoService.FindByDoc(numero);
     return result == null ? Results.NotFound() : Results.Ok(result);
 });
 
@@ -367,6 +379,10 @@ app.MapGet("/api/contabilidad/CtaCte/saldos", (HttpRequest request, HttpResponse
     string idCuentaMayor = request.Query["IdCuentaMayor"].ToString();
     var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+
+    var fechaVencStr = request.Query["FechaVenc"].ToString();
+    var fechaVenc = fechaVencStr == "" ? DateTime.Now : DateTime.ParseExact(fechaVencStr, "MM-dd-yyyy", null);
+
     string vencidoStr = request.Query["vencido"].ToString();
     bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
     string idDivisaStr = request.Query["idDivisa"].ToString();
@@ -382,7 +398,7 @@ app.MapGet("/api/contabilidad/CtaCte/saldos", (HttpRequest request, HttpResponse
     }
     CtaCteService service = new CtaCteService(connectionStringBase);
     List<SaldoCtaCte> result = null;
-    result = service.Saldos(idCuenta,idCuentaHasta, idCuentaMayor, fecha,idDivisa);
+    result = service.Saldos(idCuenta,idCuentaHasta, idCuentaMayor, fecha,fechaVenc,idDivisa);
 
     return Results.Ok(result);
 });
@@ -393,6 +409,8 @@ app.MapGet("/api/contabilidad/CtaCte/saldos/xls", (HttpRequest request, HttpResp
     string idCuentaMayor = request.Query["IdCuentaMayor"].ToString();
     var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaVencStr = request.Query["FechaVenc"].ToString();
+    var fechaVenc = fechaVencStr == "" ? DateTime.Now : DateTime.ParseExact(fechaVencStr, "MM-dd-yyyy", null);
     string vencidoStr = request.Query["vencido"].ToString();
     bool vencido = vencidoStr != "" ? Convert.ToBoolean(vencidoStr.ToString()) : false;
     string idDivisaStr = request.Query["idDivisa"].ToString();
@@ -408,7 +426,7 @@ app.MapGet("/api/contabilidad/CtaCte/saldos/xls", (HttpRequest request, HttpResp
     }
     CtaCteService service = new CtaCteService(connectionStringBase);
     List<SaldoCtaCte> result = null;
-    result = service.Saldos(idCuenta, idCuentaHasta, idCuentaMayor, fecha, idDivisa);
+    result = service.Saldos(idCuenta, idCuentaHasta, idCuentaMayor, fecha, fechaVenc, idDivisa);
     //Convertir a Excel
     DataTable dt = new DataTable("Grid");
 
@@ -871,6 +889,7 @@ app.MapGet("/api/ventas/Remito", (HttpRequest request, HttpResponse response) =>
     result = service.List(fecha, fechaHasta);
     return Results.Ok(result);
 });
+
 app.MapGet("/api/ventas/Remito/pendiente", (HttpRequest request, HttpResponse response) =>
 {
     string idCuenta = request.Query["IdCuenta"].ToString();
@@ -1369,6 +1388,62 @@ app.MapGet("/api/cereales/boleto", (HttpRequest request, HttpResponse response) 
     }
     return result;
 });
+// Registrar un nuevo boleto 
+app.MapPost("/api/cereales/boleto", async (Boleto boletoRequest) =>
+{
+    try
+    {
+        // Validar sucursal
+        if (string.IsNullOrEmpty(boletoRequest.IdSucursal))
+            return Results.BadRequest(new { error = "IdSucursal es requerido" });
+
+        var sucursal = sucursales.FirstOrDefault(w => w.Id == boletoRequest.IdSucursal);
+        if (sucursal == null)
+            return Results.NotFound(new { error = $"Sucursal {boletoRequest.IdSucursal} no encontrada" });
+
+        // Crear servicio
+        BoletoService service = new BoletoService(sucursal.ConnectionStrings);
+        service.IdSucursal = sucursal.Id;
+
+        // Crear boleto
+        var boleto = new Boleto
+        {
+            IdSucursal = boletoRequest.IdSucursal,
+            IdCosecha = boletoRequest.IdCosecha,
+            IdCuenta = boletoRequest.IdCuenta,
+            Fecha = boletoRequest.Fecha ,
+            FechaVencimiento = boletoRequest.FechaVencimiento,
+            Precio = boletoRequest.Precio ,
+            IdMoneda = boletoRequest.IdMoneda ?? "0",
+            IdCondicionVenta = boletoRequest.IdCondicionVenta ?? "1",
+            PesoNeto = boletoRequest.PesoNeto ,
+            Obs = boletoRequest.Obs ?? "",
+            Estado = "ACTIVO",
+            AFijar = boletoRequest.AFijar ,
+            PendienteFijar = boletoRequest.PendienteFijar 
+        };
+
+        // Validar
+        var errores = service.Validate(boleto);
+        if (errores.Any())
+            return Results.BadRequest(new { error = "Errores de validación", detalles = errores });
+
+        // Insertar
+        bool resultado = service.Insert(boleto);
+
+        if (!resultado)
+            return Results.BadRequest(new { error = "Error al registrar el boleto en la base de datos" });
+
+        // Obtener el boleto creado
+        var boletoCreado = service.FindOne(boleto.Id);
+        return Results.Created($"/api/cereales/boleto/{boleto.Id}", boletoCreado);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { error = $"Error interno: {ex.Message}" });
+    }
+});
+
 app.MapGet("/api/cereales/boleto/pendiente", (HttpRequest request, HttpResponse response) =>
 {
     string idCuenta = request.Query["IdCuenta"].ToString();

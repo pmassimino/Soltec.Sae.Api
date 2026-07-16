@@ -302,6 +302,7 @@ namespace Soltec.Sae.Api
             
             reader.Close();
             cnn.Close();
+            result.ImpuestoInterno = result.Detalle.Sum(s => s.ImpInterno);
             return result;
         }
         private Factura Parse(OleDbDataReader reader)
@@ -384,7 +385,13 @@ namespace Soltec.Sae.Api
             item.AlicuotaIva = (decimal)reader["aiva"];
             item.Iva = (decimal)reader["ivadet"];
             item.IdRemito = reader["rem"].ToString();
-            try { item.ImpInterno = Convert.ToDecimal(reader["intdet"]); }catch{ }
+            try {
+                if (item.Iva != 0)
+                    item.ImpInterno = Convert.ToDecimal(reader["intdet"]); 
+            }
+            catch
+            {
+            }
             //if (reader["letra"].ToString().Trim() == "A")
             //{
             item.Precio = (decimal)(reader["pun"]);

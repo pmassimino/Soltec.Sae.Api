@@ -1,16 +1,78 @@
 ﻿using System.Data.OleDb;
+using System.Runtime.CompilerServices;
 
 namespace Soltec.Sae.Api
 {
     public class BoletoService
     {
+        SujetoService sujetoService;
+        CosechaService cosechaService;
+        public string IdNumerador { get; set; } = "0001";
+        NumeradorService numeradorService;
+
         public BoletoService(string connectionStringBase) 
         {
             this.ConnectionStringBase = connectionStringBase;
+            sujetoService = new SujetoService(connectionStringBase);
+            cosechaService= new CosechaService(connectionStringBase);
+            numeradorService = new NumeradorService(connectionStringBase);            
         }
         public string ConnectionStringBase { get; set; } = "";
         public string IdSucursal { get; set; } = "01";
-       
+                
+        public string GetSiguienteNumeroBoleto()
+        {
+            string connectionString = this.ConnectionStringBase + "Cereales.dbc";
+            string queryModulos = "SELECT n_bol as numero FROM modulos";
+
+            using (OleDbConnection cnn = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(queryModulos, cnn))
+                {
+                    cnn.Open();
+
+                    // 1. Obtener el número base desde 'modulos'
+                    object resultModulos = command.ExecuteScalar();
+                    Int64 numeroReferencia = 1;
+
+                    if (resultModulos != null && resultModulos != DBNull.Value)
+                    {
+                        numeroReferencia = Convert.ToInt64(resultModulos) + 1;
+                    }
+
+                    // 2. Traer a C# todos los boletos ocupados desde el número de referencia hacia arriba
+                    // Traemos el campo como texto para no forzar funciones pesadas en el WHERE de FoxPro
+                    string queryBoletos = "SELECT bol_nro FROM boletos WHERE VAL(bol_nro) >= " + numeroReferencia.ToString();
+                    command.CommandText = queryBoletos;
+
+                    // Usamos un HashSet para búsquedas instantáneas en memoria (.Contains es O(1))
+                    HashSet<Int64> boletosOcupados = new HashSet<Int64>();
+
+                    using (OleDbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader[0] != DBNull.Value)
+                            {
+                                // Convertimos a entero en C# libre de errores de FoxPro
+                                Int64 numBoleto = Convert.ToInt64(reader[0]);
+                                boletosOcupados.Add(numBoleto);
+                            }
+                        }
+                    }
+
+                    // 3. Buscar el primer número libre en C# empezando desde numeroReferencia
+                    Int64 siguienteNumero = numeroReferencia;
+                    while (boletosOcupados.Contains(siguienteNumero))
+                    {
+                        siguienteNumero++; // Si está ocupado, salta al siguiente
+                    }
+
+                    // 4. Retornar formateado con 10 ceros a la izquierda
+                    return siguienteNumero.ToString().PadLeft(10, '0');
+                }
+            }
+        }
         public List<Boleto> List(string idCuenta , string idCosecha ,DateTime fecha) 
         {
             string connectionString = this.ConnectionStringBase + "Cereales.dbc";
@@ -35,6 +97,73 @@ namespace Soltec.Sae.Api
             }            
             cnn.Close();
             return result;
+        }
+        public bool Insert(Boleto boleto)
+        {
+            // 1. Calculamos y asignamos el nuevo número formateado
+            var id = this.GetSiguienteNumeroBoleto();
+            string connectionString = this.ConnectionStringBase + "Cereales.dbc";
+            // Escapar valores para evitar problemas con comillas
+            string fecha = boleto.Fecha.ToString("MM-dd-yyyy");
+            
+            string obs = string.IsNullOrEmpty(boleto.Obs) ? "" : boleto.Obs.Replace("'", "''");
+            string ntra = Guid.NewGuid().ToString();
+            string estadoLiq = "001"; //Pendiente de liquidar
+
+
+            // Manejar valores nulos
+            string pesoNeto = boleto.PesoNeto.ToString().Replace(",", ".") ?? "0";
+            string precio = boleto.Precio.ToString().Replace(",", ".") ?? "0";
+            string precioEnLetras = Utilities.NumeroALetras(boleto.Precio);
+            string idCuenta = boleto.IdCuenta?.ToString() ?? "0";
+            string idCosecha = boleto.IdCosecha?.ToString() ?? "0";
+            string idCondicionVenta = boleto.IdCondicionVenta?.ToString() ?? "0";
+            string aFijar = boleto.AFijar ? ".T." : ".F.";
+            string confirmado = ".T.";
+            string idDivisa = boleto.IdMoneda;
+            string origen = "APP";
+            //Numeracion
+            var numerador = numeradorService.Incrementar(this.IdNumerador);
+            int pe = numerador?.Pe ?? 0;
+            Int64 numero = numerador?.Numero ?? 0;
+            
+
+            // Construir la consulta SQL con los valores directamente
+            string query = $@"INSERT INTO boletos (
+        bol_nro, bol_fec, bol_produ, bol_kgs, bol_pre_n, bol_pre_l,
+        bol_obs1, bol_obs2, bol_cosec, bol_confi, bol_fpa, bol_loc,         
+        estado_liq, fijar, id_condvta, id_divisa,origen,pe,numero
+    ) VALUES (
+        '{id}', 
+        CTOD('{fecha}'), 
+        '{idCuenta}', 
+        {pesoNeto}, 
+        {precio}, 
+        '{precioEnLetras}', 
+        '', 
+        '{obs}', 
+        '{idCosecha}', 
+        {confirmado}, 
+        CTOD('{fecha}'), 
+        '', 
+        '{estadoLiq}', 
+        {aFijar}, 
+        '{idCondicionVenta}', 
+       '{idDivisa}',
+       '{origen}',
+        {pe},
+        {numero}         
+    )";
+
+            using (OleDbConnection cnn = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(query, cnn))
+                {
+                    cnn.Open();
+                    int filasAfectadas = command.ExecuteNonQuery();
+                    return filasAfectadas > 0;
+                }
+            }
         }
         public List<BoletoPendienteLiquidar> ListPendiente(string idCuenta, string idCosecha, DateTime fecha,DateTime fechaHasta)
         {
@@ -126,7 +255,59 @@ namespace Soltec.Sae.Api
             cnn.Close();
             return result;
         }
+        public List<string> Validate(Boleto boleto)
+        {
+            var errores = new List<string>();
 
+            if (boleto == null)
+            {
+                errores.Add("El objeto Boleto no puede ser nulo.");
+                return errores; // Retornamos de inmediato porque no se puede evaluar el resto.
+            }            
+            if (string.IsNullOrWhiteSpace(boleto.IdSucursal))
+                errores.Add("El Id de Sucursal es requerido.");
+
+            if (string.IsNullOrWhiteSpace(boleto.IdCosecha))
+                errores.Add("El Id de Cosecha es requerido.");
+            var cosecha = cosechaService.FindOne(boleto.IdCosecha);
+            if (cosecha == null)
+                errores.Add("El Id de Cosecha no existe en la bd.");
+
+            if (string.IsNullOrWhiteSpace(boleto.IdCuenta))
+                errores.Add("El Id de Cuenta (Sujeto) es requerido.");
+            
+            //var sujeto = sujetoService.FindOne(boleto.IdCuenta);
+            //if (sujeto == null)
+            //    errores.Add("El Id de Cuenta no existe en la bd.");
+
+
+            // Validación de Fechas
+            if (boleto.Fecha == default)
+                errores.Add("La Fecha de emisión no es válida.");
+
+            if (boleto.FechaVencimiento == default)
+                errores.Add("La Fecha de vencimiento no es válida.");
+
+            if (boleto.FechaVencimiento < boleto.Fecha)
+                errores.Add("La Fecha de vencimiento no puede ser anterior a la Fecha de emisión.");
+
+            // Validación de Valores Numéricos
+            if (boleto.Precio < 0)
+                errores.Add("El Precio no puede ser un valor negativo.");
+
+            if (string.IsNullOrWhiteSpace(boleto.IdMoneda))
+                errores.Add("La Moneda es requerida.");
+
+            string[] monedasValidas = { "0001", "0002" };
+            if (!monedasValidas.Contains(boleto.IdMoneda))
+                errores.Add("La Moneda no es válida requerida.");
+
+            if (boleto.PesoNeto <= 0)
+                errores.Add("El Peso Neto debe ser mayor a cero.");          
+            
+
+            return errores;
+        }
         private Boleto Parse(OleDbDataReader reader)
         {
             Boleto item = new Boleto();
