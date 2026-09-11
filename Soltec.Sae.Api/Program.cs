@@ -62,7 +62,7 @@ builder.Services.AddCors(options =>
 });
 
 
-// Configura la compresión para el tipo de contenido "application/json"
+// Configura la compresiï¿½n para el tipo de contenido "application/json"
 builder.Services.AddResponseCompression(options =>
 {
     options.EnableForHttps = true;
@@ -72,9 +72,23 @@ builder.Services.AddResponseCompression(options =>
 
 //builder.Services.AddDbContext<DatabaseContext>();
 
-var app = builder.Build();
+builder.Services
+    .AddMcpServer()
+    .WithHttpTransport()
+    .WithTools<CerealesTools>()
+    .WithTools<SujetosTools>();
 
-// Habilita la compresión de respuesta
+var sucursales = builder.Configuration.GetSection("Sucursales").GetChildren().ToList().Select(x => new Sucursal {
+    Id = x.GetValue<string>("Id"),
+    Nombre = x.GetValue<string>("Nombre"),
+    ConnectionStrings = x.GetValue<string>("ConnectionStrings")
+}).ToList();
+builder.Services.AddSingleton(sucursales);
+
+
+var app = builder.Build();
+app.MapMcp("/mcp"); 
+// Habilita la compresiï¿½n de respuesta
 //app.UseResponseCompression();
 
 var message = app.Configuration["ConnectionStrings"];
@@ -84,11 +98,6 @@ string connectionStringBase = app.Configuration["ConnectionStringsSAE"];
 string connectionStringCerealesBase = app.Configuration["ConnectionStringsCereales"];
 string tipoSaldo = app.Configuration["TipoSaldo"];
 
-var sucursales = app.Configuration.GetSection("Sucursales").GetChildren().ToList().Select(x => new Sucursal {
-    Id = x.GetValue<string>("Id"),
-    Nombre = x.GetValue<string>("Nombre"),
-    ConnectionStrings = x.GetValue<string>("ConnectionStrings")
-}).ToList();
 var seccionDolar = app.Configuration.GetSection("SeccionDolar").GetChildren().ToList().Select(x => new Seccion
 {
     Id = x.GetValue<string>("Id"),
@@ -135,8 +144,6 @@ app.UseCors("AppPolicy"); // Debe estar ANTES de UseAuthorization y MapControlle
 app.UseMiddleware<ApiKeyMiddleware>(); // Tu middleware de API Key
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
-
-
 app.MapGet("/api/almacen/articulo", (bool? soloActivos) =>
 {
     ArticuloService service = new ArticuloService(connectionStringBase);
@@ -144,7 +151,7 @@ app.MapGet("/api/almacen/articulo", (bool? soloActivos) =>
     // Instanciamos la clase de opciones que creamos
     var filtros = new ArticuloFilterOptions
     {
-        FiltrarActivos = soloActivos ?? false // Si no se envía, por defecto es false
+        FiltrarActivos = soloActivos ?? false // Si no se envï¿½a, por defecto es false
     };
 
     List<Articulo> result = service.List(filtros);
@@ -533,23 +540,23 @@ app.MapGet("/api/ventas/Factura/view", (HttpRequest request, HttpResponse respon
 
     //FacturaService service = new FacturaService(connectionStringBase);    
     //List<FacturaView> result = null;
-    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    // Define una clave ï¿½nica para el cachï¿½, basada en los parï¿½metros de la solicitud
     string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
 
-    // Intenta obtener los datos desde el caché
+    // Intenta obtener los datos desde el cachï¿½
     if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
     {
-        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        // Si no se encuentra en cachï¿½, realiza la consulta y almacena el resultado en cachï¿½ durante un tiempo especï¿½fico
         var cacheEntryOptions = new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiraciï¿½n segï¿½n tus necesidades
         };
 
         FacturaService service = new FacturaService(connectionStringBase);
         service.SeccionDolar = seccionDolar;
         result = service.ListView(fecha, fechaHasta);
 
-        // Almacena los resultados en caché
+        // Almacena los resultados en cachï¿½
         cache.Set(cacheKey, result, cacheEntryOptions);
     }
     return Results.Ok(result);
@@ -567,23 +574,23 @@ app.MapGet("/api/ventas/Factura/view/xls", (HttpRequest request, HttpResponse re
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
 
-    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    // Define una clave ï¿½nica para el cachï¿½, basada en los parï¿½metros de la solicitud
     string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
 
-    // Intenta obtener los datos desde el caché
+    // Intenta obtener los datos desde el cachï¿½
     if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
     {
-        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        // Si no se encuentra en cachï¿½, realiza la consulta y almacena el resultado en cachï¿½ durante un tiempo especï¿½fico
         var cacheEntryOptions = new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiraciï¿½n segï¿½n tus necesidades
         };
 
         FacturaService service = new FacturaService(connectionStringBase);
         service.SeccionDolar = seccionDolar;
         result = service.ListView(fecha, fechaHasta);
 
-        // Almacena los resultados en caché
+        // Almacena los resultados en cachï¿½
         cache.Set(cacheKey, result, cacheEntryOptions);
     }
     //Convertir a Excel
@@ -669,23 +676,23 @@ app.MapGet("/api/ventas/Factura/view/xls1", (HttpRequest request, HttpResponse r
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
 
-    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    // Define una clave ï¿½nica para el cachï¿½, basada en los parï¿½metros de la solicitud
     string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
 
-    // Intenta obtener los datos desde el caché
+    // Intenta obtener los datos desde el cachï¿½
     if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
     {
-        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        // Si no se encuentra en cachï¿½, realiza la consulta y almacena el resultado en cachï¿½ durante un tiempo especï¿½fico
         var cacheEntryOptions = new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiraciï¿½n segï¿½n tus necesidades
         };
 
         FacturaService service = new FacturaService(connectionStringBase);
         service.SeccionDolar = seccionDolar;
         result = service.ListView(fecha, fechaHasta);
 
-        // Almacena los resultados en caché
+        // Almacena los resultados en cachï¿½
         cache.Set(cacheKey, result, cacheEntryOptions);
     }
 
@@ -695,7 +702,7 @@ app.MapGet("/api/ventas/Factura/view/xls1", (HttpRequest request, HttpResponse r
         // Crear el documento Excel
         using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(stream, SpreadsheetDocumentType.Workbook))
         {
-            // Crear una hoja de cálculo en el libro de trabajo
+            // Crear una hoja de cï¿½lculo en el libro de trabajo
             WorkbookPart workbookPart = spreadsheetDocument.AddWorkbookPart();
             workbookPart.Workbook = new Workbook();
 
@@ -760,23 +767,23 @@ app.MapGet("/api/ventas/Factura/view/csv", (HttpRequest request, HttpResponse re
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
     var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
 
-    // Define una clave única para el caché, basada en los parámetros de la solicitud
+    // Define una clave ï¿½nica para el cachï¿½, basada en los parï¿½metros de la solicitud
     string cacheKey = $"FacturaView_{fecha.ToShortDateString()}_{fechaHasta.ToShortDateString()}";
 
-    // Intenta obtener los datos desde el caché
+    // Intenta obtener los datos desde el cachï¿½
     if (!cache.TryGetValue(cacheKey, out List<FacturaView> result))
     {
-        // Si no se encuentra en caché, realiza la consulta y almacena el resultado en caché durante un tiempo específico
+        // Si no se encuentra en cachï¿½, realiza la consulta y almacena el resultado en cachï¿½ durante un tiempo especï¿½fico
         var cacheEntryOptions = new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiración según tus necesidades
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(300) // Ajusta el tiempo de expiraciï¿½n segï¿½n tus necesidades
         };
 
         FacturaService service = new FacturaService(connectionStringBase);
         service.SeccionDolar = seccionDolar;
         result = service.ListView(fecha, fechaHasta);
 
-        // Almacena los resultados en caché
+        // Almacena los resultados en cachï¿½
         cache.Set(cacheKey, result, cacheEntryOptions);
     }
 
@@ -1002,6 +1009,135 @@ app.MapGet("/api/contabilidad/diario/xls", (HttpRequest request, HttpResponse re
     }
     return Results.Ok(result);
 });
+//Contabilidad
+app.MapGet("/api/contabilidad/librobanco", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuentaMayor = request.Query["IdCuentaMayor"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    // 1. Intentamos obtener el valor de "FiltraConciliado". Si no existe o no es un bool vï¿½lido, por defecto serï¿½ 'false'.
+    bool filtraConciliado = false;
+    if (request.Query.TryGetValue("FiltraConciliado", out var filtraQueryValue))
+    {
+        bool.TryParse(filtraQueryValue, out filtraConciliado);
+    }
+
+    // 2. Intentamos obtener el valor de "Conciliado". Si no existe o no es un bool vï¿½lido, por defecto serï¿½ 'false'.
+    bool conciliado = false;
+    if (request.Query.TryGetValue("Conciliado", out var conciliadoQueryValue))
+    {
+        bool.TryParse(conciliadoQueryValue, out conciliado);
+    }
+    LibroBancoService service = new LibroBancoService(connectionStringBase);
+    List<LibroBanco> result = null;
+    result = service.List(fecha, fechaHasta,idCuentaMayor,filtraConciliado,conciliado);
+    return Results.Ok(result);
+});
+//Resumen de cuenta sujeto
+ app.MapGet("api/cuenta/{idCuenta}/resumen", (string idCuenta, HttpRequest request, IMemoryCache cache) =>
+{
+    var fechaStr = request.Query["Fecha"].ToString();
+    var fecha = string.IsNullOrEmpty(fechaStr)
+        ? DateTime.Now
+        : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+    // 1. Se usa boolResult para no colisionar el nombre de la variable 'result'
+    bool filtraSaldoCero = bool.TryParse(request.Query["FiltraSaldoCero"], out var boolResult) && boolResult;
+
+    Dictionary<string, string> error = new Dictionary<string, string>();
+    if (string.IsNullOrEmpty(idCuenta))
+    {
+        error.Add("idCuenta", "Parametro Requerido");
+    }
+    if (error.Count > 0)
+    {
+        return Results.BadRequest(error);
+    }
+
+    // Define una clave unica para el cache, basada en los parametros que afectan el resultado
+    string cacheKey = $"ResumenView_{idCuenta}_{fecha:yyyyMMdd}";
+    if (cache.TryGetValue(cacheKey, out ResumenView cachedResult))
+    {
+        return Results.Ok(cachedResult);
+    }
+
+    // Saldos Cta. Cte.
+    var result = new ResumenView();
+
+    SujetoService sujetoService = new SujetoService(connectionStringBase);   
+    var tmpCuenta = sujetoService.FindOne(idCuenta);
+    if (tmpCuenta == null)
+{
+    return Results.NotFound("Cuenta no encontrada");
+}
+    result.Sujeto = tmpCuenta;
+    CtaCteService ctaCteService = new CtaCteService(connectionStringBase);
+
+
+    foreach (var item in tmpCuenta.Subdiarios) 
+    {
+        int idDivisa = Convert.ToInt16(item.IdDivisa);
+        
+        var saldoVencido = ctaCteService.Saldo(idCuenta, item.Id, DateTime.Now, idDivisa, true);
+        var saldo = ctaCteService.Saldo(idCuenta, item.Id, DateTime.Now, idDivisa, false);
+        
+        var itemNew = new CtaCteView
+        {
+            IdCuenta = idCuenta,
+            IdSubdiario = item.Id,
+            Nombre = item.Nombre,
+            IdDivisa = idDivisa,
+            Saldo = saldo,
+            SaldoVencido = saldoVencido
+        };
+        
+        result.CtaCte.Add(itemNew);
+    }
+
+    // Saldo Cosechas
+    List<SaldoCtaCteCereal> tmpSaldos = new List<SaldoCtaCteCereal>();
+    foreach (var suc in sucursales)
+    {
+        var service = new CtaCteCerealService(suc.ConnectionStrings)
+        {
+            SaeConnectionStringBase = connectionStringBase,
+            IdSucursal = suc.Id,
+            TipoSaldo = tipoSaldo
+        };
+        var tmpresult = service.Saldos(idCuenta, null, fecha);
+        tmpSaldos.AddRange(tmpresult);
+        foreach (var item in tmpSaldos)
+        {
+            CosechaView cosechaView = new CosechaView();
+            cosechaView.IdSucursal = item.IdSucursal;
+            cosechaView.IdCosecha = item.IdCosecha;
+            cosechaView.Nombre = item.NombreCosecha;
+            cosechaView.Saldo = item.Saldo;
+            result.Cosechas.Add(cosechaView);
+        }
+    }
+
+    // Almacena el resultado en cache
+    var cacheEntryOptions = new MemoryCacheEntryOptions
+    {
+        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+    };
+    cache.Set(cacheKey, result, cacheEntryOptions);
+
+    //Facturas y Remitos Pendientes
+    FacturaService facturaService = new FacturaService(connectionStringBase);
+    var tmpFacturasPendientes = facturaService.ListPendiente(idCuenta, fecha, DateTime.Now);
+    
+    RemitoService remitoService = new RemitoService(connectionStringBase);
+    var tmpRemitosPendientes = remitoService.ListPendiente(idCuenta, fecha, DateTime.Now);
+    result.RemitosPendientes = tmpRemitosPendientes;
+    result.FacturasPendientes = tmpFacturasPendientes;  
+    // 5. Retorno adecuado en Minimal APIs
+    return Results.Ok(result);
+});
+
 
 //Retenciones
 app.MapGet("/api/contabilidad/retencion/afip", (HttpRequest request, HttpResponse response) =>
@@ -1064,9 +1200,6 @@ app.MapGet("/api/contabilidad/retencion/dgr", (HttpRequest request, HttpResponse
     result = service.List(idCuenta, fecha, fechaHasta);
     return Results.Ok(result);
 });
-
-
-
 
 //Cereal
 //Cosechas
@@ -1426,7 +1559,7 @@ app.MapPost("/api/cereales/boleto", async (Boleto boletoRequest) =>
         // Validar
         var errores = service.Validate(boleto);
         if (errores.Any())
-            return Results.BadRequest(new { error = "Errores de validación", detalles = errores });
+            return Results.BadRequest(new { error = "Errores de validaciï¿½n", detalles = errores });
 
         // Insertar
         bool resultado = service.Insert(boleto);
@@ -1601,10 +1734,6 @@ app.MapGet("/api/cereales/rt/totalrecibido", (HttpRequest request, HttpResponse 
     return result;
 });
 
-
-
-
-
 //Cuenta Corriente Cereales
 app.MapGet("/api/cereales/CtaCte", (HttpRequest request, HttpResponse response) =>
 {
@@ -1682,6 +1811,38 @@ app.MapGet("/api/cereales/CtaCteCereal/saldos", (HttpRequest request, HttpRespon
 
     return result;
 });
+//Obtiene las cosechas disponibles para una cuenta
+app.MapGet("/api/cereales/cosechasdisponibles", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();    
+    string idSucursal = request.Query["IdSucursal"].ToString();
+    string FiltraSaldoCero = request.Query["FiltraSaldoCero"].ToString().ToLower();
+    var fechaStr = request.Query["Fecha"].ToString();
+
+    var fecha = string.IsNullOrWhiteSpace(fechaStr)
+        ? DateTime.Now
+        : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+
+    var sucFilter = sucursales.Where(w => w.Id == idSucursal || string.IsNullOrEmpty(idSucursal));
+
+    List<string> result = new List<string>();
+
+    foreach (var suc in sucFilter)
+    {
+        var service = new CtaCteCerealService(suc.ConnectionStrings)
+        {
+            SaeConnectionStringBase = connectionStringBase,
+            IdSucursal = suc.Id,
+            TipoSaldo = tipoSaldo
+        };
+
+        var tmpresult = service.ObtenerCosechasDisponibles(idCuenta);
+        result.AddRange(tmpresult);
+    }
+
+    return result;
+});
+
 //Planta
 app.MapGet("/api/cereales/planta/", (HttpRequest request, HttpResponse response) =>
 {    

@@ -1,0 +1,3469 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Api Key Auth",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/almacen/articulo": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "soloActivos",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Sujeto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comun/provincia": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntityGeneric"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comun/categoria": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntityGeneric"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comun/zona": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntityGeneric"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/comun/isRuning": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/xls": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/documento/{numero}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/almacen/articulo/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/almacen/familia": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Familia"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/almacen/linea": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Linea"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/almacen/seccionoperativa": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SeccionOperativa"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/almacen/articulo/stock": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/almacen/MovStock": {
+      "post": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovStock"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/CtaCte/{id}/saldo": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/CtaCte/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/CtaCte/{id}/pdf": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/CtaCte/saldos": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/CtaCte/saldos/xls": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/CtaCte/{id}/diasdeuda": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/ReciboCtaCte": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Seccion": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/ClaseVenta": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Campania": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura/view": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura/view/xls": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura/view/xls1": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura/view/csv": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura/pendiente": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Factura/{orden}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "orden",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/factura/trx/{ntra}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "ntra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/factura/trx/{ntra}/pdf": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "ntra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Remito": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Remito/pendiente": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/remito/informe": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/ventas/Remito/{orden}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "orden",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/mayor": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/diario": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/diario/xls": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/librobanco": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/cuenta/{idCuenta}/resumen": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "idCuenta",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/retencion/afip": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/retencion/afip/{id}/pdf": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/retencion/dgr/{id}/pdf": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/retencion/dgr": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/cereales/cosecha": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cosecha"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/cosecha/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cosecha"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/entrada/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entrada"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/entrada/trx/{ntra}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "ntra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Entrada"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/entrada/trx/{ntra}/pdf": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "ntra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/cereales/entrada": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Entrada"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/entrada/total": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/certificado": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Certificado"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/certificado/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Certificado"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/certificado/total": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/liquidacion": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Liquidacion"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/liquidacion/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Liquidacion"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/liquidacion/total": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/liquidacionsec": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LiquidacionSec"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/retiro": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Retiro"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/retiro/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Retiro"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/salida": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Salida"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/salida/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Salida"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/retiro/total": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/boleto": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Boleto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Boleto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/cereales/boleto/pendiente": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BoletoPendienteLiquidar"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/boleto/pendiente/xls": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/cereales/boleto/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Boleto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/boleto/total": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/rt": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Rt"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/rt/totaltransferido": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/rt/totalrecibido": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/CtaCte": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovCtaCteCereal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/CtaCteCereal/saldo": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaldoCtaCteCereal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/CtaCteCereal/saldos": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaldoCtaCteCereal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/cosechasdisponibles": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/planta/": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Planta"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/planta/c14": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/C14View"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/planta/saldo": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaldoPlantaView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/planta/posicioncomercial": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ItemPosicionFisica"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/Contrato": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contrato"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/Contrato/estado": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EstadoContratoView"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/condicionventa": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntityGeneric"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cereales/localidad": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Localidad"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Analisis": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "valor": {
+            "type": "number",
+            "format": "double"
+          },
+          "bonificacion": {
+            "type": "number",
+            "format": "double"
+          },
+          "rebaja": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Boleto": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosecha": {
+            "$ref": "#/components/schemas/Cosecha"
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cuenta": {
+            "$ref": "#/components/schemas/Sujeto"
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaVencimiento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "precio": {
+            "type": "number",
+            "format": "double"
+          },
+          "moneda": {
+            "type": "string",
+            "nullable": true
+          },
+          "idMoneda": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCondicionVenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "condicionVenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "obs": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "aFijar": {
+            "type": "boolean"
+          },
+          "pendienteFijar": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BoletoPendienteLiquidar": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "precio": {
+            "type": "number",
+            "format": "double"
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "moneda": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCondicionVenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "condicionVenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoLiquidado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoPendienteLiquidar": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "C14View": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "idPlanta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosecha": {
+            "$ref": "#/components/schemas/Cosecha"
+          },
+          "saldoAnterior": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ingresos": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "egresos": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "saldo": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Certificado": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaVencimiento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "tarifaAlmacenaje": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaAcarreo": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaGG": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaZarandeo": {
+            "type": "number",
+            "format": "double"
+          },
+          "secadoDesde": {
+            "type": "number",
+            "format": "double"
+          },
+          "secadoHasta": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaSecado": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaPtoExceso": {
+            "type": "number",
+            "format": "double"
+          },
+          "otros": {
+            "type": "number",
+            "format": "double"
+          },
+          "sellado": {
+            "type": "number",
+            "format": "double"
+          },
+          "numeroMuestra": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numeroBoletin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pesoBruto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mermaVolatil": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mermaSecado": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mermaZaranda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mermaCalidad": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "factor": {
+            "type": "number",
+            "format": "double"
+          },
+          "grado": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "contProteico": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeGG": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeSecado": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeZaranda": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeAcarreo": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeFlete": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeFumigada": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeOtros": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeSellado": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeAnalisis": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeImp1": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeImp2": {
+            "type": "number",
+            "format": "double"
+          },
+          "subTotal": {
+            "type": "number",
+            "format": "double"
+          },
+          "alicuotaIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "total": {
+            "type": "number",
+            "format": "double"
+          },
+          "formaPago": {
+            "type": "string",
+            "nullable": true
+          },
+          "detalleAnalisis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Analisis"
+            },
+            "nullable": true
+          },
+          "detalleRomaneo": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemRomaneo"
+            },
+            "nullable": true
+          },
+          "coe": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CertificadoLiquidacion": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "grado": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "factor": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Contrato": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosecha": {
+            "$ref": "#/components/schemas/Cosecha"
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreComprador": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Cosecha": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Deduccion": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "alicuota": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeBase": {
+            "type": "number",
+            "format": "double"
+          },
+          "alicuotaIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "importe": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EntityGeneric": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Entrada": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroDocumento": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroCartaPorte": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoBruto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoTara": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "porHumedad": {
+            "type": "number",
+            "format": "double"
+          },
+          "mermaHumedad": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "porZaranda": {
+            "type": "number",
+            "format": "double"
+          },
+          "mermaZaranda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "porCalidad": {
+            "type": "number",
+            "format": "double"
+          },
+          "mermaCalidad": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "porVolatil": {
+            "type": "number",
+            "format": "double"
+          },
+          "mermaVolatil": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pesoNetoFinal": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "observacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "patenteC": {
+            "type": "string",
+            "nullable": true
+          },
+          "patenteA": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransporte": {
+            "type": "string",
+            "nullable": true
+          },
+          "transporte": {
+            "$ref": "#/components/schemas/Sujeto"
+          },
+          "chofer": {
+            "$ref": "#/components/schemas/Sujeto"
+          },
+          "procedencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "distancia": {
+            "type": "number",
+            "format": "double"
+          },
+          "idPlanta": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLocalidadProcedencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "localidadProcedencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "idLocalidadDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "localidadDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "directo": {
+            "type": "boolean"
+          },
+          "ctg": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EstadoContratoView": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreComprador": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoAplicado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoPendienteAplicar": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoFijado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoPendienteFijar": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoLiquidado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pesoPendienteLiquidar": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Familia": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemPosicionFisica": {
+        "type": "object",
+        "properties": {
+          "concepto": {
+            "type": "string",
+            "nullable": true
+          },
+          "trigo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "maiz": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "soja": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sorgo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "girasol": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemRomaneo": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numeroCPorte": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoBruto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mermaZaranda": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mermaHumedad": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaZaranda": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaSecado": {
+            "type": "number",
+            "format": "double"
+          },
+          "porHumedad": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeSecado": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeZaranda": {
+            "type": "number",
+            "format": "double"
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Linea": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Liquidacion": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTipo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaVencimiento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "precio": {
+            "type": "number",
+            "format": "double"
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tarifaComision": {
+            "type": "number",
+            "format": "double"
+          },
+          "tarifaFlete": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeComision": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeFlete": {
+            "type": "number",
+            "format": "double"
+          },
+          "grado": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "factor": {
+            "type": "number",
+            "format": "double"
+          },
+          "contProteico": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "retIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "retGan": {
+            "type": "number",
+            "format": "double"
+          },
+          "retIb": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeFinal": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeNeto": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeRg2300": {
+            "type": "number",
+            "format": "double"
+          },
+          "precioOperacion": {
+            "type": "number",
+            "format": "double"
+          },
+          "puerto": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroCertificado": {
+            "type": "string",
+            "nullable": true
+          },
+          "procedencia": {
+            "type": "string",
+            "nullable": true
+          },
+          "coe": {
+            "type": "string",
+            "nullable": true
+          },
+          "coeAjustado": {
+            "type": "string",
+            "nullable": true
+          },
+          "actividad": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipoOperacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "importeBruto": {
+            "type": "number",
+            "format": "double"
+          },
+          "deducciones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Deduccion"
+            },
+            "nullable": true
+          },
+          "retenciones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Retencion"
+            },
+            "nullable": true
+          },
+          "certificados": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CertificadoLiquidacion"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LiquidacionSec": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTipo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaVencimiento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "precio": {
+            "type": "number",
+            "format": "double"
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "importeComision": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeSellado": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeDeduccion": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeFlete": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "retIva": {
+            "type": "number",
+            "format": "double"
+          },
+          "retGan": {
+            "type": "number",
+            "format": "double"
+          },
+          "retIb": {
+            "type": "number",
+            "format": "double"
+          },
+          "precioOperacion": {
+            "type": "number",
+            "format": "double"
+          },
+          "coe": {
+            "type": "string",
+            "nullable": true
+          },
+          "coeAjustado": {
+            "type": "string",
+            "nullable": true
+          },
+          "importeBruto": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeFinal": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Localidad": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "idProvincia": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MovCtaCteCereal": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "fechaPase": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaComprobante": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaVencimiento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "concepto": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroComprobante": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ingreso": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "egreso": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "saldo": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "saldoACertificar": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "tieneComp": {
+            "type": "boolean"
+          },
+          "orden": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MovStock": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idArticulo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreArticulo": {
+            "type": "string",
+            "nullable": true
+          },
+          "concepto": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idDeposito": {
+            "type": "string",
+            "nullable": true
+          },
+          "idDepositoDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "cantidad": {
+            "type": "number",
+            "format": "double"
+          },
+          "pe": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lote": {
+            "type": "string",
+            "nullable": true
+          },
+          "serie": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Planta": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Retencion": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "alicuota": {
+            "type": "number",
+            "format": "double"
+          },
+          "importeBase": {
+            "type": "number",
+            "format": "double"
+          },
+          "importe": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Retiro": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosecha": {
+            "$ref": "#/components/schemas/Cosecha"
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "idPlanta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cuenta": {
+            "$ref": "#/components/schemas/Sujeto"
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroCPorte": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Rt": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosecha": {
+            "$ref": "#/components/schemas/Cosecha"
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaVencimiento": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "tipo": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cuenta": {
+            "$ref": "#/components/schemas/Sujeto"
+          },
+          "idCuentaDestino": {
+            "type": "string",
+            "nullable": true
+          },
+          "cuentaDestino": {
+            "$ref": "#/components/schemas/Sujeto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaldoCtaCteCereal": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "entregado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "recibido": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transferido": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "retirado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "certificado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "liquidado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "autorizado": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "disponible": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "saldo": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SaldoPlantaView": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "idPlanta": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreCereal": {
+            "type": "string",
+            "nullable": true
+          },
+          "saldo": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Salida": {
+        "type": "object",
+        "properties": {
+          "idSucursal": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCosecha": {
+            "type": "string",
+            "nullable": true
+          },
+          "cosecha": {
+            "$ref": "#/components/schemas/Cosecha"
+          },
+          "idCuenta": {
+            "type": "string",
+            "nullable": true
+          },
+          "idPlanta": {
+            "type": "string",
+            "nullable": true
+          },
+          "cuenta": {
+            "$ref": "#/components/schemas/Sujeto"
+          },
+          "idTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numero": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroCPorte": {
+            "type": "string",
+            "nullable": true
+          },
+          "pesoNeto": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SeccionOperativa": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Subdiario": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "idDivisa": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Sujeto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroDocumento": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroIngBruto": {
+            "type": "string",
+            "nullable": true
+          },
+          "domicilio": {
+            "type": "string",
+            "nullable": true
+          },
+          "localidad": {
+            "type": "string",
+            "nullable": true
+          },
+          "idProvincia": {
+            "type": "string",
+            "nullable": true
+          },
+          "provincia": {
+            "type": "string",
+            "nullable": true
+          },
+          "idCategoria": {
+            "type": "string",
+            "nullable": true
+          },
+          "categoria": {
+            "type": "string",
+            "nullable": true
+          },
+          "idZona": {
+            "type": "string",
+            "nullable": true
+          },
+          "zona": {
+            "type": "string",
+            "nullable": true
+          },
+          "codigoPostal": {
+            "type": "string",
+            "nullable": true
+          },
+          "condicionIva": {
+            "type": "string",
+            "nullable": true
+          },
+          "condicionIB": {
+            "type": "string",
+            "nullable": true
+          },
+          "subdiarios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subdiario"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "description": "ApiKey must appear in header",
+        "name": "ApiKey",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKey": [ ]
+    }
+  ]
+}

@@ -222,7 +222,7 @@ namespace Soltec.Sae.Api
             Int32 result = (DateTime.Now - UltimaFecha).Days;           
             return result;
         }
-
+  
 
 
 

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jKSGOTxZILhVxXSQd2LWlJr8GQhzspy9kaUIEgzM38JuOXIZ1kslmEWo7h31m+PYJL4l6trtH2YdXJyEMYz/oA==",
+  "dgSpecHash": "SU78UnMWKds=",
   "success": true,
   "projectFilePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
   "expectedPackageFiles": [
@@ -32,17 +32,21 @@
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\7.0.11\\microsoft.entityframeworkcore.relational.7.0.11.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\7.0.11\\microsoft.entityframeworkcore.sqlserver.7.0.11.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\7.0.11\\microsoft.entityframeworkcore.tools.7.0.11.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.ai.abstractions\\10.8.3\\microsoft.extensions.ai.abstractions.10.8.3.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\10.0.10\\microsoft.extensions.caching.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.10\\microsoft.extensions.configuration.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.10\\microsoft.extensions.dependencyinjection.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.dependencymodel\\7.0.0\\microsoft.extensions.dependencymodel.7.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.diagnostics.abstractions\\10.0.10\\microsoft.extensions.diagnostics.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\10.0.10\\microsoft.extensions.fileproviders.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.hosting.abstractions\\10.0.10\\microsoft.extensions.hosting.abstractions.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0\\microsoft.extensions.logging.7.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.options\\7.0.0\\microsoft.extensions.options.7.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.10\\microsoft.extensions.logging.abstractions.10.0.10.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.options\\10.0.10\\microsoft.extensions.options.10.0.10.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.10\\microsoft.extensions.primitives.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.identity.client\\4.47.2\\microsoft.identity.client.4.47.2.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.identity.client.extensions.msal\\2.19.3\\microsoft.identity.client.extensions.msal.2.19.3.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.identitymodel.abstractions\\6.24.0\\microsoft.identitymodel.abstractions.6.24.0.nupkg.sha512",
@@ -59,6 +63,9 @@
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\modelcontextprotocol\\2.2.0\\modelcontextprotocol.2.2.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\modelcontextprotocol.aspnetcore\\2.2.0\\modelcontextprotocol.aspnetcore.2.2.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\modelcontextprotocol.core\\2.2.0\\modelcontextprotocol.core.2.2.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\npoi\\2.6.2\\npoi.2.6.2.nupkg.sha512",
@@ -94,7 +101,7 @@
     "C:\\Users\\pmass\\.nuget\\packages\\system.console\\4.3.0\\system.console.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.data.oledb\\6.0.0\\system.data.oledb.6.0.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\system.diagnostics.diagnosticsource\\10.0.10\\system.diagnostics.diagnosticsource.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.diagnostics.performancecounter\\6.0.0\\system.diagnostics.performancecounter.6.0.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.diagnostics.tools\\4.3.0\\system.diagnostics.tools.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.diagnostics.tracing\\4.3.0\\system.diagnostics.tracing.4.3.0.nupkg.sha512",
@@ -110,6 +117,7 @@
     "C:\\Users\\pmass\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\system.io.pipelines\\10.0.10\\system.io.pipelines.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
@@ -117,6 +125,7 @@
     "C:\\Users\\pmass\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.net.http.extensions.compression.client\\2.0.2\\system.net.http.extensions.compression.client.2.0.2.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\system.net.serversentevents\\10.0.10\\system.net.serversentevents.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.net.sockets\\4.3.0\\system.net.sockets.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.objectmodel\\4.3.0\\system.objectmodel.4.3.0.nupkg.sha512",
@@ -152,8 +161,8 @@
     "C:\\Users\\pmass\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.text.encoding.codepages\\6.0.0\\system.text.encoding.codepages.6.0.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.text.encoding.extensions\\4.3.0\\system.text.encoding.extensions.4.3.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
-    "C:\\Users\\pmass\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\system.text.encodings.web\\10.0.10\\system.text.encodings.web.10.0.10.nupkg.sha512",
+    "C:\\Users\\pmass\\.nuget\\packages\\system.text.json\\10.0.10\\system.text.json.10.0.10.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.text.regularexpressions\\4.3.0\\system.text.regularexpressions.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\pmass\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
@@ -168,91 +177,109 @@
     {
       "code": "NU1603",
       "level": "Warning",
+      "message": "Microsoft.AspNet.WebApi.MessageHandlers.Compression 2.0.0 depends on Microsoft.AspNet.WebApi.Extensions.Compression.Server (>= 2.0.0) but Microsoft.AspNet.WebApi.Extensions.Compression.Server 2.0.0 was not found. Microsoft.AspNet.WebApi.Extensions.Compression.Server 2.0.1 was resolved instead.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "Microsoft.AspNet.WebApi.MessageHandlers.Compression 2.0.0 depende de Microsoft.AspNet.WebApi.Extensions.Compression.Server (>= 2.0.0), pero no se encontró Microsoft.AspNet.WebApi.Extensions.Compression.Server 2.0.0. Se resolvió una mejor coincidencia aproximada de Microsoft.AspNet.WebApi.Extensions.Compression.Server 2.0.1.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "Microsoft.AspNet.WebApi.Extensions.Compression.Server",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1603",
       "level": "Warning",
+      "message": "Microsoft.AspNet.WebApi.MessageHandlers.Compression 2.0.0 depends on System.Net.Http.Extensions.Compression.Client (>= 2.0.0) but System.Net.Http.Extensions.Compression.Client 2.0.0 was not found. System.Net.Http.Extensions.Compression.Client 2.0.2 was resolved instead.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "Microsoft.AspNet.WebApi.MessageHandlers.Compression 2.0.0 depende de System.Net.Http.Extensions.Compression.Client (>= 2.0.0), pero no se encontró System.Net.Http.Extensions.Compression.Client 2.0.0. Se resolvió una mejor coincidencia aproximada de System.Net.Http.Extensions.Compression.Client 2.0.2.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "System.Net.Http.Extensions.Compression.Client",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'BouncyCastle 1.8.9' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"BouncyCastle 1.8.9\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "BouncyCastle",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'iTextSharp 5.5.13.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"iTextSharp 5.5.13.3\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "iTextSharp",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'Microsoft.AspNet.WebApi.Extensions.Compression.Server 2.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"Microsoft.AspNet.WebApi.Extensions.Compression.Server 2.0.1\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "Microsoft.AspNet.WebApi.Extensions.Compression.Server",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'Microsoft.Bcl 1.1.10' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"Microsoft.Bcl 1.1.10\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "Microsoft.Bcl",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'Microsoft.Bcl.Compression 3.9.85' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"Microsoft.Bcl.Compression 3.9.85\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "Microsoft.Bcl.Compression",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'Microsoft.Net.Http 2.2.29' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"Microsoft.Net.Http 2.2.29\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "Microsoft.Net.Http",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
+      "message": "Package 'System.Net.Http.Extensions.Compression.Client 2.0.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "projectPath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "warningLevel": 1,
-      "message": "El paquete \"System.Net.Http.Extensions.Compression.Client 2.0.2\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net6.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "filePath": "C:\\Proyectos\\Soltec.Sae.Api\\Soltec.Sae.Api\\Soltec.Sae.Api.csproj",
       "libraryId": "System.Net.Http.Extensions.Compression.Client",
       "targetGraphs": [
-        "net6.0"
+        "net8.0"
       ]
     }
   ]

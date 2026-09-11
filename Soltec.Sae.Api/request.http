@@ -1,0 +1,15 @@
+@url=https://localhost:7253
+@ApiKey = pgH7QzFHJx4w46fI~5Uzi4RvtTwlEXp
+
+
+
+### Zonas - Obtener todas
+# @name Cosechas Disponibles
+GET {{url}}/api/cereales/cosechasdisponibles
+ApiKey: {{ApiKey}}
+
+
+### Zonas - Obtener todas
+# @name Cosechas Disponibles
+GET {{url}}/api/cuenta/15072/resumen
+ApiKey: {{ApiKey}}

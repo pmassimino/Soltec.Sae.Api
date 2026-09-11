@@ -365,7 +365,30 @@ namespace Soltec.Sae.Api
             }
                 return result;            
         }
-        
+        public List<string> ObtenerCosechasDisponibles(string idCuenta)
+    {
+        string sql = $@"
+    SELECT bol_cosec AS cosecha FROM boletos WHERE bol_produ = '{idCuenta}'
+    UNION
+    SELECT en_cosec AS cosecha FROM entrada WHERE en_produ = '{idCuenta}'
+    UNION
+    SELECT id_cosecha AS cosecha FROM rettransf WHERE id_receptor = '{idCuenta}'";
+
+        string connectionString = this.ConnectionStringBase + "cereales.dbc";
+            OleDbConnection cnn = new OleDbConnection(connectionString);
+            cnn.Open();
+            OleDbCommand command = cnn.CreateCommand();
+            command.CommandText = sql;
+            OleDbDataReader reader = command.ExecuteReader();            
+            List<string> cosechas = new List<string>();
+            while (reader.Read())
+            {
+                cosechas.Add(reader["cosecha"].ToString());
+            }
+            reader.Close();
+            cnn.Close();
+            return cosechas;
+    }
 
     }
 
