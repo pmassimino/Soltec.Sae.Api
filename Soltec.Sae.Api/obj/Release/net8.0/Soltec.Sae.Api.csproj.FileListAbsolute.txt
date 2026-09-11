@@ -124,3 +124,4 @@ C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net8.0\refint\Soltec.Sae.
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net8.0\Soltec.Sae.Api.pdb
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net8.0\Soltec.Sae.Api.genruntimeconfig.cache
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net8.0\ref\Soltec.Sae.Api.dll
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Release\net8.0\staticwebassets.upToDateCheck.txt

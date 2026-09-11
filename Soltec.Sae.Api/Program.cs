@@ -1127,11 +1127,13 @@ app.MapGet("/api/contabilidad/librobanco", (HttpRequest request, HttpResponse re
     cache.Set(cacheKey, result, cacheEntryOptions);
 
     //Facturas y Remitos Pendientes
+    DateTime fechaDesde = fecha.AddYears(-3);
     FacturaService facturaService = new FacturaService(connectionStringBase);
-    var tmpFacturasPendientes = facturaService.ListPendiente(idCuenta, fecha, DateTime.Now);
+    facturaService.SeccionPendiente = seccionPendiente;
+    var tmpFacturasPendientes = facturaService.ListPendiente(idCuenta, fechaDesde,fecha);
     
     RemitoService remitoService = new RemitoService(connectionStringBase);
-    var tmpRemitosPendientes = remitoService.ListPendiente(idCuenta, fecha, DateTime.Now);
+    var tmpRemitosPendientes = remitoService.ListPendiente(idCuenta, fechaDesde ,fecha);
     result.RemitosPendientes = tmpRemitosPendientes;
     result.FacturasPendientes = tmpFacturasPendientes;  
     // 5. Retorno adecuado en Minimal APIs
