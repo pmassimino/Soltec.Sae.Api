@@ -660,6 +660,18 @@
         }
       }
     },
+    "/api/ventas/pedido": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/contabilidad/mayor": {
       "get": {
         "tags": [

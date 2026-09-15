@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Soltec.Sae.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9181765bd92d53f92ea4608ca163675e1bfc3b1a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b379a3932f27025b51afa97623af9bd36303ada")]
 [assembly: System.Reflection.AssemblyProductAttribute("Soltec.Sae.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Soltec.Sae.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

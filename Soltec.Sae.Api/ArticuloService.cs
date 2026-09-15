@@ -55,64 +55,68 @@ namespace Soltec.Sae.Api
             cnn.Close();
             return result;
         }
+        // Lee una columna del reader como decimal; si la columna no existe, es nula, o el driver
+        // tira una excepción al leerla/convertirla (pasa con algunos registros corruptos en la BD), devuelve 0.
+        private static decimal ParseDecimal(OleDbDataReader reader, string column)
+        {
+            try
+            {
+                return Convert.ToDecimal(reader[column]);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // Lee una columna del reader como int, protegida igual que ParseDecimal.
+        private static int ParseInt(OleDbDataReader reader, string column)
+        {
+            try
+            {
+                return Convert.ToInt32(reader[column]);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         private Articulo Parse(OleDbDataReader reader)
         {
             Articulo item = new Articulo();
             item.Id = reader["cod"].ToString().Trim();
             item.Nombre = reader["nom"].ToString().Trim();
-            try
-            {
-             item.PrecioCosto = (decimal)reader["pco"];
-            }
-            catch (Exception ex)
-            { }
-            item.MargenVenta = (decimal)reader["pove"];
-            item.ImpuestoInterno = (decimal)reader["imi"];
-            try
-            {
-                item.PrecioVenta = (decimal)reader["pve1"];
-            } catch (Exception ex) { }
-            try
-            {
-                item.PrecioVentaFinal = (decimal)reader["pfin"];
-            }catch (Exception ex) { }
-
-            item.AlicuotaIva = (decimal)reader["aiva"];
+            item.PrecioCosto = ParseDecimal(reader, "pco");
+            item.MargenVenta = ParseDecimal(reader, "pove");
+            item.ImpuestoInterno = ParseDecimal(reader, "imi");
+            item.PrecioVenta = ParseDecimal(reader, "pve1");
+            item.PrecioVentaFinal = ParseDecimal(reader, "pfin");
+            item.AlicuotaIva = ParseDecimal(reader, "aiva");
             item.IdFamilia = reader["agru"].ToString().Trim();
             item.IdSeccionOp = reader["sect"].ToString().Trim();
-            int.TryParse(reader["div"]?.ToString(), out int idDivisa);
-            item.IdDivisa = idDivisa;
-            item.Stock = Convert.ToDecimal(reader["sact"]);
-            try 
-            {
-                item.PendRemitir = Convert.ToDecimal(reader["spen"]);
-            }catch (Exception ex) 
-            {
-            }
-            try
-            {
-                var listaPrecio = new List<PrecioArticulo>();
-                listaPrecio.Add(new PrecioArticulo { Tipo = "Publico", Valor = item.PrecioVentaFinal });
-                // Usamos Convert.ToDecimal para evitar errores si el valor es nulo en BD
-                var precioVenta2 = Convert.ToDecimal(reader["PVE2F"]);
-                var precioVenta3 = Convert.ToDecimal(reader["PVE3F"]); // Corregida la columna
-                
-                if (precioVenta2 > 0)
-                {
-                    listaPrecio.Add(new PrecioArticulo { Tipo = "Especial", Valor = precioVenta2 });
-                }
+            item.IdDivisa = ParseInt(reader, "div");
+            item.Stock = ParseDecimal(reader, "sact");
+            item.PendRemitir = ParseDecimal(reader, "spen");
 
-                if (precioVenta3 > 0)
-                {
-                    // Corregido: Usamos precioVenta3
-                    listaPrecio.Add(new PrecioArticulo { Tipo = "Mayorista", Valor = precioVenta3 });
-                }
-                item.Precios = listaPrecio;
-            }
-            catch (Exception ex)
+            var listaPrecio = new List<PrecioArticulo>
             {
-                // Manejo de errores
+                new PrecioArticulo { Tipo = "Publico", Valor = item.PrecioVentaFinal }
+            };
+
+            var precioVenta2 = ParseDecimal(reader, "PVE2F");
+            var precioVenta3 = ParseDecimal(reader, "PVE3F");
+
+            if (precioVenta2 > 0)
+            {
+                listaPrecio.Add(new PrecioArticulo { Tipo = "Especial", Valor = precioVenta2 });
             }
+
+            if (precioVenta3 > 0)
+            {
+                listaPrecio.Add(new PrecioArticulo { Tipo = "Mayorista", Valor = precioVenta3 });
+            }
+            item.Precios = listaPrecio;
 
             return item;
         }

@@ -76,7 +76,14 @@ builder.Services
     .AddMcpServer()
     .WithHttpTransport()
     .WithTools<CerealesTools>()
-    .WithTools<SujetosTools>();
+    .WithTools<SujetosTools>()
+    .WithTools<FacturaTools>()
+    .WithTools<PedidoTools>()
+    .WithTools<ArticuloTools>()
+    .WithTools<LiquidacionTools>()
+    .WithTools<CertificadoTools>()
+    .WithTools<MovPlantaCerealTools>()
+    .WithTools<CosechaTools>();
 
 var sucursales = builder.Configuration.GetSection("Sucursales").GetChildren().ToList().Select(x => new Sucursal {
     Id = x.GetValue<string>("Id"),
@@ -516,6 +523,7 @@ app.MapGet("/api/ventas/Campania", (HttpRequest request, HttpResponse response) 
 
 app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =>
 {
+    string idCuenta = request.Query["IdCuenta"].ToString();
     var fechaStr = request.Query["Fecha"].ToString();
     var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
     var fechaHastaStr = request.Query["FechaHasta"].ToString();
@@ -523,7 +531,7 @@ app.MapGet("/api/ventas/Factura", (HttpRequest request, HttpResponse response) =
     FacturaService service = new FacturaService(connectionStringBase);
     service.SeccionDolar = seccionDolar;
     List<Factura> result = null;
-    result = service.List(fecha,fechaHasta);
+    result = service.List(fecha,fechaHasta,idCuenta);
     return Results.Ok(result);
 });
 app.MapGet("/api/ventas/Factura/view", (HttpRequest request, HttpResponse response, IMemoryCache cache) =>
@@ -938,6 +946,22 @@ app.MapGet("/api/ventas/Remito/{orden}", (string orden, HttpRequest request, Htt
     result = service.FindOne(sec, orden);
     return Results.Ok(result);
 });
+//Pedido
+app.MapGet("/api/ventas/pedido", (HttpRequest request, HttpResponse response) =>
+{
+    string idCuenta = request.Query["IdCuenta"].ToString();
+    var fechaStr = request.Query["Fecha"].ToString();
+    var incluyeDetalleStr = request.Query["IncluyeDetalle"].ToString();
+    var incluyeDetalle = incluyeDetalleStr == "" ? false : Convert.ToBoolean(incluyeDetalleStr);
+    var fecha = fechaStr == "" ? DateTime.Now.AddDays(-530) : DateTime.ParseExact(fechaStr, "MM-dd-yyyy", null);
+    var fechaHastaStr = request.Query["FechaHasta"].ToString();
+    var fechaHasta = fechaHastaStr == "" ? DateTime.Now : DateTime.ParseExact(fechaHastaStr, "MM-dd-yyyy", null);
+    PedidoService service = new PedidoService(connectionStringBase);
+    List<Pedido> result = null;
+    result = service.List(fecha, fechaHasta, idCuenta);
+    return Results.Ok(result);
+});
+
 //Contabilidad
 app.MapGet("/api/contabilidad/mayor", (HttpRequest request, HttpResponse response) =>
 {

@@ -1,4 +1,5 @@
-﻿using System.Data.OleDb;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using System.Data.OleDb;
 
 namespace Soltec.Sae.Api
 {
@@ -12,7 +13,7 @@ namespace Soltec.Sae.Api
         public List<Seccion> SeccionDolar { get; set; }
         public List<Seccion> SeccionPendiente { get; set; }
 
-        public List<Factura> List(DateTime fecha, DateTime fechaHasta)
+        public List<Factura> List(DateTime fecha, DateTime fechaHasta,string IdCuenta="")
         {
             SujetoService sujetoService = new SujetoService(this.ConnectionStringBase);
             string connectionString = this.ConnectionStringBase + "sae.dbc";
@@ -25,13 +26,18 @@ namespace Soltec.Sae.Api
                 "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,totd,nctip," +
                 "cla,peri_asig," + 
                 "clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva, " +
-                "can,ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet,facmae.guid as ntra " + 
+                "can,facdet.ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet,facmae.guid as ntra ,artrub.cod as idFamilia,artrub.nom as familia," +
+                "sec.nom as SeccionFacturacion " +
                 "FROM facmae " +
                 "INNER JOIN facdet ON facmae.sec = facdet.sec AND facmae.orden = facdet.orden " +
                 "INNER JOIN sec On facmae.sec = sec.cod " +
-                "inner join clipro on clipro.cod = facmae.scta " + 
+                "LEFT JOIN artgen ON artgen.cod = facdet.art " +
+                "LEFT JOIN artrub ON artrub.cod = artgen.agru " +
+            "LEFT join clipro on clipro.cod = facmae.scta " +
                 "WHERE  (femi BETWEEN ctod('" + fecha.ToString("MM-dd-yyy") + "')" +                 
-                " AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) and sec.funcion = '1' and sec.dis_iva = .f. order by femi,facmae.tipo,letra,pe,num,facdet.item";
+                " AND ctod('" + fechaHasta.ToString("MM-dd-yyy") + "')) and sec.funcion = '1' and sec.dis_iva = .f." +
+                "and (scta = '" + IdCuenta + "' or empty('" + IdCuenta + "'))" +
+                "order by femi,facmae.tipo,letra,pe,num,facdet.item";
             OleDbDataReader reader = command.ExecuteReader();
             List<Factura> result = new List<Factura>();
             string idAnt = "";
@@ -227,25 +233,26 @@ namespace Soltec.Sae.Api
             OleDbConnection cnn = new OleDbConnection(connectionString);
             cnn.Open();
             OleDbCommand command = cnn.CreateCommand();
-            command.CommandText = "SELECT facmae.sec,facmae.orden,facmae.tipo,letra,pe,num,cae,cae_id,tipcomp,femi,fvto,cmay,scta,facmae.rem,cla, " +
-                "facmae.ven,tve,tep,tra,civa,sub1,sub1imp,dto,pde,sub2,gas,facmae.int,facmae.ibru,cibru,per,facmae.fle,ot1,ret,iva1,iva2,iva3,facmae.tot, " + 
+            command.CommandText = "SELECT facmae.sec,facmae.orden,facmae.tipo,letra,pe,num,cae,cae_id,tipcomp,femi,fvto,facmae.cmay,scta,facmae.rem,cla, " +
+                "facmae.ven,tve,tep,tra,civa,sub1,sub1imp,dto,pde,sub2,gas,facmae.int,facmae.ibru,cibru,per,facmae.fle,ot1,ret,iva1,iva2,iva3,facmae.tot, " +
                 "cotiz,morig,estado,integ,facmae.lote,facmae.noa,noi,obs1,obs2,fnventa,facmae.tip_op,ord_ven,fac_cre,for_pag,transp,guia,nped,bultos, " +
-                "facmae.credito,pag,fcr,div,totd,nctip,clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email, "+ 
-                "clipro.cuit,clipro.piva " +
-                "FROM FACMAE " +                 
+                "facmae.credito,pag,fcr,div,totd,nctip,peri_asig,facmae.guid as ntra,clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email, "+
+                "clipro.cuit,clipro.piva,sec.nom as SeccionFacturacion " +
+                "FROM FACMAE " +
                 "inner join clipro on clipro.cod = facmae.scta " +
-                "WHERE  sec = '" + sec + "' and orden = '" + orden + "'";
+                "INNER JOIN sec ON facmae.sec = sec.cod " +
+                "WHERE  facmae.sec = '" + sec + "' and facmae.orden = '" + orden + "'";
             OleDbDataReader reader = command.ExecuteReader();
             Factura result = null;
             while (reader.Read())
             {
-                result = Parse(reader);                
+                result = Parse(reader);
             }
             reader.Close();
-            command.CommandText = "Select facmae.letra,can,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp," + 
-                "VAL(STR(facdet.int,10,2)) as intdet,facdet.rem " + 
+            command.CommandText = "Select facmae.letra,can,facdet.ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp," +
+                "VAL(STR(facdet.int,10,2)) as intdet,facdet.rem " +
                 "from facdet " +
-                "inner join facmae on facmae.sec = facdet.sec and facmae.orden = facdet.orden " + 
+                "inner join facmae on facmae.sec = facdet.sec and facmae.orden = facdet.orden " +
                 "WHERE facdet.sec = '" + sec + "' and facdet.orden = '" + orden + "'";
             reader = command.ExecuteReader();
             List<DetalleFactura> detalle = new List<DetalleFactura>();
@@ -270,7 +277,7 @@ namespace Soltec.Sae.Api
                "for_pag,transp,guia,nped,bultos,facmae.credito,pag,fcr,totd,nctip," +
                "cla,peri_asig," +
                "clipro.cod,clipro.nom,clipro.dir,clipro.alt,clipro.loc,clipro.pos,clipro.provin,clipro.email,clipro.cuit,clipro.piva, " +
-               "can,ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet ,facmae.guid as ntra " +
+               "can,ume,des,pun,bon,art,facdet.tot as totdet,facdet.iva as ivadet,VAL(STR(facdet.aiva,10,2)) as aiva,dtog,punimp,VAL(STR(facdet.int,10,2)) as intdet ,facmae.guid as ntra,sec.nom as SeccionFacturacion " +
                "FROM facmae " +
                "INNER JOIN facdet ON facmae.sec = facdet.sec AND facmae.orden = facdet.orden " +
                "INNER JOIN sec On facmae.sec = sec.cod " +
@@ -309,6 +316,7 @@ namespace Soltec.Sae.Api
         {
             Factura item = new Factura();
             item.Sec = reader["sec"].ToString().Trim();
+            item.SeccionFacturacion = reader["SeccionFacturacion"].ToString().Trim();
             item.Orden = reader["orden"].ToString().Trim();
             item.Tipo = Convert.ToInt16(reader["tipo"]);
             item.Letra = reader["letra"].ToString().Trim();
@@ -351,6 +359,7 @@ namespace Soltec.Sae.Api
             item.Total = (decimal)reader["tot"];
             item.Cae = Convert.ToInt64(reader["cae"]);            
             item.IdDivisa = reader["morig"].ToString().Trim() == "D" || reader["morig"].ToString().Trim() == "1" ? 1:0;
+            item.Divisa = item.IdDivisa == 1 ? "PESOS" : "DOLARES";
             item.Cotizacion = 1;
             //Poner solo la cotizacion si es Factura en dolar o con clausula
             if (item.IdDivisa == 1 || (item.IdDivisa == 0 && this.SeccionDolar?.Where(w => w.Id == item.Sec).Count() > 0))

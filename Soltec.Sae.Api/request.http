@@ -13,3 +13,9 @@ ApiKey: {{ApiKey}}
 # @name Cosechas Disponibles
 GET {{url}}/api/cuenta/15072/resumen
 ApiKey: {{ApiKey}}
+
+
+### Pedido - Obtener pedidos
+# @name Cosechas Disponibles
+GET {{url}}/api/ventas/pedido
+ApiKey: {{ApiKey}}
