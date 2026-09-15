@@ -1,7 +1,7 @@
 [
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__6",
+    "ContainingType": "ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__0",
     "RelativePath": "api/almacen/articulo",
     "HttpMethod": "GET",
     "IsController": false,
@@ -22,8 +22,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__15",
+    "ContainingType": "ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__1",
     "RelativePath": "api/almacen/articulo/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -44,8 +44,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__19",
+    "ContainingType": "ArticuloEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapArticuloEndpoints\u003Eb__2",
     "RelativePath": "api/almacen/articulo/stock",
     "HttpMethod": "GET",
     "IsController": false,
@@ -60,8 +60,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__16",
+    "ContainingType": "AlmacenEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapAlmacenEndpoints\u003Eb__0",
     "RelativePath": "api/almacen/familia",
     "HttpMethod": "GET",
     "IsController": false,
@@ -78,8 +78,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__17",
+    "ContainingType": "AlmacenEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapAlmacenEndpoints\u003Eb__1",
     "RelativePath": "api/almacen/linea",
     "HttpMethod": "GET",
     "IsController": false,
@@ -96,8 +96,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__20",
+    "ContainingType": "AlmacenEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapAlmacenEndpoints\u003Eb__3",
     "RelativePath": "api/almacen/MovStock",
     "HttpMethod": "POST",
     "IsController": false,
@@ -118,8 +118,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__18",
+    "ContainingType": "AlmacenEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapAlmacenEndpoints\u003Eb__2",
     "RelativePath": "api/almacen/seccionoperativa",
     "HttpMethod": "GET",
     "IsController": false,
@@ -136,8 +136,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__73",
+    "ContainingType": "BoletoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapBoletoEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/boleto",
     "HttpMethod": "GET",
     "IsController": false,
@@ -154,8 +154,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__74",
+    "ContainingType": "BoletoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapBoletoEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/boleto",
     "HttpMethod": "POST",
     "IsController": false,
@@ -176,8 +176,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__77",
+    "ContainingType": "BoletoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapBoletoEndpoints\u003Eb__4",
     "RelativePath": "api/cereales/boleto/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -200,8 +200,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__75",
+    "ContainingType": "BoletoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapBoletoEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/boleto/pendiente",
     "HttpMethod": "GET",
     "IsController": false,
@@ -218,8 +218,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__76",
+    "ContainingType": "BoletoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapBoletoEndpoints\u003Eb__3",
     "RelativePath": "api/cereales/boleto/pendiente/xls",
     "HttpMethod": "GET",
     "IsController": false,
@@ -234,8 +234,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__78",
+    "ContainingType": "BoletoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapBoletoEndpoints\u003Eb__5",
     "RelativePath": "api/cereales/boleto/total",
     "HttpMethod": "GET",
     "IsController": false,
@@ -252,8 +252,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__61",
+    "ContainingType": "CertificadoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCertificadoEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/certificado",
     "HttpMethod": "GET",
     "IsController": false,
@@ -270,8 +270,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__62",
+    "ContainingType": "CertificadoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCertificadoEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/certificado/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -294,8 +294,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__63",
+    "ContainingType": "CertificadoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCertificadoEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/certificado/total",
     "HttpMethod": "GET",
     "IsController": false,
@@ -312,8 +312,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__92",
+    "ContainingType": "VariosCerealEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapVariosCerealEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/condicionventa",
     "HttpMethod": "GET",
     "IsController": false,
@@ -330,8 +330,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__90",
+    "ContainingType": "ContratoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContratoEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/Contrato",
     "HttpMethod": "GET",
     "IsController": false,
@@ -348,8 +348,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__91",
+    "ContainingType": "ContratoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContratoEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/Contrato/estado",
     "HttpMethod": "GET",
     "IsController": false,
@@ -366,8 +366,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__54",
+    "ContainingType": "CosechaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCosechaEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/cosecha",
     "HttpMethod": "GET",
     "IsController": false,
@@ -384,8 +384,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__55",
+    "ContainingType": "CosechaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCosechaEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/cosecha/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -408,8 +408,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__85",
+    "ContainingType": "CtaCteCerealEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteCerealEndpoints\u003Eb__3",
     "RelativePath": "api/cereales/cosechasdisponibles",
     "HttpMethod": "GET",
     "IsController": false,
@@ -426,8 +426,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__82",
+    "ContainingType": "CtaCteCerealEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteCerealEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/CtaCte",
     "HttpMethod": "GET",
     "IsController": false,
@@ -444,8 +444,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__83",
+    "ContainingType": "CtaCteCerealEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteCerealEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/CtaCteCereal/saldo",
     "HttpMethod": "GET",
     "IsController": false,
@@ -462,8 +462,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__84",
+    "ContainingType": "CtaCteCerealEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteCerealEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/CtaCteCereal/saldos",
     "HttpMethod": "GET",
     "IsController": false,
@@ -480,8 +480,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__59",
+    "ContainingType": "EntradaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapEntradaEndpoints\u003Eb__3",
     "RelativePath": "api/cereales/entrada",
     "HttpMethod": "GET",
     "IsController": false,
@@ -498,8 +498,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__56",
+    "ContainingType": "EntradaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapEntradaEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/entrada/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -522,8 +522,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__60",
+    "ContainingType": "EntradaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapEntradaEndpoints\u003Eb__4",
     "RelativePath": "api/cereales/entrada/total",
     "HttpMethod": "GET",
     "IsController": false,
@@ -540,8 +540,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__57",
+    "ContainingType": "EntradaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapEntradaEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/entrada/trx/{ntra}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -564,8 +564,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__58",
+    "ContainingType": "EntradaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapEntradaEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/entrada/trx/{ntra}/pdf",
     "HttpMethod": "GET",
     "IsController": false,
@@ -586,8 +586,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__64",
+    "ContainingType": "LiquidacionEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapLiquidacionEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/liquidacion",
     "HttpMethod": "GET",
     "IsController": false,
@@ -604,8 +604,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__65",
+    "ContainingType": "LiquidacionEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapLiquidacionEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/liquidacion/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -628,8 +628,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__66",
+    "ContainingType": "LiquidacionEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapLiquidacionEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/liquidacion/total",
     "HttpMethod": "GET",
     "IsController": false,
@@ -646,8 +646,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__67",
+    "ContainingType": "LiquidacionEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapLiquidacionEndpoints\u003Eb__3",
     "RelativePath": "api/cereales/liquidacionsec",
     "HttpMethod": "GET",
     "IsController": false,
@@ -664,8 +664,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__93",
+    "ContainingType": "VariosCerealEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapVariosCerealEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/localidad",
     "HttpMethod": "GET",
     "IsController": false,
@@ -682,8 +682,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__86",
+    "ContainingType": "PlantaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapPlantaEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/planta/",
     "HttpMethod": "GET",
     "IsController": false,
@@ -700,8 +700,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__87",
+    "ContainingType": "PlantaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapPlantaEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/planta/c14",
     "HttpMethod": "GET",
     "IsController": false,
@@ -718,8 +718,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__89",
+    "ContainingType": "PlantaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapPlantaEndpoints\u003Eb__3",
     "RelativePath": "api/cereales/planta/posicioncomercial",
     "HttpMethod": "GET",
     "IsController": false,
@@ -736,8 +736,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__88",
+    "ContainingType": "PlantaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapPlantaEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/planta/saldo",
     "HttpMethod": "GET",
     "IsController": false,
@@ -754,8 +754,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__68",
+    "ContainingType": "RetiroSalidaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRetiroSalidaEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/retiro",
     "HttpMethod": "GET",
     "IsController": false,
@@ -772,8 +772,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__69",
+    "ContainingType": "RetiroSalidaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRetiroSalidaEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/retiro/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -796,8 +796,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__72",
+    "ContainingType": "RetiroSalidaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRetiroSalidaEndpoints\u003Eb__4",
     "RelativePath": "api/cereales/retiro/total",
     "HttpMethod": "GET",
     "IsController": false,
@@ -814,8 +814,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__79",
+    "ContainingType": "RtEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRtEndpoints\u003Eb__0",
     "RelativePath": "api/cereales/rt",
     "HttpMethod": "GET",
     "IsController": false,
@@ -832,8 +832,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__81",
+    "ContainingType": "RtEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRtEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/rt/totalrecibido",
     "HttpMethod": "GET",
     "IsController": false,
@@ -850,8 +850,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__80",
+    "ContainingType": "RtEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRtEndpoints\u003Eb__1",
     "RelativePath": "api/cereales/rt/totaltransferido",
     "HttpMethod": "GET",
     "IsController": false,
@@ -868,8 +868,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__70",
+    "ContainingType": "RetiroSalidaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRetiroSalidaEndpoints\u003Eb__2",
     "RelativePath": "api/cereales/salida",
     "HttpMethod": "GET",
     "IsController": false,
@@ -886,8 +886,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__71",
+    "ContainingType": "RetiroSalidaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRetiroSalidaEndpoints\u003Eb__3",
     "RelativePath": "api/cereales/salida/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -910,8 +910,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__9",
+    "ContainingType": "ComunEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapComunEndpoints\u003Eb__1",
     "RelativePath": "api/comun/categoria",
     "HttpMethod": "GET",
     "IsController": false,
@@ -928,8 +928,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_11",
+    "ContainingType": "ComunEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapComunEndpoints\u003Eb__0_3",
     "RelativePath": "api/comun/isRuning",
     "HttpMethod": "GET",
     "IsController": false,
@@ -944,8 +944,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__8",
+    "ContainingType": "ComunEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapComunEndpoints\u003Eb__0",
     "RelativePath": "api/comun/provincia",
     "HttpMethod": "GET",
     "IsController": false,
@@ -962,8 +962,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__10",
+    "ContainingType": "ComunEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapComunEndpoints\u003Eb__2",
     "RelativePath": "api/comun/zona",
     "HttpMethod": "GET",
     "IsController": false,
@@ -980,8 +980,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__22",
+    "ContainingType": "CtaCteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteEndpoints\u003Eb__1",
     "RelativePath": "api/contabilidad/CtaCte/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1002,8 +1002,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__26",
+    "ContainingType": "CtaCteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteEndpoints\u003Eb__5",
     "RelativePath": "api/contabilidad/CtaCte/{id}/diasdeuda",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1024,8 +1024,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__23",
+    "ContainingType": "CtaCteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteEndpoints\u003Eb__2",
     "RelativePath": "api/contabilidad/CtaCte/{id}/pdf",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1046,8 +1046,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__21",
+    "ContainingType": "CtaCteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteEndpoints\u003Eb__0",
     "RelativePath": "api/contabilidad/CtaCte/{id}/saldo",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1068,8 +1068,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__24",
+    "ContainingType": "CtaCteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteEndpoints\u003Eb__3",
     "RelativePath": "api/contabilidad/CtaCte/saldos",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1084,8 +1084,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__25",
+    "ContainingType": "CtaCteEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapCtaCteEndpoints\u003Eb__4",
     "RelativePath": "api/contabilidad/CtaCte/saldos/xls",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1100,8 +1100,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__46",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__2",
     "RelativePath": "api/contabilidad/diario",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1116,8 +1116,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__47",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__3",
     "RelativePath": "api/contabilidad/diario/xls",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1132,8 +1132,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__48",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__4",
     "RelativePath": "api/contabilidad/librobanco",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1148,8 +1148,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__45",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__1",
     "RelativePath": "api/contabilidad/mayor",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1164,8 +1164,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__27",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__0",
     "RelativePath": "api/contabilidad/ReciboCtaCte",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1180,8 +1180,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__50",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__5",
     "RelativePath": "api/contabilidad/retencion/afip",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1196,8 +1196,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__51",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__6",
     "RelativePath": "api/contabilidad/retencion/afip/{id}/pdf",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1218,8 +1218,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__53",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__8",
     "RelativePath": "api/contabilidad/retencion/dgr",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1234,8 +1234,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__52",
+    "ContainingType": "ContabilidadEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapContabilidadEndpoints\u003Eb__7",
     "RelativePath": "api/contabilidad/retencion/dgr/{id}/pdf",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1256,8 +1256,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__7",
+    "ContainingType": "SujetoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapSujetoEndpoints\u003Eb__1",
     "RelativePath": "api/contabilidad/sujeto",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1274,8 +1274,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__13",
+    "ContainingType": "SujetoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapSujetoEndpoints\u003Eb__3",
     "RelativePath": "api/contabilidad/sujeto/{id}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1296,8 +1296,30 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__14",
+    "ContainingType": "SujetoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapSujetoEndpoints\u003Eb__5",
+    "RelativePath": "api/contabilidad/sujeto/{idCuenta}/resumen",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "idCuenta",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SujetoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapSujetoEndpoints\u003Eb__4",
     "RelativePath": "api/contabilidad/sujeto/documento/{numero}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1318,8 +1340,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__12",
+    "ContainingType": "SujetoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapSujetoEndpoints\u003Eb__2",
     "RelativePath": "api/contabilidad/sujeto/xls",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1334,30 +1356,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__49",
-    "RelativePath": "api/cuenta/{idCuenta}/resumen",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "idCuenta",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__30",
+    "ContainingType": "VentasVariosEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapVentasVariosEndpoints\u003Eb__2",
     "RelativePath": "api/ventas/Campania",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1372,8 +1372,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__29",
+    "ContainingType": "VentasVariosEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapVentasVariosEndpoints\u003Eb__1",
     "RelativePath": "api/ventas/ClaseVenta",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1388,8 +1388,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__31",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__2",
     "RelativePath": "api/ventas/Factura",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1404,8 +1404,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__37",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__8",
     "RelativePath": "api/ventas/Factura/{orden}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1426,8 +1426,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__36",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__7",
     "RelativePath": "api/ventas/Factura/pendiente",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1442,8 +1442,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__38",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__9",
     "RelativePath": "api/ventas/factura/trx/{ntra}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1464,8 +1464,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__39",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__10",
     "RelativePath": "api/ventas/factura/trx/{ntra}/pdf",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1486,8 +1486,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__32",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__3",
     "RelativePath": "api/ventas/Factura/view",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1502,8 +1502,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__35",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__6",
     "RelativePath": "api/ventas/Factura/view/csv",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1518,8 +1518,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__33",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__4",
     "RelativePath": "api/ventas/Factura/view/xls",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1534,8 +1534,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__34",
+    "ContainingType": "FacturaEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapFacturaEndpoints\u003Eb__5",
     "RelativePath": "api/ventas/Factura/view/xls1",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1550,8 +1550,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__44",
+    "ContainingType": "PedidoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapPedidoEndpoints\u003Eb__0",
     "RelativePath": "api/ventas/pedido",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1566,8 +1566,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__40",
+    "ContainingType": "RemitoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRemitoEndpoints\u003Eb__0",
     "RelativePath": "api/ventas/Remito",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1582,8 +1582,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__43",
+    "ContainingType": "RemitoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRemitoEndpoints\u003Eb__3",
     "RelativePath": "api/ventas/Remito/{orden}",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1604,8 +1604,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__42",
+    "ContainingType": "RemitoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRemitoEndpoints\u003Eb__2",
     "RelativePath": "api/ventas/remito/informe",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1620,8 +1620,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__41",
+    "ContainingType": "RemitoEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapRemitoEndpoints\u003Eb__1",
     "RelativePath": "api/ventas/Remito/pendiente",
     "HttpMethod": "GET",
     "IsController": false,
@@ -1636,8 +1636,8 @@
     ]
   },
   {
-    "ContainingType": "Program\u002B\u003C\u003Ec__DisplayClass0_0",
-    "Method": "\u003C\u003CMain\u003E$\u003Eb__28",
+    "ContainingType": "VentasVariosEndpoints\u002B\u003C\u003Ec__DisplayClass0_0",
+    "Method": "\u003CMapVentasVariosEndpoints\u003Eb__0",
     "RelativePath": "api/ventas/Seccion",
     "HttpMethod": "GET",
     "IsController": false,

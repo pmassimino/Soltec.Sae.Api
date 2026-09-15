@@ -11,7 +11,7 @@ ApiKey: {{ApiKey}}
 
 ### Zonas - Obtener todas
 # @name Cosechas Disponibles
-GET {{url}}/api/cuenta/15072/resumen
+GET {{url}}/api/contabilidad/sujeto/15072/resumen
 ApiKey: {{ApiKey}}
 
 

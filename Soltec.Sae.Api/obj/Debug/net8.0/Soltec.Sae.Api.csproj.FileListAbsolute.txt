@@ -124,3 +124,4 @@ C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net8.0\rjsmcshtml.dswa.cach
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
 C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net8.0\swae.build.ex.cache
+C:\Proyectos\Soltec.Sae.Api\Soltec.Sae.Api\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

@@ -26,6 +26,40 @@
         }
       }
     },
+    "/api/almacen/articulo/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/almacen/articulo/stock": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/contabilidad/sujeto": {
       "get": {
         "tags": [
@@ -44,6 +78,84 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/xls": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/{id}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/documento/{numero}": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "numero",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/contabilidad/sujeto/{idCuenta}/resumen": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "parameters": [
+          {
+            "name": "idCuenta",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -126,84 +238,6 @@
         }
       }
     },
-    "/api/contabilidad/sujeto/xls": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/contabilidad/sujeto/{id}": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/contabilidad/sujeto/documento/{numero}": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
-        ],
-        "parameters": [
-          {
-            "name": "numero",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/almacen/articulo/{id}": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/almacen/familia": {
       "get": {
         "tags": [
@@ -266,18 +300,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/almacen/articulo/stock": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       }
@@ -408,18 +430,6 @@
               "type": "string"
             }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/contabilidad/ReciboCtaCte": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
         ],
         "responses": {
           "200": {
@@ -672,6 +682,18 @@
         }
       }
     },
+    "/api/contabilidad/ReciboCtaCte": {
+      "get": {
+        "tags": [
+          "Soltec.Sae.Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/contabilidad/mayor": {
       "get": {
         "tags": [
@@ -712,28 +734,6 @@
       "get": {
         "tags": [
           "Soltec.Sae.Api"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/cuenta/{idCuenta}/resumen": {
-      "get": {
-        "tags": [
-          "Soltec.Sae.Api"
-        ],
-        "parameters": [
-          {
-            "name": "idCuenta",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
         ],
         "responses": {
           "200": {
